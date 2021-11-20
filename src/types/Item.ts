@@ -6,6 +6,8 @@ export class Item {
     private _id: number,
     //タイプ
     private _type: string,
+    //名前
+    private _name: string,
     //説明
     private _discription: string,
     //Mの価格
@@ -34,6 +36,13 @@ export class Item {
 
   public set type(type: string) {
     this._type = type;
+  }
+  public get name(): string {
+    return this._name;
+  }
+
+  public set name(name: string) {
+    this._name = name;
   }
 
   public get discription(): string {
