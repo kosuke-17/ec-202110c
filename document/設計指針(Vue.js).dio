@@ -1,29 +1,31 @@
 <mxfile host="65bd71144e">
     <diagram id="Iyzo-n8MeCfhVtugdxC-" name="ページ1">
+
         <mxGraphModel dx="951" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="22" value="RegisterUser.vue" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry width="330" height="438" as="geometry"/>
+                    <mxGeometry width="330" height="456" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value=" //エラーメッセージの配列&#10;- errors: Array&lt;string&gt;&#10;  //エラーメッセージ&#10;- errorMessage:string&#10;  //姓&#10;- lastName : string&#10;　//名&#10;- firstName : string&#10;　//パスワード&#10;- password : string&#10;  //確認パスワード&#10;-checkpassword&#10;//メールアドレス&#10;- mailAddress : string&#10;  // 郵便番号&#10;- zipcode :string&#10;  // 住所&#10;- address: string&#10;  //電話番号&#10;- phoneNumber: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="22" vertex="1">
+                <mxCell id="23" value=" //エラーメッセージの配列&#10;- errors: Array&lt;string&gt;&#10;  //エラーメッセージ&#10;- errorMessage:string&#10;  //姓&#10;- lastName : string&#10;　//名&#10;- firstName : string&#10;　//パスワード&#10;- password : string&#10;  //確認パスワード&#10;-checkpassword&#10;//メールアドレス&#10;- email : string&#10;  // 郵便番号&#10;- zipcode :string&#10;  // 住所&#10;- address: string&#10;  //電話番号&#10;- telephone: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="22" vertex="1">
                     <mxGeometry y="26" width="330" height="344" as="geometry"/>
                 </mxCell>
                 <mxCell id="24" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="22" vertex="1">
                     <mxGeometry y="370" width="330" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="25" value="+ async registerUser(): Promise&lt;void&gt;&#10;     (登録ボタンをクリックしたらユーザーを登録する)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="22" vertex="1">
-                    <mxGeometry y="378" width="330" height="60" as="geometry"/>
+                <mxCell id="25" value="+ async registerUser(): Promise&lt;void&gt;&#10;     (登録ボタンをクリックしたらユーザーを登録する)&#10;+ async getAddressByZipcode&#10;   (住所検索ボタンをクリックしたら住所を取得する)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="22" vertex="1">
+                    <mxGeometry y="378" width="330" height="78" as="geometry"/>
                 </mxCell>
                 <mxCell id="26" value="外部WebAPI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="400" y="90" width="375" height="78" as="geometry"/>
+                    <mxGeometry x="400" y="90" width="375" height="98" as="geometry"/>
                 </mxCell>
-                <mxCell id="27" value="+ user(name, email, password, zipcode,&#10;address, telephone): json" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="26" vertex="1">
-                    <mxGeometry y="26" width="375" height="44" as="geometry"/>
+                <mxCell id="27" value="+ user(name, email, password, zipcode,&#10;address, telephone): json&#10;// ZIP CODA APIを利用&#10;+ api(zipcode):json" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="26" vertex="1">
+                    <mxGeometry y="26" width="375" height="64" as="geometry"/>
                 </mxCell>
                 <mxCell id="28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="26" vertex="1">
-                    <mxGeometry y="70" width="375" height="8" as="geometry"/>
+                    <mxGeometry y="90" width="375" height="8" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="Use" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.997;exitY=0.601;exitDx=0;exitDy=0;exitPerimeter=0;entryX=-0.007;entryY=0.018;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="23" target="27" edge="1">
                     <mxGeometry width="160" relative="1" as="geometry">
@@ -32,16 +34,16 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="48" value="Login.vue" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry y="480" width="330" height="178" as="geometry"/>
+                    <mxGeometry y="480" width="330" height="208" as="geometry"/>
                 </mxCell>
-                <mxCell id="49" value="   //メールアドレス&#10;- email : string&#10;　//パスワード&#10;- password : string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="48" vertex="1">
-                    <mxGeometry y="26" width="330" height="64" as="geometry"/>
+                <mxCell id="49" value="   //エラーメッセージ&#10;- errorMessage:string  &#10; //メールアドレス&#10;- email : string&#10;　//パスワード&#10;- password : string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="48" vertex="1">
+                    <mxGeometry y="26" width="330" height="94" as="geometry"/>
                 </mxCell>
                 <mxCell id="50" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="48" vertex="1">
-                    <mxGeometry y="90" width="330" height="18" as="geometry"/>
+                    <mxGeometry y="120" width="330" height="18" as="geometry"/>
                 </mxCell>
                 <mxCell id="51" value="+ async loginUser() : Promise&lt;void&gt;&#10;  (ログインボタンをクリックするとログインする)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="48" vertex="1">
-                    <mxGeometry y="108" width="330" height="70" as="geometry"/>
+                    <mxGeometry y="138" width="330" height="70" as="geometry"/>
                 </mxCell>
                 <mxCell id="52" value="外部WebAPI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="400" y="545.5" width="375" height="78" as="geometry"/>
@@ -159,7 +161,7 @@
                 <mxCell id="120" value="Vuexストア(index.ts)" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="490" y="1340" width="290" height="186" as="geometry"/>
                 </mxCell>
-                <mxCell id="121" value="- cartList: Array&lt;Item&gt; (state)&#10;  (プラグイン機能を使う)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="120" vertex="1">
+                <mxCell id="121" value="- orderItemList: Array&lt;Item&gt; (state)&#10;  (プラグイン機能を使う)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="120" vertex="1">
                     <mxGeometry y="26" width="290" height="54" as="geometry"/>
                 </mxCell>
                 <mxCell id="122" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="120" vertex="1">
