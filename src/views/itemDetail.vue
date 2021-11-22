@@ -104,7 +104,7 @@
           <button
             class="waves-effect waves-light btn"
             type="button"
-            onclick="location.href='cart_list.html'"
+            @click="addItem"
           >
             <span>カートに入れる</span>
           </button>
@@ -186,32 +186,24 @@ export default class itemDetail extends Vue {
     );
   }
 
-  /**
-   * 商品の金額を計算して返す.
-   *
-   * @remarks 表示されている商品の合計金額を選択されたオプションで計算する
-   * @return 商品の合計金額
-   */
-  // get calcTotalPrice(): number {
-  //   let sizePrice = 0;
-  //   let toppingPrice = 0;
-  //   const mSizePrice = 200;
-  //   const lSizePrice = 300;
-  //   //各サイズを選択された時の商品の金額と、トッピングの金額を取得する
-  //   if (this.size == "M") {
-  //     sizePrice = this.currentOrderItem.item.priceM;
-  //     toppingPrice = mSizePrice;
-  //   } else if (this.size == "L") {
-  //     sizePrice = this.currentItem.priceL;
-  //     toppingPrice = lSizePrice;
-  //   }
-  //   return (
-  //     (sizePrice + toppingPrice * this.selectedTopping.length) * this.quantity
-  //   );
-  // console.log(this.selectedTopping.length);
-  // console.dir(JSON.stringify(this.selectedTopping));
+  addItem(): void {
+    this["$store"].commit("addItemToCart", {
+      size: this.size,
+      orderToppingList: this.selectedTopping,
+      quantity: this.quantity,
+      orderItem: {
+        id: this.currentOrderItem.item.id,
+        name: this.currentOrderItem.item.name,
+        description: this.currentOrderItem.item.description,
+        priceM: this.currentOrderItem.item.priceM,
+        priceL: this.currentOrderItem.item.priceL,
+        imagePath: this.currentOrderItem.item.imagePath,
+        deleted: this.currentOrderItem.item.deleteId,
+      },
+    });
+    this["$router"].push("/cartLlist");
+  }
 }
-// }
 </script>
 
 <style scoped>

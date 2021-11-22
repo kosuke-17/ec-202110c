@@ -40,29 +40,29 @@ export default new Vuex.Store({
       console.dir("items:" + JSON.stringify(state.itemList));
     },
 
-    addItemtoCart(state, payload): void {
+    addItemToCart(state, payload): void {
       state.orderItemList.push(
         new OrderItem(
           state.orderItemList.length + 1,
-          payload.itemId,
+          payload.orderItem.id,
           0,
           payload.quantity,
           payload.size,
           new Item(
-            payload.item.id,
-            payload.item.type,
-            payload.item.name,
-            payload.item.description,
-            payload.item.priceM,
-            payload.item.priceL,
-            payload.item.imagePath,
-            payload.item.deleteId,
-            payload.item.toppingList
+            payload.orderItem.id,
+            payload.orderItem.type,
+            payload.orderItem.name,
+            payload.orderItem.description,
+            payload.orderItem.priceM,
+            payload.orderItem.priceL,
+            payload.orderItem.imagePath,
+            payload.orderItem.deleteId,
+            payload.orderItem.toppingList
           ),
           payload.orderToppingList
         )
       );
-      // console.dir(JSON.stringify(payload));
+      console.dir(JSON.stringify(state.orderItemList));
     },
   }, //end mutations
   actions: {
