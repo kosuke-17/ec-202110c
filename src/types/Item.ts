@@ -1,4 +1,4 @@
-import { Topping } from './Topping';
+import { Topping } from "./Topping";
 
 export class Item {
   constructor(
@@ -9,7 +9,7 @@ export class Item {
     //名前
     private _name: string,
     //説明
-    private _discription: string,
+    private _description: string,
     //Mの価格
     private _priceM: number,
     //Lの価格
@@ -45,12 +45,12 @@ export class Item {
     this._name = name;
   }
 
-  public get discription(): string {
-    return this._discription;
+  public get description(): string {
+    return this._description;
   }
 
-  public set discription(discription: string) {
-    this._discription = discription;
+  public set description(description: string) {
+    this._description = description;
   }
 
   public get priceM(): number {
