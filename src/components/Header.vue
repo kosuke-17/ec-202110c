@@ -9,7 +9,7 @@
         </div>
 
         <div class="header-right">
-          <router-link to="/itemsList"> 商品一覧</router-link>
+          <router-link to="/itemList"> 商品一覧</router-link>
 
           <router-link to="/registerUser"> 会員登録 </router-link>
           <router-link to="/cartList">
