@@ -5,8 +5,13 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+
+    path: "/itemList",
+    component: () => import("../views/itemList.vue"),
+
     path: "/itemDetail",
     component: () => import("../views/itemDetail.vue"),
+
   },
 ];
 
