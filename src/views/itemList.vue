@@ -39,6 +39,18 @@
         </div>
       </div>
     </div>
+    <!-- itemList ページボタン -->
+    <div class="page-btn">
+      <div v-for="page of getShowPage" v-bind:key="page">
+        <button
+          type="button"
+          class="btn"
+          v-on:click="showItemListForOnePage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,6 +63,8 @@ export default class itemList extends Vue {
   private itemList = Array<Item>();
   //検索キーワード
   private searchKeyWord = "";
+  //表示するページ数
+  private pegeNum = 0;
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから商品一覧を取得する.
@@ -58,19 +72,51 @@ export default class itemList extends Vue {
    * @remarks 全商品一覧をAPIからアクションで取得、ミューテーションで商品オブジェクト化したものを商品一覧配列に格納
    *
    */
-  async created() {
+  async created(): Promise<void> {
     await this["$store"].dispatch("getItemList");
     this.itemList = this["$store"].getters.getAllItems;
+
+    this.defaltDisplayItemList;
   }
   /**
    *商品名を曖昧検索する.
    *@params - 入力欄に入力された検索キーワード
    *
    */
-  getSearchKeyWord(searchKeyWord: string) {
+  getSearchKeyWord(searchKeyWord: string): void {
     this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
 
     console.dir("絞り込み結果：" + JSON.stringify(this.itemList));
+  }
+
+  /**
+   * ページ数を表示する.
+   *@returns 表示するページ数
+   */
+  get getShowPage(): number {
+    return Math.ceil(this["$store"].getters.getAllItems.length / 9);
+  }
+  /**
+   *１ぺーじに表示させる商品リスト.
+   *@remarks クリックされたページ数から表示させる商品リストのIndexを指定してsliceメソットで表示させるリストを指定している
+   *@param target - 押されたページ数
+   *
+   */
+  showItemListForOnePage(targetNum: number): void {
+    let startIndex = (targetNum - 1) * 9;
+    let endIndex = startIndex + 9;
+
+    this.itemList = this["$store"].getters.getAllItems.slice(
+      startIndex,
+      endIndex
+    );
+  }
+  /**
+   * 商品一覧の初期ページを９個に指定.
+   * @returns 商品リストの最初の９個（Index:0〜8）
+   */
+  get defaltDisplayItemList(): void {
+    return (this.itemList = this["$store"].getters.getAllItems.slice(0, 9));
   }
 }
 </script>
@@ -174,5 +220,17 @@ export default class itemList extends Vue {
 .price {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
+}
+
+.page-btn {
+  width: 100%;
+  padding: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0 5px;
 }
 </style>
