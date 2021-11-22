@@ -12,6 +12,10 @@ const routes: Array<RouteConfig> = [
     path: "/itemDetail",
     component: () => import("../views/itemDetail.vue"),
   },
+  {
+    path: "/cartList",
+    component: () => import("../views/cartList.vue"),
+  },
 ];
 
 const router = new VueRouter({
