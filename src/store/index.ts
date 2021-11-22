@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { Item } from "../types/Item";
+import { OrderItem } from "@/types/OrderItem";
 
 Vue.use(Vuex);
 
@@ -10,6 +11,8 @@ export default new Vuex.Store({
   state: {
     //商品一覧が入る配列
     itemList: new Array<Item>(),
+    //カートに入っている商品一覧
+    orderItemList: new Array<OrderItem>(),
   },
   mutations: {
     /**
@@ -25,7 +28,7 @@ export default new Vuex.Store({
             item.id,
             item.type,
             item.name,
-            item.discription,
+            item.description,
             item.priceM,
             item.priceL,
             item.imagePath,
@@ -36,7 +39,32 @@ export default new Vuex.Store({
       }
       console.dir("items:" + JSON.stringify(state.itemList));
     },
-  },
+
+    addItemtoCart(state, payload): void {
+      state.orderItemList.push(
+        new OrderItem(
+          state.orderItemList.length + 1,
+          payload.itemId,
+          0,
+          payload.quantity,
+          payload.size,
+          new Item(
+            payload.item.id,
+            payload.item.type,
+            payload.item.name,
+            payload.item.description,
+            payload.item.priceM,
+            payload.item.priceL,
+            payload.item.imagePath,
+            payload.item.deleteId,
+            payload.item.toppingList
+          ),
+          payload.orderToppingList
+        )
+      );
+      // console.dir(JSON.stringify(payload));
+    },
+  }, //end mutations
   actions: {
     /**
      * 商品一覧をAPIから取得.
@@ -76,5 +104,8 @@ export default new Vuex.Store({
         return state.itemList.filter((item) => item.name.includes(keyWord));
       };
     },
-  },
+    getOrderItemList(state) {
+      return state.orderItemList;
+    },
+  }, //end getters
 });
