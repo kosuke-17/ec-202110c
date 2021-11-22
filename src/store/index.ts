@@ -19,7 +19,7 @@ export default new Vuex.Store({
      */
     getItemList(state, payload) {
       state.itemList = new Array<Item>();
-      for (const item of payload.itemList) {
+      for (const item of payload.items) {
         state.itemList.push(
           new Item(
             item.id,
@@ -34,7 +34,7 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("items:" + JSON.stringify(state.itemList));
+      console.dir("itemList:" + JSON.stringify(state.itemList));
     },
   },
   actions: {
@@ -45,11 +45,11 @@ export default new Vuex.Store({
      *
      */
     async getItemList(context) {
-      const responce = await axios.get(
+      const response = await axios.get(
         "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
       );
-      console.dir("responce:" + JSON.stringify(responce));
-      const payload = responce.data;
+      console.dir("responce:" + JSON.stringify(response));
+      const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
       context.commit("getItemList", payload);

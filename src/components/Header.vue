@@ -9,11 +9,7 @@
         </div>
 
         <div class="header-right">
-<<<<<<< HEAD
           <router-link to="/itemList"> 商品一覧</router-link>
-=======
-          <router-link to="/itemsList"> 商品一覧</router-link>
->>>>>>> develop
           <router-link to="/registerUser"> 会員登録 </router-link>
           <router-link to="/cartList">
             <i class="fas fa-shopping-cart"></i>カート
@@ -29,11 +25,7 @@
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
 import { Component, Vue } from "vue-property-decorator";
-=======
-import { Component, Vue } from 'vue-property-decorator';
->>>>>>> develop
 
 @Component
 export default class Header extends Vue {
