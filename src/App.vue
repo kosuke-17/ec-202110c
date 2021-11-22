@@ -1,12 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <Header />
+    <div class="top-wrapper">
+      <router-view />
     </div>
-    <router-view/>
+    <Footer />
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+
+@Component({
+  components: {
+    Header,
+    Footer,
+  },
+})
+export default class App extends Vue {}
+</script>
 
 <style>
 #app {
