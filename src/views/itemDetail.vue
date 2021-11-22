@@ -127,7 +127,7 @@ import { OrderTopping } from "@/types/OrderTopping";
 
 @Component
 export default class itemDetail extends Vue {
-  //現在選択されている商品
+  //現在表示されている商品
   private currentOrderItem = new OrderItem(
     0,
     0,
@@ -164,7 +164,7 @@ export default class itemDetail extends Vue {
       "http://153.127.48.168:8080/ecsite-api/item/21"
     );
     console.dir(JSON.stringify(response.data.item));
-
+    //外部APIから取得してきたデータを代入
     this.currentOrderItem = new OrderItem(
       0,
       0,
@@ -186,6 +186,9 @@ export default class itemDetail extends Vue {
     );
   }
 
+  /**
+   * ショッピングカートに商品を追加する.
+   */
   addItem(): void {
     this["$store"].commit("addItemToCart", {
       size: this.size,

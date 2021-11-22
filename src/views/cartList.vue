@@ -70,6 +70,11 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  /**
+   * ショッピングカートに入っている商品の配列を返す.
+   *
+   * @returns ショッピングカートに入っている商品の配列
+   */
   get orderItemList(): Array<OrderItem> {
     return this["$store"].getters.getOrderItemList;
   }
