@@ -29,9 +29,9 @@
             <div class="item-icon">
               <img :src="item.imagePath" />
             </div>
-            <router-link
-              :to="'http://153.127.48.168:8080/ecsite-api/item/' + item.id"
-              >{{ item.name }}</router-link
+            <router-link :to="'/itemDetail/' + item.id">{{
+              item.name
+            }}</router-link
             ><br />
             <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
             <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
@@ -78,6 +78,7 @@ export default class itemList extends Vue {
 
     this.defaltDisplayItemList;
   }
+
   /**
    *商品名を曖昧検索する.
    *@params - 入力欄に入力された検索キーワード

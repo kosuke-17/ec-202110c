@@ -9,7 +9,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/itemList.vue"),
   },
 
-  { path: "/itemDetail", component: () => import("../views/itemDetail.vue") },
+  {
+    path: "/itemDetail/:id",
+    component: () => import("../views/itemDetail.vue"),
+  },
 ];
 
 const router = new VueRouter({
