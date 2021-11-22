@@ -19,6 +19,12 @@ export class OrderItem {
     private _orderToppingList: Array<OrderTopping>
   ) {}
 
+  /**
+   * 商品の税抜き価格を計算して返す.
+   *
+   * @remarks 表示されている商品の税抜価格を選択されたオプションで計算する
+   * @return 商品の合計金額
+   */
   calcSubTotalPrice(
     size: string,
     toppingCount: number,
