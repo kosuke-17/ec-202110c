@@ -1,31 +1,46 @@
 <template>
-  <div class="top-wrapper">
+  <div class="top-wrapeer">
     <div class="container">
-      <h1 class="page-title">Hawaiianパラダイス</h1>
+      <h1 class="page-title">{{ currentItem.name }}</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
-            <img src="img/1.jpg" />
+            <img v-bind:src="currentItem.imagePath" />
           </div>
           <div class="item-intro">
-            ハワイで取れる名産物でかつオーガニックな食料がふんだんに使われたローカルフーズです。健康志向の方に大人気の商品です。
+            {{ currentItem.description }}
           </div>
         </div>
         <div class="row item-size">
           <div class="item-hedding">サイズ</div>
           <div>
             <label>
-              <input id="size-m" name="size" type="radio" checked="checked" />
+              <input
+                id="size-m"
+                name="size"
+                type="radio"
+                checked="checked"
+                v-model="size"
+                value="M"
+              />
               <span>
-                &nbsp;<span class="price">Ｍ</span
-                >&nbsp;&nbsp;1,380円(税抜)</span
+                &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
+                  currentItem.priceM
+                }}円(税抜)</span
               >
             </label>
             <label>
-              <input id="size-l" name="size" type="radio" />
+              <input
+                id="size-l"
+                name="size"
+                type="radio"
+                v-model="size"
+                value="L"
+              />
               <span>
-                &nbsp;<span class="price">Ｌ</span
-                >&nbsp;&nbsp;2,380円(税抜)</span
+                &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
+                  currentItem.priceL
+                }}円(税抜)</span
               >
             </label>
           </div>
@@ -36,46 +51,18 @@
             <span>&nbsp;Ｍ&nbsp;</span>&nbsp;&nbsp;200円(税抜)
             <span>&nbsp;Ｌ</span>&nbsp;&nbsp;300円(税抜)
           </div>
-          <div>
+          <div
+            v-for="topping of currentItem.toppingList"
+            v-bind:key="topping.id"
+            class="toppingList"
+          >
             <label class="item-topping">
-              <input type="checkbox" />
-              <span>ハワイアンソルト</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ハワイアンマヨネーズ</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ハワイアントマト</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ブルーチーズ</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ハワイアンチョコレート</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>アンチョビ</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>エビ</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ガーリックスライス</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>トロピカルフルーツ</span>
-            </label>
-            <label class="item-topping">
-              <input type="checkbox" />
-              <span>ココナッツ</span>
+              <input
+                type="checkbox"
+                v-model="selectedTopping"
+                :value="topping"
+              />
+              <span>{{ topping.name }}</span>
             </label>
           </div>
         </div>
@@ -83,7 +70,7 @@
           <div class="item-hedding item-hedding-quantity">数量</div>
           <div class="item-quantity-selectbox">
             <div class="input-field col s12">
-              <select>
+              <select class="browser-default" v-model.number="quantity">
                 <option value="" disabled selected>選択して下さい</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -102,7 +89,7 @@
           </div>
         </div>
         <div class="row item-total-price">
-          <span>この商品金額：38,000 円(税抜)</span>
+          <span>この商品金額：{{ calcTotalPrice }} 円(税抜)</span>
         </div>
         <div class="row item-cart-btn">
           <button
@@ -120,8 +107,165 @@
   <!-- end top-wrapper -->
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Item } from "@/types/Item";
+import { Topping } from "@/types/Topping";
+import { Component, Vue } from "vue-property-decorator";
+import axios from "axios";
+
+@Component
+export default class itemDetail extends Vue {
+  //現在選択されている商品
+  private currentItem = new Item(
+    0,
+    "type",
+    "name",
+    "discription",
+    0,
+    0,
+    "imagePath",
+    true,
+    new Array<Topping>()
+  );
+
+  // 現在選択されている商品の画像
+  private currentItemImage = "";
+  //選択されているサイズ
+  private size = "";
+  //選択されているトッッピングの個数
+  private selectedTopping = new Array<Topping>();
+  //選択された商品の個数
+  private quantity = 0;
+
+  async created(): Promise<void> {
+    // 送られてきたリクエストパラメータのidをnumberに変換して取得する
+    // const itemID = parseInt(this["$route"].params.id);
+    const response = await axios.get(
+      "http://153.127.48.168:8080/ecsite-api/item/21"
+    );
+    console.dir(JSON.stringify(response.data.item));
+
+    this.currentItem = new Item(
+      response.data.item.id,
+      response.data.item.type,
+      response.data.item.name,
+      response.data.item.description,
+      response.data.item.priceM,
+      response.data.item.priceL,
+      response.data.item.imagePath,
+      response.data.item.deleted,
+      response.data.item.toppingList
+    );
+  }
+
+  /**
+   * 商品の金額を計算して返す.
+   *
+   * @remarks 表示されている商品の合計金額を選択されたオプションで計算する
+   * @return 商品の合計金額
+   */
+  get calcTotalPrice(): number {
+    let sizePrice = 0;
+    let toppingPrice = 0;
+    const mSizePrice = 200;
+    const lSizePrice = 300;
+    //各サイズを選択された時の商品の金額と、トッピングの金額を取得する
+    if (this.size == "M") {
+      sizePrice = this.currentItem.priceM;
+      toppingPrice = mSizePrice;
+    } else if (this.size == "L") {
+      sizePrice = this.currentItem.priceL;
+      toppingPrice = lSizePrice;
+    }
+    return (
+      (sizePrice + toppingPrice * this.selectedTopping.length) * this.quantity
+    );
+    // console.log(this.selectedTopping.length);
+    // console.dir(JSON.stringify(this.selectedTopping));
+  }
+}
 </script>
 
-<style></style>
+<style scoped>
+.item-detail {
+  display: flex;
+  /* 中央揃え */
+  justify-content: center;
+}
+.item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 30px;
+  width: 250px;
+  height: 250px;
+  padding: 0 0 15px 0;
+}
+
+.item-intro {
+  width: 400px;
+  padding-top: 50px;
+  padding-left: 50px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.item-hedding {
+  font-weight: bold;
+  font-size: 17px;
+  text-align: left;
+}
+.item-size {
+  /* text-align: center; */
+  font-size: 15px;
+  margin-bottom: 20px;
+  padding: 0 200px 0 200px;
+}
+
+/* サイズをオレンジ〇で囲む */
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
+}
+
+.item-toppings {
+  font-size: 15px;
+  padding: 0 200px 0 200px;
+  text-align: left;
+}
+
+.item-topping {
+  margin-right: 10px;
+}
+
+.item-hedding-quantity {
+  margin-left: 200px;
+}
+
+.item-quantity {
+  text-align: center;
+  font-size: 15px;
+}
+
+.item-quantity-selectbox {
+  padding: 0 300px 0 300px;
+}
+
+.item-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
+.item-cart-btn {
+  text-align: center;
+}
+
+.toppingList {
+  display: inline;
+  text-align: left;
+}
+
+.item-size {
+  text-align: left;
+}
+</style>
