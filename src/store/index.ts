@@ -9,7 +9,7 @@ export default new Vuex.Store({
   strict: true,
   state: {
     //商品一覧が入る配列
-    items: new Array<Item>(),
+    itemList: new Array<Item>(),
   },
   mutations: {
     /**
@@ -18,9 +18,9 @@ export default new Vuex.Store({
      * @param payload - 外部APIから商品一覧情報を取得
      */
     getItemList(state, payload) {
-      state.items = new Array<Item>();
-      for (const item of payload.items) {
-        state.items.push(
+      state.itemList = new Array<Item>();
+      for (const item of payload.itemList) {
+        state.itemList.push(
           new Item(
             item.id,
             item.type,
@@ -34,7 +34,7 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("items:" + JSON.stringify(state.items));
+      console.dir("items:" + JSON.stringify(state.itemList));
     },
   },
   actions: {
@@ -63,7 +63,7 @@ export default new Vuex.Store({
      * @returns - 商品一覧
      */
     getAllItems(state) {
-      return state.items;
+      return state.itemList;
     },
 
     /**
@@ -71,9 +71,9 @@ export default new Vuex.Store({
      *@param state - ステートオブジェクト
      *@returns - 曖昧検索で絞り込まれた商品
      */
-    getSerchKeyWord(state) {
+    getSearchKeyWord(state) {
       return (keyWord: string) => {
-        return state.items.filter((item) => item.name.includes(keyWord));
+        return state.itemList.filter((item) => item.name.includes(keyWord));
       };
     },
   },

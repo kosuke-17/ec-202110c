@@ -8,13 +8,13 @@
             type="text"
             name="name"
             class="search-name-input"
-            v-model="serchKeyWord"
+            v-model="searchKeyWord"
           />
 
           <button
             class="btn search-btn"
             type="button"
-            v-on:click="getSerchKeyWord(serchKeyWord)"
+            v-on:click="getSearchKeyWord(searchKeyWord)"
           >
             <span>検 索</span>
           </button>
@@ -50,7 +50,7 @@ export default class itemList extends Vue {
   //商品一覧を格納する配列
   private itemList = Array<Item>();
   //検索キーワード
-  private serchKeyWord = "";
+  private searchKeyWord = "";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから商品一覧を取得する.
@@ -67,8 +67,8 @@ export default class itemList extends Vue {
    *@params - 入力欄に入力された検索キーワード
    *
    */
-  getSerchKeyWord(serchKeyWord: string) {
-    this.itemList = this["$store"].getters.getSerchKeyWord(serchKeyWord);
+  getSearchKeyWord(searchKeyWord: string) {
+    this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
 
     console.dir("絞り込み結果：" + JSON.stringify(this.itemList));
   }
@@ -175,31 +175,4 @@ export default class itemList extends Vue {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
 }
-
-/* .items {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-.item {
-  width: 33%;
-}
-
-.item-icon {
-  display: block;
-  width: 250px;
-  height: 250px;
-  margin: 0 auto;
-  padding: 0 0 15px 0;
-  box-sizing: border-box;
-}
-.item-icon img {
-  width: 100%;
-  height: 100%;
-  border-radius: 30 px;
-  box-sizing: border-box;
-} */
 </style>
