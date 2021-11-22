@@ -111,6 +111,7 @@
 import { Item } from "@/types/Item";
 import { Topping } from "@/types/Topping";
 import { Component, Vue } from "vue-property-decorator";
+// 使用するためには「npm install axios --save」を行う
 import axios from "axios";
 
 @Component
