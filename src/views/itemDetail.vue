@@ -1,14 +1,14 @@
 <template>
   <div class="top-wrapeer">
     <div class="container">
-      <h1 class="page-title">{{ currentItem.name }}</h1>
+      <h1 class="page-title">{{ currentOrderItem.item.name }}</h1>
       <div class="row">
         <div class="row item-detail">
           <div class="item-icon">
-            <img v-bind:src="currentItem.imagePath" />
+            <img v-bind:src="currentOrderItem.item.imagePath" />
           </div>
           <div class="item-intro">
-            {{ currentItem.description }}
+            {{ currentOrderItem.item.description }}
           </div>
         </div>
         <div class="row item-size">
@@ -25,7 +25,7 @@
               />
               <span>
                 &nbsp;<span class="price">Ｍ</span>&nbsp;&nbsp;{{
-                  currentItem.priceM
+                  currentOrderItem.item.priceM
                 }}円(税抜)</span
               >
             </label>
@@ -39,7 +39,7 @@
               />
               <span>
                 &nbsp;<span class="price">Ｌ</span>&nbsp;&nbsp;{{
-                  currentItem.priceL
+                  currentOrderItem.item.priceL
                 }}円(税抜)</span
               >
             </label>
@@ -52,7 +52,7 @@
             <span>&nbsp;Ｌ</span>&nbsp;&nbsp;300円(税抜)
           </div>
           <div
-            v-for="topping of currentItem.toppingList"
+            v-for="topping of currentOrderItem.item.toppingList"
             v-bind:key="topping.id"
             class="toppingList"
           >
@@ -89,13 +89,22 @@
           </div>
         </div>
         <div class="row item-total-price">
-          <span>この商品金額：{{ calcTotalPrice }} 円(税抜)</span>
+          <span
+            >この商品金額：{{
+              currentOrderItem.calcSubTotalPrice(
+                size,
+                selectedTopping.length,
+                quantity
+              )
+            }}
+            円(税抜)</span
+          >
         </div>
         <div class="row item-cart-btn">
           <button
             class="waves-effect waves-light btn"
             type="button"
-            onclick="location.href='cart_list.html'"
+            @click="addItem"
           >
             <span>カートに入れる</span>
           </button>
@@ -111,21 +120,32 @@
 import { Item } from "@/types/Item";
 import { Topping } from "@/types/Topping";
 import { Component, Vue } from "vue-property-decorator";
+// 使用するためには「npm install axios --save」を行う
 import axios from "axios";
+import { OrderItem } from "@/types/OrderItem";
+import { OrderTopping } from "@/types/OrderTopping";
 
 @Component
 export default class itemDetail extends Vue {
   //現在選択されている商品
-  private currentItem = new Item(
-    0,
-    "type",
-    "name",
-    "discription",
+  private currentOrderItem = new OrderItem(
     0,
     0,
-    "imagePath",
-    true,
-    new Array<Topping>()
+    0,
+    0,
+    "M",
+    new Item(
+      0,
+      "type",
+      "name",
+      "description",
+      0,
+      0,
+      "image",
+      false,
+      new Array<Topping>()
+    ),
+    new Array<OrderTopping>()
   );
 
   // 現在選択されている商品の画像
@@ -145,43 +165,43 @@ export default class itemDetail extends Vue {
     );
     console.dir(JSON.stringify(response.data.item));
 
-    this.currentItem = new Item(
-      response.data.item.id,
-      response.data.item.type,
-      response.data.item.name,
-      response.data.item.description,
-      response.data.item.priceM,
-      response.data.item.priceL,
-      response.data.item.imagePath,
-      response.data.item.deleted,
-      response.data.item.toppingList
+    this.currentOrderItem = new OrderItem(
+      0,
+      0,
+      0,
+      0,
+      "M",
+      new Item(
+        response.data.item.id,
+        response.data.item.type,
+        response.data.item.name,
+        response.data.item.description,
+        response.data.item.priceM,
+        response.data.item.priceL,
+        response.data.item.imagePath,
+        response.data.item.deleted,
+        response.data.item.toppingList
+      ),
+      new Array<OrderTopping>()
     );
   }
 
-  /**
-   * 商品の金額を計算して返す.
-   *
-   * @remarks 表示されている商品の合計金額を選択されたオプションで計算する
-   * @return 商品の合計金額
-   */
-  get calcTotalPrice(): number {
-    let sizePrice = 0;
-    let toppingPrice = 0;
-    const mSizePrice = 200;
-    const lSizePrice = 300;
-    //各サイズを選択された時の商品の金額と、トッピングの金額を取得する
-    if (this.size == "M") {
-      sizePrice = this.currentItem.priceM;
-      toppingPrice = mSizePrice;
-    } else if (this.size == "L") {
-      sizePrice = this.currentItem.priceL;
-      toppingPrice = lSizePrice;
-    }
-    return (
-      (sizePrice + toppingPrice * this.selectedTopping.length) * this.quantity
-    );
-    // console.log(this.selectedTopping.length);
-    // console.dir(JSON.stringify(this.selectedTopping));
+  addItem(): void {
+    this["$store"].commit("addItemToCart", {
+      size: this.size,
+      orderToppingList: this.selectedTopping,
+      quantity: this.quantity,
+      orderItem: {
+        id: this.currentOrderItem.item.id,
+        name: this.currentOrderItem.item.name,
+        description: this.currentOrderItem.item.description,
+        priceM: this.currentOrderItem.item.priceM,
+        priceL: this.currentOrderItem.item.priceL,
+        imagePath: this.currentOrderItem.item.imagePath,
+        deleted: this.currentOrderItem.item.deleteId,
+      },
+    });
+    this["$router"].push("/cartLlist");
   }
 }
 </script>

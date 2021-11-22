@@ -1,5 +1,5 @@
-import { Item } from './Item';
-import { OrderTopping } from './OrderTopping';
+import { Item } from "./Item";
+import { OrderTopping } from "./OrderTopping";
 
 export class OrderItem {
   constructor(
@@ -19,9 +19,30 @@ export class OrderItem {
     private _orderToppingList: Array<OrderTopping>
   ) {}
 
-  get getCalcSubTotalPrice(): number {
-    // ここに計算処理を書く
-    return 1;
+  /**
+   * 商品の税抜き価格を計算して返す.
+   *
+   * @remarks 表示されている商品の税抜価格を選択されたオプションで計算する
+   * @return 商品の合計金額
+   */
+  calcSubTotalPrice(
+    size: string,
+    toppingCount: number,
+    quantity: number
+  ): number {
+    let sizePrice = 0;
+    let toppingPrice = 0;
+    const mSizePrice = 200;
+    const lSizePrice = 300;
+    //各サイズを選択された時の商品の金額と、トッピングの金額を取得する
+    if (size === "M") {
+      sizePrice = this.item.priceM;
+      toppingPrice = mSizePrice;
+    } else if (size === "L") {
+      sizePrice = this.item.priceL;
+      toppingPrice = lSizePrice;
+    }
+    return (sizePrice + toppingPrice * toppingCount) * quantity;
   }
 
   public get id(): number {
