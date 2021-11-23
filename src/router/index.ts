@@ -17,6 +17,10 @@ const routes: Array<RouteConfig> = [
     path: '/itemDetail/:id',
     component: () => import('../views/itemDetail.vue'),
   },
+  {
+    path: '/',
+    component: () => import('../views/Home.vue'),
+  },
 ];
 
 const router = new VueRouter({
