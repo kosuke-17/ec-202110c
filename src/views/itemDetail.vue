@@ -159,9 +159,9 @@ export default class itemDetail extends Vue {
 
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
-    // const itemID = parseInt(this["$route"].params.id);
+    const itemID = parseInt(this["$route"].params.id);
     const response = await axios.get(
-      "http://153.127.48.168:8080/ecsite-api/item/21"
+      `http://153.127.48.168:8080/ecsite-api/item/${itemID}`
     );
     console.dir(JSON.stringify(response.data.item));
     //外部APIから取得してきたデータを代入
@@ -204,7 +204,7 @@ export default class itemDetail extends Vue {
         deleted: this.currentOrderItem.item.deleteId,
       },
     });
-    this["$router"].push("/cartLlist");
+    this["$router"].push("/cartList");
   }
 }
 </script>
