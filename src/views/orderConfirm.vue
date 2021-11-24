@@ -2,58 +2,55 @@
   <div class="container">
     <h1 class="page-title">注文内容確認</h1>
     <!-- table -->
-    <table class="striped">
-      <thead>
-        <tr>
-          <th class="cart-table-th">商品名</th>
-          <th>サイズ、価格(税抜)、数量</th>
-          <th>トッピング、価格(税抜)</th>
-          <th>小計</th>
-        </tr>
-      </thead>
-      <tbody v-for="(item, index) of orderItemList" v-bind:key="index">
-        <tr>
-          <td class="cart-item-name">
-            <div class="cart-item-icon">
-              <img src="img/1.jpg" />
-            </div>
-            <span>{{ item.item.name }}</span>
-            <span>{{ orderItemList }}</span>
-          </td>
-          <td>
-            <span class="price">&nbsp;{{ item.size }}</span
-            >&nbsp;&nbsp;{{ item.item.price }}円 &nbsp;&nbsp;
-            {{ item.quantity }}個
-          </td>
-          <td>
-            <ul v-for="toppings of item.orderToppingList" v-bind:key="toppings">
-              <li>{{ topping.topping.name }}</li>
-            </ul>
-          </td>
-          <td><div class="text-center">円</div></td>
-          <td>
-            <button class="btn" type="button">
-              <span>削除</span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="row cart-total-price">
-      <div>消費税：8,000円</div>
-      <div>ご注文金額合計：38,000円 (税込)</div>
+    <div class="row">
+      <table class="striped">
+        <thead>
+          <tr>
+            <th class="cart-table-th">商品名</th>
+            <th>サイズ、価格(税抜)、数量</th>
+            <th>トッピング、価格(税抜)</th>
+            <th>小計</th>
+          </tr>
+        </thead>
+        <tbody
+          v-for="(orderItem, index) of currentOrderItemList"
+          v-bind:key="orderItem.id"
+        >
+          <tr>
+            <td class="cart-item-name">
+              <div class="cart-item-icon">
+                <img :src="orderItem.item.imagePath" />
+              </div>
+              <span>{{ orderItem.item.name }}</span>
+            </td>
+            <td>
+              <span class="price">&nbsp;{{ orderItem.size }}</span
+              >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
+              &nbsp;&nbsp; {{ orderItem.quantity }}個
+            </td>
+            <td>
+              <ul
+                v-for="topping of orderItem.orderToppingList"
+                v-bind:key="topping.id"
+              >
+                <li>{{ topping.name }}</li>
+              </ul>
+            </td>
+            <td>
+              <div class="text-center">
+                {{
+                  orderItem.calcSubTotalPrice(
+                    orderItem.size,
+                    orderItem.orderToppingList.length,
+                    orderItem.quantity
+                  )
+                }}円
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="row order-confirm-btn">
-      <button
-        class="btn"
-        type="button"
-        onclick="location.href='order_confirm.html'"
-      >
-        <span>注文に進む</span>
-      </button>
-    </div>
-
     <div class="row cart-total-price">
       <div>消費税：8,000円</div>
       <div>ご注文金額合計：38,000円 (税込)</div>
@@ -111,7 +108,6 @@
             type="radio"
             value="10"
             v-model="deliveryTime"
-            checked="checked"
           />
           <span>10時</span>
         </label>
@@ -198,13 +194,17 @@
             name="paymentMethod"
             type="radio"
             value="1"
-            v-model="status"
-            checked="checked"
+            v-model="paymentMethod"
           />
           <span>代金引換</span>
         </label>
         <label class="order-confirm-payment-method-radio">
-          <input name="paymentMethod" type="radio" value="2" v-model="status" />
+          <input
+            name="paymentMethod"
+            type="radio"
+            value="2"
+            v-model="paymentMethod"
+          />
           <span>クレジットカード</span>
         </label>
       </span>
@@ -226,7 +226,7 @@ import { format } from "date-fns";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class App extends Vue {
+export default class OrderConfirm extends Vue {
   // カートに入っている商品
   private currentOrderItemList = new Array<OrderItem>();
   // 消費税
@@ -250,16 +250,15 @@ export default class App extends Vue {
   // 宛先電話番号
   private destinationTel = "";
   // 配達日時
-  private deliveryTime = "";
+  private deliveryTime = "10";
   // 支払い方法
-  private paymentMethod = "";
+  private paymentMethod = "1";
   // ユーザー
   private user = new User(0, "", "", "", "", "", "");
   // 送信用の注文商品をリストで渡す(型の指定をどうするか考える)
   private orderItemFormList: any[] = [];
-
   /**
-   * 注文商品情報の取得
+   * ショッピングカートに入っている商品の配列を変数に格納.
    */
   created(): void {
     this.currentOrderItemList = this.$store.getters.getOrderItemList;
@@ -269,6 +268,13 @@ export default class App extends Vue {
    * 注文商品情報の送信.
    */
   async orderInfomation(): Promise<void> {
+    // 支払い方法によって、金額受け渡しのステータスを変える
+    if (this.paymentMethod === "1") {
+      this.status = "1";
+    }
+    if (this.paymentMethod === "2") {
+      this.status = "2";
+    }
     // リロードするとorderItemFormListがundefindになる(リロード問題発生)
     // console.dir(JSON.stringify(this.orderItemsList));
     for (let item of this.currentOrderItemList) {
@@ -283,7 +289,6 @@ export default class App extends Vue {
     }
     // console.dir(JSON.stringify(this.orderItemFormList));
 
-    this.status = this.paymentMethod;
     // サーバーに送るために日付を加工
     const createOrderDate = new Date(this.orderDate);
     const formatOrderDate = format(
@@ -311,7 +316,7 @@ export default class App extends Vue {
       "http://153.127.48.168:8080/ecsite-api/order",
       {
         userId: this.userId,
-        status: "1",
+        status: this.status,
         totalPrice: this.totalPrice,
         destinationName: this.destinationName,
         destinationEmail: this.destinationEmail,
@@ -319,7 +324,7 @@ export default class App extends Vue {
         destinationAddress: this.destinationAddress,
         destinationTel: this.destinationTel,
         deliveryTime: formatOrderDate,
-        paymentMethod: "1",
+        paymentMethod: this.paymentMethod,
         orderItemFormList: this.orderItemFormList,
       }
     );
