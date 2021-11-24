@@ -63,11 +63,7 @@
         <div>ご注文金額合計：38,000円 (税込)</div>
       </div>
       <div class="row order-confirm-btn">
-        <button
-          class="btn"
-          type="button"
-          onclick="location.href='order_confirm.html'"
-        >
+        <button class="btn" type="button" @click="goToOrder">
           <span>注文に進む</span>
         </button>
       </div>
@@ -83,6 +79,9 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class cartList extends Vue {
   private orderItemList = new Array<OrderItem>();
+  /**
+   * ショッピングカートに入っている商品の配列を変数に格納.
+   */
   created(): void {
     this.orderItemList = this["$store"].getters.getOrderItemList;
   }
@@ -91,6 +90,9 @@ export default class cartList extends Vue {
    *
    * @returns ショッピングカートに入っている商品の配列
    */
+  goToOrder(): void {
+    this.$router.push("/orderConfirm");
+  }
 }
 </script>
 
