@@ -180,7 +180,7 @@ export default class RegisterUser extends Vue {
     }
 
     if (response.data.status == "success" && this.checkPassword !== "") {
-      this.$router.push("/loginAdmin");
+      this.$router.push("/loginUser");
     }
   }
 
