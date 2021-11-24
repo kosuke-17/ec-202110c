@@ -34,7 +34,11 @@
                   v-for="topping of orderItem.orderToppingList"
                   v-bind:key="topping.id"
                 >
-                  <li>{{ topping.name }}</li>
+                  <li>
+                    {{ topping.name }}&nbsp;（{{
+                      orderItem.toppingPrice(orderItem.size)
+                    }}円）
+                  </li>
                 </ul>
               </td>
               <td>
@@ -49,7 +53,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn" type="button">
+                <button class="btn" type="button" @click="deleteItem(index)">
                   <span>削除</span>
                 </button>
               </td>
@@ -59,15 +63,13 @@
       </div>
 
       <div class="row cart-total-price">
-        <div>消費税：8,000円</div>
-        <div>ご注文金額合計：38,000円 (税込)</div>
+        <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
+        <div>
+          ご注文金額合計：{{ totalPriceIncludeTax.toLocaleString() }}円 (税込)
+        </div>
       </div>
       <div class="row order-confirm-btn">
-        <button
-          class="btn"
-          type="button"
-          onclick="location.href='order_confirm.html'"
-        >
+        <button class="btn" type="button" @click="goToOrder">
           <span>注文に進む</span>
         </button>
       </div>
@@ -82,13 +84,68 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  private orderItemList = new Array<OrderItem>();
+  /**
+   * ショッピングカートに入っている商品の配列を変数に格納.
+   */
+  created(): void {
+    this.orderItemList = this["$store"].getters.getOrderItemList;
+  }
   /**
    * ショッピングカートに入っている商品の配列を返す.
    *
    * @returns ショッピングカートに入っている商品の配列
    */
-  get orderItemList(): Array<OrderItem> {
-    return this["$store"].getters.getOrderItemList;
+  goToOrder(): void {
+    this.$router.push("/orderConfirm");
+  }
+
+  /**
+   * ショッピングカートに入っている商品を削除する.
+   */
+  deleteItem(index: number): void {
+    this["$store"].commit("deleteItem", {
+      index: index,
+    });
+  }
+
+  /**
+   *税抜き合計金額を計算するして返す.
+   *
+   * @remarks ショッピングカートに入っている商品の税抜き合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品
+   */
+  private totalPriceWithoutTax(): number {
+    let totalPriceWithoutTax = 0;
+    for (let orderItem of this["$store"].getters.getOrderItemList) {
+      totalPriceWithoutTax += orderItem.calcSubTotalPrice(
+        orderItem.size,
+        orderItem.orderToppingList.length,
+        orderItem.quantity
+      );
+    }
+    return totalPriceWithoutTax;
+  }
+
+  /**
+   * 消費税を計算して返す
+   *
+   * @remarks ショッピングカートに入っている商品の消費税金額を計算して返す
+   * @returns ショッピングカートに入っている商品の消費税金額
+   */
+  get taxPrice(): number {
+    const tax = 0.1;
+    return this.totalPriceWithoutTax() * tax;
+  }
+
+  /**
+   * 合計金額を計算して返す
+   *
+   * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品の合計金額
+   */
+  get totalPriceIncludeTax(): number {
+    return this.totalPriceWithoutTax() + this.taxPrice;
   }
 }
 </script>

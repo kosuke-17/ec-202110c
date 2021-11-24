@@ -21,6 +21,8 @@ export default class LogoutUser extends Vue {
       `http://153.127.48.168:8080/ecsite-api/user/logout`
     );
     console.dir("response:" + JSON.stringify(response));
+    //ステートをログアウトに切り替えるミューテーションから呼び出す
+    this["$store"].commit("statusLogout");
     // ログイン画面に遷移する
     this.$router.push("/loginUser");
   }

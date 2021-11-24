@@ -17,6 +17,8 @@ export default new Vuex.Store({
     selectedItemList: new Array<Item>(),
     //カートに入っている商品一覧
     orderItemList: new Array<OrderItem>(),
+    //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
+    isLogin: false,
   },
   mutations: {
     /**
@@ -76,6 +78,7 @@ export default new Vuex.Store({
     },
 
     /**
+
      *指定した方法で商品一覧を並び替える.
      
      * @param state - ステートオブジェクト
@@ -155,8 +158,34 @@ export default new Vuex.Store({
           return 0;
         });
       }
+
+     * ログインする.
+     * @remarks ステートをログイン状態に変更している
+     * @param state ステートオブジェクト
+     */
+    statusLogin(state) {
+      state.isLogin = true;
+    },
+    /**
+     * ログアウトする.
+     * @remarks ステートをログアウト状態に変更している
+     * @param state ステートオブジェクト
+     */
+    statusLogout(state) {
+      state.isLogin = false;
+                              
+    /**
+     * ショッピングカートに入っている商品を削除する.
+     *
+     * @param state - ステートオブジェクト
+     * @param payload - ショッピングカートの配列の番号
+     */
+    deleteItem(state, payload): void {
+      state.orderItemList.splice(payload.index, 1);
+
     },
   }, //end mutations
+
   actions: {
     /**
      * 商品一覧をAPIから取得.
@@ -215,35 +244,46 @@ export default new Vuex.Store({
       for (const orderItem of state.orderItemList) {
         orderItemList.push(
           new OrderItem(
-            orderItem.id,
-            orderItem.itemId,
+            orderItem._id,
+            orderItem._itemId,
             0,
-            orderItem.quantity,
-            orderItem.size,
+            orderItem._quantity,
+            orderItem._size,
             new Item(
-              orderItem.item.id,
-              orderItem.item.type,
-              orderItem.item.name,
-              orderItem.item.description,
-              orderItem.item.priceM,
-              orderItem.item.priceL,
-              orderItem.item.imagePath,
-              orderItem.item.deleteId,
-              orderItem.item.toppingList
+              orderItem._item._id,
+              orderItem._item._type,
+              orderItem._item._name,
+              orderItem._item._description,
+              orderItem._item._priceM,
+              orderItem._item._priceL,
+              orderItem._item._imagePath,
+              orderItem._item._deleteId,
+              orderItem._item._toppingList
             ),
-            orderItem.orderToppingList
+            orderItem._orderToppingList
           )
         );
       }
       return orderItemList;
     },
+
+    /**
+     * ログイン状態を取得
+     * @param state - ステートオブジェクト
+     * @returns - ログイン状態
+     */
+
+    getLoginStatus(state) {
+      return state.isLogin;
+    },
   }, //end getters
+
   plugins: [
     createPersistedState({
       // ストレージのキーを指定
       key: "vue",
       //orderItemListのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
-      paths: ["orderItemList"],
+      paths: ["orderItemList", "isLogin"],
       // ストレージの種類を指定
       storage: window.sessionStorage,
     }),
