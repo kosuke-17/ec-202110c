@@ -43,7 +43,7 @@
           <div class="input-field col s12">
             <input id="zipcode" type="text" maxlength="7" v-model="zipcode" />
             <label for="zipcode">郵便番号(ハイフンなし)</label>
-            <button class="btn" type="button">
+            <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
             </button>
           </div>
@@ -292,6 +292,27 @@ export default class RegisterUser extends Vue {
     this.errorOfTelephone = "";
     this.errorOfPassword = "";
     this.errorOfCheckpassword = "";
+  }
+  /**
+   * 郵便馬号から住所取得.
+   * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストールしてます
+   */
+  async getAddressByZipCode(): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const axiosJsonpAdapter = require("axios-jsonp");
+
+    const response = await axios.get("https://zipcoda.net/api", {
+      adapter: axiosJsonpAdapter,
+      params: {
+        zipcode: this.zipcode,
+      },
+    });
+    //JSON形式で取得内容確認
+    console.dir("郵便番号" + JSON.stringify(response));
+    //componentsのパスを確認
+    console.dir(JSON.stringify(response.data.items[0].components));
+    //.join("")でcomponents配列内を連結
+    this.address = response.data.items[0].components.join("");
   }
 }
 </script>

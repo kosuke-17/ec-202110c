@@ -3,6 +3,8 @@ import Vuex from "vuex";
 import axios from "axios";
 import { Item } from "../types/Item";
 import { OrderItem } from "@/types/OrderItem";
+// 使うためには「npm install --save vuex-persistedstate」を行う
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -119,8 +121,49 @@ export default new Vuex.Store({
         return state.itemList.filter((item) => item.name.includes(keyWord));
       };
     },
+    /**
+     *ショッピングカートに入っている商品の配列を返す.
+     *
+     * @param state - ステートオブジェクト
+     * @returns ショッピングカートに入っている商品の配列
+     */
     getOrderItemList(state) {
-      return state.orderItemList;
+      // return state.orderItemList;
+      const orderItemList = new Array<OrderItem>();
+      for (const orderItem of state.orderItemList) {
+        orderItemList.push(
+          new OrderItem(
+            orderItem.id,
+            orderItem.itemId,
+            0,
+            orderItem.quantity,
+            orderItem.size,
+            new Item(
+              orderItem.item.id,
+              orderItem.item.type,
+              orderItem.item.name,
+              orderItem.item.description,
+              orderItem.item.priceM,
+              orderItem.item.priceL,
+              orderItem.item.imagePath,
+              orderItem.item.deleteId,
+              orderItem.item.toppingList
+            ),
+            orderItem.orderToppingList
+          )
+        );
+      }
+      return orderItemList;
     },
   }, //end getters
+  plugins: [
+    createPersistedState({
+      // ストレージのキーを指定
+      key: "vue",
+      //orderItemListのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
+      paths: ["orderItemList"],
+      // ストレージの種類を指定
+      storage: window.sessionStorage,
+    }),
+  ], //end plugins
 });
