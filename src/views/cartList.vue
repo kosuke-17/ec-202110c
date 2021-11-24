@@ -82,14 +82,15 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  private orderItemList = new Array<OrderItem>();
+  created(): void {
+    this.orderItemList = this["$store"].getters.getOrderItemList;
+  }
   /**
    * ショッピングカートに入っている商品の配列を返す.
    *
    * @returns ショッピングカートに入っている商品の配列
    */
-  get orderItemList(): Array<OrderItem> {
-    return this["$store"].getters.getOrderItemList;
-  }
 }
 </script>
 
