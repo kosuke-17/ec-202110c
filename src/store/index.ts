@@ -15,6 +15,8 @@ export default new Vuex.Store({
     itemList: new Array<Item>(),
     //カートに入っている商品一覧
     orderItemList: new Array<OrderItem>(),
+    //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
+    isLogin: false,
   },
   mutations: {
     /**
@@ -72,7 +74,25 @@ export default new Vuex.Store({
       );
       console.dir(JSON.stringify(state.orderItemList));
     },
+
+    /**
+     * ログインする.
+     * @remarks ステートをログイン状態に変更している
+     * @param state ステートオブジェクト
+     */
+    statusLogin(state) {
+      state.isLogin = true;
+    },
+    /**
+     * ログアウトする.
+     * @remarks ステートをログアウト状態に変更している
+     * @param state ステートオブジェクト
+     */
+    statusLogout(state) {
+      state.isLogin = false;
+    },
   }, //end mutations
+
   actions: {
     /**
      * 商品一覧をAPIから取得.
@@ -146,13 +166,24 @@ export default new Vuex.Store({
       }
       return orderItemList;
     },
+
+    /**
+     * ログイン状態を取得
+     * @param state - ステートオブジェクト
+     * @returns - ログイン状態
+     */
+
+    getLoginStatus(state) {
+      return state.isLogin;
+    },
   }, //end getters
+
   plugins: [
     createPersistedState({
       // ストレージのキーを指定
       key: "vue",
       //orderItemListのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
-      paths: ["orderItemList"],
+      paths: ["orderItemList", "isLogin"],
       // ストレージの種類を指定
       storage: window.sessionStorage,
     }),
