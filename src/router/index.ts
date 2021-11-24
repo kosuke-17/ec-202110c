@@ -4,6 +4,10 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+    path: "/contactCompany",
+    component: () => import("../views/contactCompany.vue"),
+  },
+  {
     path: "/orderFinished",
     component: () => import("../views/OrderFinished.vue"),
   },
