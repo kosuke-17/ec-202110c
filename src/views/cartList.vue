@@ -49,7 +49,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn" type="button">
+                <button class="btn" type="button" @click="deleteItem(index)">
                   <span>削除</span>
                 </button>
               </td>
@@ -92,6 +92,15 @@ export default class cartList extends Vue {
    */
   goToOrder(): void {
     this.$router.push("/orderConfirm");
+  }
+
+  /**
+   * ショッピングカートに入っている商品を削除する.
+   */
+  deleteItem(index: number): void {
+    this["$store"].commit("deleteItem", {
+      index: index,
+    });
   }
 }
 </script>

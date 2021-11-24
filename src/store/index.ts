@@ -72,6 +72,15 @@ export default new Vuex.Store({
       );
       console.dir(JSON.stringify(state.orderItemList));
     },
+    /**
+     * ショッピングカートに入っている商品を削除する.
+     *
+     * @param state - ステートオブジェクト
+     * @param payload - ショッピングカートの配列の番号
+     */
+    deleteItem(state, payload): void {
+      state.orderItemList.splice(payload.index, 1);
+    },
   }, //end mutations
   actions: {
     /**
