@@ -3,23 +3,23 @@ import { Topping } from "./Topping";
 export class Item {
   constructor(
     //商品ID
-    private _id: number,
+    public _id: number,
     //タイプ
-    private _type: string,
+    public _type: string,
     //名前
-    private _name: string,
+    public _name: string,
     //説明
-    private _description: string,
+    public _description: string,
     //Mの価格
-    private _priceM: number,
+    public _priceM: number,
     //Lの価格
-    private _priceL: number,
+    public _priceL: number,
     //画像パス
-    private _imagePath: string,
+    public _imagePath: string,
     //削除フラグ
-    private _deleteId: boolean,
+    public _deleteId: boolean,
     //トッピングリスト
-    private _toppingList: Array<Topping>
+    public _toppingList: Array<Topping>
   ) {}
 
   public get id(): number {

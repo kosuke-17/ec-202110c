@@ -4,19 +4,19 @@ import { OrderTopping } from "./OrderTopping";
 export class OrderItem {
   constructor(
     //注文商品ID
-    private _id: number,
+    public _id: number,
     //商品ID
-    private _itemId: number,
+    public _itemId: number,
     //注文ID
-    private _orderId: number,
+    public _orderId: number,
     //数量
-    private _quantity: number,
+    public _quantity: number,
     //サイズ
-    private _size: string,
+    public _size: string,
     //商品
-    private _item: Item,
+    public _item: Item,
     //注文トッピングリスト
-    private _orderToppingList: Array<OrderTopping>
+    public _orderToppingList: Array<OrderTopping>
   ) {}
 
   /**
@@ -58,6 +58,26 @@ export class OrderItem {
       itemPrice = this.item.priceL;
     }
     return itemPrice;
+  }
+  /**
+   * サイズによってトッピングの値段を返す.
+   *
+   * @param orderItemSize - 選択された商品のサイズ
+   * @returns サイズごとのトッピングの値段
+   */
+  toppingPrice(orderItemSize: string): number {
+    let toppingPrice = 0;
+    //Mサイズを選択した時のトッピングの値段
+    const toppingPriceforMsize = 200;
+    //Lサイズを選択した時のトッピングの値段
+    const toppingPriceforLsize = 300;
+
+    if (orderItemSize === "M") {
+      toppingPrice = toppingPriceforMsize;
+    } else if (orderItemSize === "L") {
+      toppingPrice = toppingPriceforLsize;
+    }
+    return toppingPrice;
   }
 
   public get id(): number {
