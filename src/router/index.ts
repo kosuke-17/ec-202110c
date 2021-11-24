@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import RegisterUser from "../views/RegisterUser.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
