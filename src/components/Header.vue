@@ -4,7 +4,7 @@
       <div class="header">
         <div class="header-left">
           <router-link to="/"
-            ><img class="logo" src="/img/header_logo.png"
+            ><img class="logo" src="/img_coffee/header_logo.png"
           /></router-link>
         </div>
 
@@ -40,7 +40,7 @@ export default class Header extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 header {
-  height: 65px;
+  height: 60px;
   width: 100%;
   background-color: rgba(255, 255, 255, 0.9);
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
