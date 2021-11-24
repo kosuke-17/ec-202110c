@@ -201,7 +201,7 @@ export default class itemDetail extends Vue {
         deleted: this.currentOrderItem.item.deleteId,
       },
     });
-    this["$router"].push("/cartLlist");
+    this["$router"].push("/cartList");
   }
 }
 </script>
