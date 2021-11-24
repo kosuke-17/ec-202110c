@@ -43,7 +43,7 @@
           <div class="input-field col s12">
             <input id="zipcode" type="text" maxlength="7" v-model="zipcode" />
             <label for="zipcode">郵便番号(ハイフンなし)</label>
-            <button class="btn" type="button" v-on:click="zipCode()">
+            <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
             </button>
           </div>
@@ -297,7 +297,7 @@ export default class RegisterUser extends Vue {
    * 郵便馬号から住所取得.
    * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストールしてます
    */
-  async zipCode() {
+  async getAddressByZipCode(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const axiosJsonpAdapter = require("axios-jsonp");
 
