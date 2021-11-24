@@ -1,5 +1,5 @@
 <template>
-  <div class="top-wrapeer">
+  <div class="top-wrapper">
     <div class="container">
       <h1 class="page-title">{{ currentOrderItem.item.name }}</h1>
       <div class="row">
@@ -100,6 +100,7 @@
             円(税抜)</span
           >
         </div>
+        <div class="errorMessage">{{ errorMessage }}</div>
         <div class="row item-cart-btn">
           <button
             class="waves-effect waves-light btn"
@@ -156,6 +157,8 @@ export default class itemDetail extends Vue {
   private selectedTopping = new Array<Topping>();
   //選択された商品の個数
   private quantity = 1;
+  //サイズと数量が選択されていない時のエラーメッセージ
+  private errorMessage = "";
 
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
@@ -190,21 +193,27 @@ export default class itemDetail extends Vue {
    * ショッピングカートに商品を追加する.
    */
   addItem(): void {
-    this["$store"].commit("addItemToCart", {
-      size: this.size,
-      orderToppingList: this.selectedTopping,
-      quantity: this.quantity,
-      orderItem: {
-        id: this.currentOrderItem.item.id,
-        name: this.currentOrderItem.item.name,
-        description: this.currentOrderItem.item.description,
-        priceM: this.currentOrderItem.item.priceM,
-        priceL: this.currentOrderItem.item.priceL,
-        imagePath: this.currentOrderItem.item.imagePath,
-        deleted: this.currentOrderItem.item.deleteId,
-      },
-    });
-    this["$router"].push("/cartList");
+    //サイズか数量が選択されていないときはエラーメッセージを表示する
+    if (this.size === "" || this.quantity == 0) {
+      this.errorMessage = "サイズと数量を選択してください";
+      return;
+    } else {
+      this["$store"].commit("addItemToCart", {
+        size: this.size,
+        orderToppingList: this.selectedTopping,
+        quantity: this.quantity,
+        orderItem: {
+          id: this.currentOrderItem.item.id,
+          name: this.currentOrderItem.item.name,
+          description: this.currentOrderItem.item.description,
+          priceM: this.currentOrderItem.item.priceM,
+          priceL: this.currentOrderItem.item.priceL,
+          imagePath: this.currentOrderItem.item.imagePath,
+          deleted: this.currentOrderItem.item.deleteId,
+        },
+      });
+      this["$router"].push("/cartList");
+    }
   }
 }
 </script>
@@ -290,5 +299,9 @@ export default class itemDetail extends Vue {
 
 .item-size {
   text-align: left;
+}
+.errorMessage {
+  color: red;
+  text-align: center;
 }
 </style>

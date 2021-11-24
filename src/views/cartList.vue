@@ -53,7 +53,7 @@
                 </div>
               </td>
               <td>
-                <button class="btn" type="button">
+                <button class="btn" type="button" @click="deleteItem(index)">
                   <span>削除</span>
                 </button>
               </td>
@@ -69,11 +69,7 @@
         </div>
       </div>
       <div class="row order-confirm-btn">
-        <button
-          class="btn"
-          type="button"
-          onclick="location.href='order_confirm.html'"
-        >
+        <button class="btn" type="button" @click="goToOrder">
           <span>注文に進む</span>
         </button>
       </div>
@@ -88,13 +84,29 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  private orderItemList = new Array<OrderItem>();
+  /**
+   * ショッピングカートに入っている商品の配列を変数に格納.
+   */
+  created(): void {
+    this.orderItemList = this["$store"].getters.getOrderItemList;
+  }
   /**
    * ショッピングカートに入っている商品の配列を返す.
    *
    * @returns ショッピングカートに入っている商品の配列
    */
-  get orderItemList(): Array<OrderItem> {
-    return this["$store"].getters.getOrderItemList;
+  goToOrder(): void {
+    this.$router.push("/orderConfirm");
+  }
+
+  /**
+   * ショッピングカートに入っている商品を削除する.
+   */
+  deleteItem(index: number): void {
+    this["$store"].commit("deleteItem", {
+      index: index,
+    });
   }
 
   /**
