@@ -1,30 +1,30 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/orderConfirm',
-    component: () => import('../views/OrderConfirm.vue'),
+    path: "/orderConfirm",
+    component: () => import("../views/orderConfirm.vue"),
   },
   {
-    path: '/itemList',
-    component: () => import('../views/itemList.vue'),
+    path: "/itemList",
+    component: () => import("../views/itemList.vue"),
   },
 
   {
-    path: '/cartList',
-    component: () => import('../views/cartList.vue'),
+    path: "/cartList",
+    component: () => import("../views/cartList.vue"),
   },
   {
-    path: '/itemDetail/:id',
-    component: () => import('../views/itemDetail.vue'),
+    path: "/itemDetail/:id",
+    component: () => import("../views/itemDetail.vue"),
   },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
