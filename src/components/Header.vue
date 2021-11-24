@@ -17,7 +17,7 @@
           <router-link to="/loginUser">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
-          <router-link to="/loginUser"> ログアウト </router-link>
+          <router-link to="/logoutUser"> ログアウト </router-link>
         </div>
       </div>
     </div>
