@@ -295,7 +295,8 @@ export default class RegisterUser extends Vue {
   }
   /**
    * 郵便馬号から住所取得.
-   * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストールしてます
+   * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストール
+   *           使うためには「npm install --save-dev axios-jsonp」を行う
    */
   async getAddressByZipCode(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-var-requires

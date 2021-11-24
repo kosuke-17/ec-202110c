@@ -9,15 +9,21 @@
         </div>
 
         <div class="header-right">
-          <router-link to="/itemList"> 商品一覧</router-link>
-          <router-link to="/registerUser"> 会員登録 </router-link>
+          <router-link to="/itemList">
+            <i class="fas fa-utensils"></i> 商品一覧
+          </router-link>
+          <router-link to="/registerUser" v-if="loginStatus === false">
+            <i class="fas fa-user"></i>会員登録
+          </router-link>
           <router-link to="/cartList">
             <i class="fas fa-shopping-cart"></i>カート
           </router-link>
-          <router-link to="/loginUser">
+          <router-link to="/loginUser" v-if="loginStatus === false">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
-          <router-link to="/logoutUser"> ログアウト </router-link>
+          <router-link to="/logoutUser" v-if="loginStatus === true">
+            <i class="fas fa-sign-out-alt"></i>ログアウト
+          </router-link>
         </div>
       </div>
     </div>
@@ -29,9 +35,9 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Header extends Vue {
   // ユーザーのログイン状態でナビゲーションの項目を変化
-  // get userStatus(): string {
-  //   return this['$store'].state.userStatus;
-  // }
+  get loginStatus(): boolean {
+    return this["$store"].getters.getLoginStatus;
+  }
 }
 </script>
 
