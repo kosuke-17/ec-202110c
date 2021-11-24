@@ -1,8 +1,8 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import axios from "axios";
-import { Item } from "../types/Item";
-import { OrderItem } from "@/types/OrderItem";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from 'axios';
+import { Item } from '../types/Item';
+import { OrderItem } from '@/types/OrderItem';
 
 Vue.use(Vuex);
 
@@ -37,7 +37,7 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("itemList:" + JSON.stringify(state.itemList));
+      console.dir('itemList:' + JSON.stringify(state.itemList));
     },
 
     /**
@@ -80,13 +80,13 @@ export default new Vuex.Store({
      */
     async getItemList(context) {
       const response = await axios.get(
-        "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
+        'http://153.127.48.168:8080/ecsite-api/item/items/coffee'
       );
-      console.dir("responce:" + JSON.stringify(response));
+      console.dir('responce:' + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
-      context.commit("getItemList", payload);
+      context.commit('getItemList', payload);
     },
   },
   modules: {},
