@@ -13,29 +13,38 @@
               <th>小計</th>
             </tr>
           </thead>
-          <tbody v-for="(item, index) of orderItemList" v-bind:key="index">
+          <tbody v-for="(item, index) of orderItemList" v-bind:key="item.id">
             <tr>
               <td class="cart-item-name">
                 <div class="cart-item-icon">
-                  <img src="img/1.jpg" />
+                  <img :src="item.item.imagePath" />
                 </div>
                 <span>{{ item.item.name }}</span>
-                <span>{{ orderItemList }}</span>
               </td>
               <td>
                 <span class="price">&nbsp;{{ item.size }}</span
-                >&nbsp;&nbsp;{{ item.item.price }}円 &nbsp;&nbsp;
+                >&nbsp;&nbsp;{{ itemPrice(index) }}円 &nbsp;&nbsp;
                 {{ item.quantity }}個
               </td>
               <td>
                 <ul
-                  v-for="toppings of item.orderToppingList"
-                  v-bind:key="toppings"
+                  v-for="topping of item.orderToppingList"
+                  v-bind:key="topping.id"
                 >
-                  <li>{{ topping.topping.name }}</li>
+                  <li>{{ topping.name }}</li>
                 </ul>
               </td>
-              <td><div class="text-center">円</div></td>
+              <td>
+                <div class="text-center">
+                  {{
+                    item.calcSubTotalPrice(
+                      item.size,
+                      item.orderToppingList.length,
+                      item.quantity
+                    )
+                  }}円
+                </div>
+              </td>
               <td>
                 <button class="btn" type="button">
                   <span>削除</span>
@@ -70,8 +79,31 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  /**
+   * ショッピングカートに入っている商品の配列を返す.
+   *
+   * @returns ショッピングカートに入っている商品の配列
+   */
   get orderItemList(): Array<OrderItem> {
     return this["$store"].getters.getOrderItemList;
+  }
+
+  /**
+   * ショッピングカートで商品のサイズごとの単価を表示する.
+   *
+   * @returns 商品の単価
+   */
+  itemPrice(index: number): number {
+    let orderItemPrice = new Array<number>();
+    // let id = this.orderItemList[].id - 1;
+    for (const orderItem of this.orderItemList) {
+      if (orderItem.size === "M") {
+        orderItemPrice.push(orderItem.item.priceM);
+      } else if (orderItem.size === "L") {
+        orderItemPrice.push(orderItem.item.priceL);
+      }
+    }
+    return orderItemPrice[index];
   }
 }
 </script>
@@ -100,5 +132,10 @@ export default class cartList extends Vue {
 
 .order-confirm-btn {
   text-align: center;
+}
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
 }
 </style>
