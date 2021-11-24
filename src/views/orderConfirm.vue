@@ -294,29 +294,12 @@ export default class OrderConfirm extends Vue {
         size: item.size,
       });
     }
-    // console.dir(JSON.stringify(this.orderItemFormList));
 
     // サーバーに送るために日付を加工
     const createOrderDate = new Date(this.orderDate);
     const formatOrderDate = format(
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
-    );
-
-    console.dir(
-      JSON.stringify({
-        userId: this.userId,
-        status: this.status,
-        totalPrice: this.totalPrice,
-        destinationName: this.destinationName,
-        destinationEmail: this.destinationEmail,
-        destinationZipcode: this.destinationZipcode,
-        destinationAddress: this.destinationAddress,
-        destinationTel: this.destinationTel,
-        deliveryTime: formatOrderDate,
-        paymentMethod: this.paymentMethod,
-        orderItemFormList: this.orderItemFormList,
-      })
     );
 
     const response = await axios.post(
@@ -335,7 +318,6 @@ export default class OrderConfirm extends Vue {
         orderItemFormList: this.orderItemFormList,
       }
     );
-    console.dir(JSON.stringify(response));
 
     if (response.data.status === "success") {
       this.$router.push("/orderFinished");

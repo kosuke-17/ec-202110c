@@ -171,8 +171,6 @@ export default class RegisterUser extends Vue {
       }
     );
 
-    // console.dir("response:" + JSON.stringify(response));
-
     if (response.data.message == "そのメールアドレスはすでに使われています。") {
       this.errorOfMailAddress =
         "Error：この「メールアドレス」は既に使用されています。";

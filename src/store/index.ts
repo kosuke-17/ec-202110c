@@ -43,7 +43,7 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("itemList:" + JSON.stringify(state.itemList));
+      // console.dir("itemList:" + JSON.stringify(state.itemList));
     },
 
     /**
@@ -74,7 +74,7 @@ export default new Vuex.Store({
           payload.orderToppingList
         )
       );
-      console.dir(JSON.stringify(state.orderItemList));
+      // console.dir(JSON.stringify(state.orderItemList));
     },
 
     /**
@@ -197,7 +197,7 @@ export default new Vuex.Store({
       const response = await axios.get(
         "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
       );
-      console.dir("responce:" + JSON.stringify(response));
+      console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している

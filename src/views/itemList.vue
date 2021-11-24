@@ -118,8 +118,6 @@ export default class itemList extends Vue {
    */
   getSearchKeyWord(searchKeyWord: string): void {
     this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
-
-    console.dir("絞り込み結果：" + JSON.stringify(this.itemList));
   }
 
   /**
