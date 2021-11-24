@@ -107,6 +107,7 @@ export default class cartList extends Vue {
     this["$store"].commit("deleteItem", {
       index: index,
     });
+    this.orderItemList = this["$store"].getters.getOrderItemList;
   }
 
   /**
