@@ -158,7 +158,8 @@ export default new Vuex.Store({
           return 0;
         });
       }
-
+    },
+    /**
      * ログインする.
      * @remarks ステートをログイン状態に変更している
      * @param state ステートオブジェクト
@@ -173,7 +174,7 @@ export default new Vuex.Store({
      */
     statusLogout(state) {
       state.isLogin = false;
-                              
+    },
     /**
      * ショッピングカートに入っている商品を削除する.
      *
@@ -182,7 +183,6 @@ export default new Vuex.Store({
      */
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
-
     },
   }, //end mutations
 
