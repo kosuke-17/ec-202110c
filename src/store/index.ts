@@ -124,21 +124,21 @@ export default new Vuex.Store({
       for (const orderItem of state.orderItemList) {
         orderItemList.push(
           new OrderItem(
-            orderItem.id,
-            orderItem.itemId,
+            orderItem._id,
+            orderItem._itemId,
             0,
-            orderItem.quantity,
-            orderItem.size,
+            orderItem._quantity,
+            orderItem._size,
             new Item(
-              orderItem.item.id,
-              orderItem.item.type,
-              orderItem.item.name,
-              orderItem.item.description,
-              orderItem.item.priceM,
-              orderItem.item.priceL,
-              orderItem.item.imagePath,
-              orderItem.item.deleteId,
-              orderItem.item.toppingList
+              orderItem._item._id,
+              orderItem._item._type,
+              orderItem._item._name,
+              orderItem._item._description,
+              orderItem._item._priceM,
+              orderItem._item._priceL,
+              orderItem._item._imagePath,
+              orderItem._item._deleteId,
+              orderItem._item._toppingList
             ),
             orderItem.orderToppingList
           )

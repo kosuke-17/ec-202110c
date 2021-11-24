@@ -4,19 +4,19 @@ import { OrderTopping } from "./OrderTopping";
 export class OrderItem {
   constructor(
     //注文商品ID
-    private _id: number,
+    public _id: number,
     //商品ID
-    private _itemId: number,
+    public _itemId: number,
     //注文ID
-    private _orderId: number,
+    public _orderId: number,
     //数量
-    private _quantity: number,
+    public _quantity: number,
     //サイズ
-    private _size: string,
+    public _size: string,
     //商品
-    private _item: Item,
+    public _item: Item,
     //注文トッピングリスト
-    private _orderToppingList: Array<OrderTopping>
+    public _orderToppingList: Array<OrderTopping>
   ) {}
 
   /**
