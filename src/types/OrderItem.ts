@@ -45,6 +45,21 @@ export class OrderItem {
     return (sizePrice + toppingPrice * toppingCount) * quantity;
   }
 
+  /**
+   * ショッピングカートで商品のサイズごとの単価を表示する.
+   *
+   * @returns 商品の単価
+   */
+  orderItemUnitPrice(): number {
+    let itemPrice = 0;
+    if (this.size === "M") {
+      itemPrice = this.item.priceM;
+    } else if (this.size === "L") {
+      itemPrice = this.item.priceL;
+    }
+    return itemPrice;
+  }
+
   public get id(): number {
     return this._id;
   }

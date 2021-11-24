@@ -4,20 +4,30 @@
     <div class="search-wrapper">
       <div class="container">
         <form class="search-form">
-          <input
-            type="text"
-            name="name"
-            class="search-name-input"
-            v-model="searchKeyWord"
-          />
+          <!-- サジェスト機能 -->
+          <fieldset>
+            <input
+              type="text"
+              name="name"
+              class="search-name-input"
+              v-model="searchKeyWord"
+              autocomplete="on"
+              list="cafe-item"
+            />
+            <datalist id="cafe-item">
+              <div v-for="item of getAllItem" v-bind:key="item.id">
+                <option v-bind:value="item.name"></option>
+              </div>
+            </datalist>
 
-          <button
-            class="btn search-btn"
-            type="button"
-            v-on:click="getSearchKeyWord(searchKeyWord)"
-          >
-            <span>検 索</span>
-          </button>
+            <button
+              class="btn search-btn"
+              type="button"
+              v-on:click="getSearchKeyWord(searchKeyWord)"
+            >
+              <span>検 索</span>
+            </button>
+          </fieldset>
         </form>
       </div>
     </div>
@@ -55,14 +65,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { Item } from '../types/Item';
+import { Vue, Component } from "vue-property-decorator";
+import { Item } from "../types/Item";
 @Component
 export default class itemList extends Vue {
   //商品一覧を格納する配列
   private itemList = Array<Item>();
   //検索キーワード
-  private searchKeyWord = '';
+  private searchKeyWord = "";
   //表示するページ数
   private pegeNum = 0;
 
@@ -73,9 +83,9 @@ export default class itemList extends Vue {
    *
    */
   async created(): Promise<void> {
-    await this['$store'].dispatch('getItemList');
+    await this["$store"].dispatch("getItemList");
 
-    this.itemList = this['$store'].getters.getAllItems;
+    this.itemList = this["$store"].getters.getAllItems;
 
     this.defaltDisplayItemList;
   }
@@ -86,9 +96,9 @@ export default class itemList extends Vue {
    *
    */
   getSearchKeyWord(searchKeyWord: string): void {
-    this.itemList = this['$store'].getters.getSearchKeyWord(searchKeyWord);
+    this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
 
-    console.dir('絞り込み結果：' + JSON.stringify(this.itemList));
+    console.dir("絞り込み結果：" + JSON.stringify(this.itemList));
   }
 
   /**
@@ -96,7 +106,7 @@ export default class itemList extends Vue {
    *@returns 表示するページ数
    */
   get getShowPage(): number {
-    return Math.ceil(this['$store'].getters.getAllItems.length / 9);
+    return Math.ceil(this["$store"].getters.getAllItems.length / 9);
   }
   /**
    *１ぺーじに表示させる商品リスト.
@@ -108,7 +118,7 @@ export default class itemList extends Vue {
     let startIndex = (targetNum - 1) * 9;
     let endIndex = startIndex + 9;
 
-    this.itemList = this['$store'].getters.getAllItems.slice(
+    this.itemList = this["$store"].getters.getAllItems.slice(
       startIndex,
       endIndex
     );
@@ -118,7 +128,14 @@ export default class itemList extends Vue {
    * @returns 商品リストの最初の９個（Index:0〜8）
    */
   get defaltDisplayItemList(): void {
-    return (this.itemList = this['$store'].getters.getAllItems.slice(0, 9));
+    return (this.itemList = this["$store"].getters.getAllItems.slice(0, 9));
+  }
+  /**
+   *商品全件一覧を取得.
+   * @remarks 商品検索のサジェスト機能をするために全件取得メソッドを作成
+   */
+  get getAllItem(): void {
+    return this["$store"].getters.getAllItems;
   }
 }
 </script>
