@@ -31,9 +31,27 @@
         </form>
       </div>
     </div>
+
     <!-- item list -->
     <div class="item-wrapper">
       <div class="container">
+        <div class="changeItemOrder">
+          <select
+            class="btn search-btn"
+            name="itemlist"
+            id="itemlist"
+            v-on:change="changeItemOrder(selectedOrder)"
+            v-model="selectedOrder"
+          >
+            <option disabled value="">--並び替え--</option>
+            <option>名前昇順</option>
+            <option>名前降順</option>
+            <option>金額が高い順(Mサイズ)</option>
+            <option>金額が低い順(Mサイズ)</option>
+            <option>金額が高い順(Lサイズ)</option>
+            <option>金額が低い順(Lサイズ)</option>
+          </select>
+        </div>
         <div class="items">
           <div class="item" v-for="item of itemList" v-bind:key="item.id">
             <div class="item-icon">
@@ -49,6 +67,7 @@
         </div>
       </div>
     </div>
+
     <!-- itemList ページボタン -->
     <div class="page-btn">
       <div v-for="page of getShowPage" v-bind:key="page">
@@ -75,6 +94,8 @@ export default class itemList extends Vue {
   private searchKeyWord = "";
   //表示するページ数
   private pegeNum = 0;
+  //並び替え変数
+  private selectedOrder = "";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから商品一覧を取得する.
@@ -136,6 +157,10 @@ export default class itemList extends Vue {
    */
   get getAllItem(): void {
     return this["$store"].getters.getAllItems;
+  }
+
+  changeItemOrder(selectedOrder: string): void {
+    this.itemList = this["$store"].getters.getSelectedAllItems(selectedOrder);
   }
 }
 </script>
@@ -251,5 +276,10 @@ export default class itemList extends Vue {
 
 .btn {
   margin: 0 5px;
+}
+
+.changeItemOrder {
+  width: 18%;
+  margin: right; /*検索窓を中央に配置*/
 }
 </style>

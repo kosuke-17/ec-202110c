@@ -102,6 +102,90 @@ export default new Vuex.Store({
       return state.itemList;
     },
 
+    getSelectedAllItems(state) {
+      return (selectedOrder: string) => {
+        if (selectedOrder == "名前昇順") {
+          return state.itemList.sort(function (a, b) {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        } else if (selectedOrder == "名前降順") {
+          return state.itemList.sort(function (a, b) {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA > nameB) {
+              return -1;
+            }
+            if (nameA < nameB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        } else if (selectedOrder == "金額が高い順(Mサイズ)") {
+          return state.itemList.sort(function (a, b) {
+            const priceA = a.priceM;
+            const priceB = b.priceM;
+            if (priceA > priceB) {
+              return -1;
+            }
+            if (priceA < priceB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        } else if (selectedOrder == "金額が低い順(Mサイズ)") {
+          return state.itemList.sort(function (a, b) {
+            const priceA = a.priceM;
+            const priceB = b.priceM;
+            if (priceA < priceB) {
+              return -1;
+            }
+            if (priceA > priceB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        } else if (selectedOrder == "金額が高い順(Lサイズ)") {
+          return state.itemList.sort(function (a, b) {
+            const priceA = a.priceL;
+            const priceB = b.priceL;
+            if (priceA > priceB) {
+              return -1;
+            }
+            if (priceA < priceB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        } else if (selectedOrder == "金額が低い順(Lサイズ)") {
+          return state.itemList.sort(function (a, b) {
+            const priceA = a.priceL;
+            const priceB = b.priceL;
+            if (priceA < priceB) {
+              return -1;
+            }
+            if (priceA > priceB) {
+              return 1;
+            }
+
+            return 0;
+          });
+        }
+      };
+    },
+
     /**
      * 検索欄で入力されたキーワードで商品を絞り込む
      *@param state - ステートオブジェクト
