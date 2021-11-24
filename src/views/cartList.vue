@@ -34,7 +34,11 @@
                   v-for="topping of orderItem.orderToppingList"
                   v-bind:key="topping.id"
                 >
-                  <li>{{ topping.name }}</li>
+                  <li>
+                    {{ topping.name }}&nbsp;（{{
+                      orderItem.toppingPrice(orderItem.size)
+                    }}円）
+                  </li>
                 </ul>
               </td>
               <td>
