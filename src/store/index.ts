@@ -13,6 +13,8 @@ export default new Vuex.Store({
   state: {
     //商品一覧が入る配列
     itemList: new Array<Item>(),
+    //並び替えた商品一覧が入る配列
+    selectedItemList: new Array<Item>(),
     //カートに入っている商品一覧
     orderItemList: new Array<OrderItem>(),
   },
@@ -72,6 +74,88 @@ export default new Vuex.Store({
       );
       console.dir(JSON.stringify(state.orderItemList));
     },
+
+    /**
+     *指定した方法で商品一覧を並び替える.
+     
+     * @param state - ステートオブジェクト
+     * @param payload - 並び替えの方法（例：昇順、降順）
+     */
+    changeItemOrder(state, payload) {
+      if (payload == "名前昇順") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (payload == "名前降順") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA > nameB) {
+            return -1;
+          }
+          if (nameA < nameB) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (payload == "金額が高い順(Mサイズ)") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const priceA = a.priceM;
+          const priceB = b.priceM;
+          if (priceA > priceB) {
+            return -1;
+          }
+          if (priceA < priceB) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (payload == "金額が低い順(Mサイズ)") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const priceA = a.priceM;
+          const priceB = b.priceM;
+          if (priceA < priceB) {
+            return -1;
+          }
+          if (priceA > priceB) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (payload == "金額が高い順(Lサイズ)") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const priceA = a.priceL;
+          const priceB = b.priceL;
+          if (priceA > priceB) {
+            return -1;
+          }
+          if (priceA < priceB) {
+            return 1;
+          }
+          return 0;
+        });
+      } else if (payload == "金額が低い順(Lサイズ)") {
+        state.selectedItemList = state.itemList.sort(function (a, b) {
+          const priceA = a.priceL;
+          const priceB = b.priceL;
+          if (priceA < priceB) {
+            return -1;
+          }
+          if (priceA > priceB) {
+            return 1;
+          }
+          return 0;
+        });
+      }
+    },
   }, //end mutations
   actions: {
     /**
@@ -101,91 +185,14 @@ export default new Vuex.Store({
     getAllItems(state) {
       return state.itemList;
     },
-
-    getSelectedAllItems(state) {
-      return (selectedOrder: string) => {
-        if (selectedOrder == "名前昇順") {
-          return state.itemList.sort(function (a, b) {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        } else if (selectedOrder == "名前降順") {
-          return state.itemList.sort(function (a, b) {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-            if (nameA > nameB) {
-              return -1;
-            }
-            if (nameA < nameB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        } else if (selectedOrder == "金額が高い順(Mサイズ)") {
-          return state.itemList.sort(function (a, b) {
-            const priceA = a.priceM;
-            const priceB = b.priceM;
-            if (priceA > priceB) {
-              return -1;
-            }
-            if (priceA < priceB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        } else if (selectedOrder == "金額が低い順(Mサイズ)") {
-          return state.itemList.sort(function (a, b) {
-            const priceA = a.priceM;
-            const priceB = b.priceM;
-            if (priceA < priceB) {
-              return -1;
-            }
-            if (priceA > priceB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        } else if (selectedOrder == "金額が高い順(Lサイズ)") {
-          return state.itemList.sort(function (a, b) {
-            const priceA = a.priceL;
-            const priceB = b.priceL;
-            if (priceA > priceB) {
-              return -1;
-            }
-            if (priceA < priceB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        } else if (selectedOrder == "金額が低い順(Lサイズ)") {
-          return state.itemList.sort(function (a, b) {
-            const priceA = a.priceL;
-            const priceB = b.priceL;
-            if (priceA < priceB) {
-              return -1;
-            }
-            if (priceA > priceB) {
-              return 1;
-            }
-
-            return 0;
-          });
-        }
-      };
+    /**
+     * 並び替えした後の商品一覧を取得する.
+     * @param state - ステートオブジェクト
+     * @returns - 並び替え後の商品一覧
+     */
+    getSelectedItems(state) {
+      return state.selectedItemList;
     },
-
     /**
      * 検索欄で入力されたキーワードで商品を絞り込む
      *@param state - ステートオブジェクト

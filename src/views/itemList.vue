@@ -40,7 +40,7 @@
             class="btn search-btn"
             name="itemlist"
             id="itemlist"
-            v-on:change="changeItemOrder(selectedOrder)"
+            v-on:change="changeOrder"
             v-model="selectedOrder"
           >
             <option disabled value="">--並び替え--</option>
@@ -159,8 +159,14 @@ export default class itemList extends Vue {
     return this["$store"].getters.getAllItems;
   }
 
-  changeItemOrder(selectedOrder: string): void {
-    this.itemList = this["$store"].getters.getSelectedAllItems(selectedOrder);
+  /**
+   * 並び替えした後の商品全件一覧を取得.
+   * @remarks
+   * payloadで指定した並び替え方法を渡す
+   */
+  changeOrder(): void {
+    this["$store"].commit("changeItemOrder", this.selectedOrder);
+    this.itemList = this["$store"].getters.getSelectedItems;
   }
 }
 </script>
