@@ -156,7 +156,7 @@ export default class itemDetail extends Vue {
   //選択されているトッッピングの個数
   private selectedTopping = new Array<Topping>();
   //選択された商品の個数
-  private quantity = 0;
+  private quantity = 1;
   //サイズと数量が選択されていない時のエラーメッセージ
   private errorMessage = "";
 
