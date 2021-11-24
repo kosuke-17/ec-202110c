@@ -13,22 +13,25 @@
               <th>小計</th>
             </tr>
           </thead>
-          <tbody v-for="(item, index) of orderItemList" v-bind:key="item.id">
+          <tbody
+            v-for="(orderItem, index) of orderItemList"
+            v-bind:key="orderItem.id"
+          >
             <tr>
               <td class="cart-item-name">
                 <div class="cart-item-icon">
-                  <img :src="item.item.imagePath" />
+                  <img :src="orderItem.item.imagePath" />
                 </div>
-                <span>{{ item.item.name }}</span>
+                <span>{{ orderItem.item.name }}</span>
               </td>
               <td>
-                <span class="price">&nbsp;{{ item.size }}</span
-                >&nbsp;&nbsp;{{ itemPrice(index) }}円 &nbsp;&nbsp;
-                {{ item.quantity }}個
+                <span class="price">&nbsp;{{ orderItem.size }}</span
+                >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
+                &nbsp;&nbsp; {{ orderItem.quantity }}個
               </td>
               <td>
                 <ul
-                  v-for="topping of item.orderToppingList"
+                  v-for="topping of orderItem.orderToppingList"
                   v-bind:key="topping.id"
                 >
                   <li>{{ topping.name }}</li>
@@ -37,10 +40,10 @@
               <td>
                 <div class="text-center">
                   {{
-                    item.calcSubTotalPrice(
-                      item.size,
-                      item.orderToppingList.length,
-                      item.quantity
+                    orderItem.calcSubTotalPrice(
+                      orderItem.size,
+                      orderItem.orderToppingList.length,
+                      orderItem.quantity
                     )
                   }}円
                 </div>
@@ -86,24 +89,6 @@ export default class cartList extends Vue {
    */
   get orderItemList(): Array<OrderItem> {
     return this["$store"].getters.getOrderItemList;
-  }
-
-  /**
-   * ショッピングカートで商品のサイズごとの単価を表示する.
-   *
-   * @returns 商品の単価
-   */
-  itemPrice(index: number): number {
-    let orderItemPrice = new Array<number>();
-    // let id = this.orderItemList[].id - 1;
-    for (const orderItem of this.orderItemList) {
-      if (orderItem.size === "M") {
-        orderItemPrice.push(orderItem.item.priceM);
-      } else if (orderItem.size === "L") {
-        orderItemPrice.push(orderItem.item.priceL);
-      }
-    }
-    return orderItemPrice[index];
   }
 }
 </script>
