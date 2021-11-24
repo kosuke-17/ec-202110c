@@ -218,7 +218,6 @@
 </template>
 
 <script lang="ts">
-import { Order } from "@/types/Order";
 import { OrderItem } from "@/types/OrderItem";
 import { User } from "@/types/User";
 import axios from "axios";
@@ -259,9 +258,17 @@ export default class OrderConfirm extends Vue {
   private orderItemFormList: any[] = [];
   /**
    * ショッピングカートに入っている商品の配列を変数に格納.
+   * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
    */
   created(): void {
-    this.currentOrderItemList = this.$store.getters.getOrderItemList;
+    if (this.$store.state.isLogin) {
+      this.currentOrderItemList = this.$store.getters.getOrderItemList;
+      console.log("ログインしています");
+    } else {
+      alert("ログインしてないため、ログイン画面に移動します。");
+      this.$router.push("/loginUser");
+      console.log("ログインしてません");
+    }
   }
 
   /**
