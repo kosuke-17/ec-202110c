@@ -140,7 +140,7 @@ export default new Vuex.Store({
               orderItem._item._deleteId,
               orderItem._item._toppingList
             ),
-            orderItem.orderToppingList
+            orderItem._orderToppingList
           )
         );
       }
