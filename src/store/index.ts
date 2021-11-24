@@ -40,6 +40,12 @@ export default new Vuex.Store({
       console.dir('itemList:' + JSON.stringify(state.itemList));
     },
 
+    /**
+     *ショッピングカートに商品を追加する.
+     
+     * @param state - ステートオブジェクト
+     * @param payload - ショッピングカートに入れた商品の詳細情報
+     */
     addItemToCart(state, payload): void {
       state.orderItemList.push(
         new OrderItem(
