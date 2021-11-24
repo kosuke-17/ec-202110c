@@ -78,9 +78,15 @@ export default class LoginUser extends Vue {
       }
     );
 
-    console.dir("response:" + JSON.stringify(response));
+    // console.dir("response:" + JSON.stringify(response));
     // エラー処理
     if (response.data.status == "success") {
+      // 会員登録情報の取得
+      const loginUserData = response.data.responseMap.user;
+      // ステートにログインしたユーザーの情報を渡す
+      this["$store"].commit("getUserInfo", {
+        userInfo: loginUserData,
+      });
       //ステートをログインに切り替えるミューテーションから呼び出す
       this["$store"].commit("statusLogin");
       // 商品一覧画面に遷移する

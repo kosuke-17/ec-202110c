@@ -5,6 +5,7 @@ import { Item } from "../types/Item";
 import { OrderItem } from "@/types/OrderItem";
 // 使うためには「npm install --save vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
+import { User } from "@/types/User";
 
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     orderItemList: new Array<OrderItem>(),
     //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    loginUserInfo: new User(0, "", "", "", "", "", ""),
   },
   mutations: {
     /**
@@ -184,6 +186,17 @@ export default new Vuex.Store({
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
     },
+    getUserInfo(state, payload): void {
+      state.loginUserInfo = new User(
+        payload.userInfo.id,
+        payload.userInfo.name,
+        payload.userInfo.email,
+        payload.userInfo.password,
+        payload.userInfo.zipcode,
+        payload.userInfo.address,
+        payload.userInfo.telephone
+      );
+    },
   }, //end mutations
 
   actions: {
@@ -282,8 +295,8 @@ export default new Vuex.Store({
     createPersistedState({
       // ストレージのキーを指定
       key: "vue",
-      //orderItemListのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
-      paths: ["orderItemList", "isLogin"],
+      //ステートのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
+      paths: ["orderItemList", "isLogin", "loginUserInfo"],
       // ストレージの種類を指定
       storage: window.sessionStorage,
     }),
