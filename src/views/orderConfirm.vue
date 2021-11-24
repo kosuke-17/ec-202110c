@@ -1,5 +1,5 @@
 <template>
-  <div class="top-wrapeer">
+  <div class="top-wrapper">
     <shoppingCart></shoppingCart>
   </div>
 </template>
