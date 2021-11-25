@@ -302,6 +302,7 @@ export default class OrderConfirm extends Vue {
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
+    console.log("userId:" + this.userId);
 
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/order",
