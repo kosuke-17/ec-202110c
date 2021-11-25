@@ -41,7 +41,13 @@
         <div class="row">
           <div class="error">{{ errorOfZipcode }}</div>
           <div class="input-field col s12">
-            <input id="zipcode" type="text" maxlength="7" v-model="zipcode" />
+            <input
+              id="zipcode"
+              type="number"
+              v-model="zipcode"
+              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="7"
+            />
             <label for="zipcode">郵便番号(ハイフンなし)</label>
             <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
@@ -58,8 +64,14 @@
         <div class="row">
           <div class="error">{{ errorOfTelephone }}</div>
           <div class="input-field col s12">
-            <input id="tel" type="tel" v-model="telephone" />
-            <label for="tel">電話番号</label>
+            <input
+              id="tel"
+              type="number"
+              v-model="telephone"
+              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="14"
+            />
+            <label for="tel">電話番号(ハイフンなし)</label>
           </div>
         </div>
         <div class="row">
@@ -334,5 +346,11 @@ export default class RegisterUser extends Vue {
 
 .error {
   color: red;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
