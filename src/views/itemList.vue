@@ -44,8 +44,8 @@
             v-model="selectedOrder"
           >
             <option disabled value="">--並び替え--</option>
-            <option>名前昇順</option>
-            <option>名前降順</option>
+            <option>昇順(名前)</option>
+            <option>降順(名前)</option>
             <option>金額が高い順(Mサイズ)</option>
             <option>金額が低い順(Mサイズ)</option>
             <option>金額が高い順(Lサイズ)</option>
@@ -159,8 +159,7 @@ export default class itemList extends Vue {
 
   /**
    * 並び替えした後の商品全件一覧を取得.
-   * @remarks
-   * payloadで指定した並び替え方法を渡す
+   * @remarks payloadで指定した並び替え方法を渡す
    */
   changeOrder(): void {
     this["$store"].commit("changeItemOrder", this.selectedOrder);
