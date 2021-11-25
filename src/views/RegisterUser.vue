@@ -73,7 +73,9 @@
               v-model="password"
               required
             />
-            <label for="password">パスワード</label>
+            <label for="password"
+              >パスワード(大文字・小文字の英数字・8文字以上12文字以内)</label
+            >
           </div>
         </div>
         <div class="row">
@@ -247,6 +249,9 @@ export default class RegisterUser extends Vue {
     if (this.password === "") {
       this.errorOfPassword = "「パスワード」が未入力です。";
       hasError = true;
+    } else if (this.password.length < 8 || 12 < this.password.length) {
+      this.errorOfPassword =
+        "「パスワード」は8文字以上12文字以内で入力して下さい。";
     } else {
       this.errorOfPassword = "";
     }
