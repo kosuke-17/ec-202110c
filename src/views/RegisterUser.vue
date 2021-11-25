@@ -302,19 +302,23 @@ export default class RegisterUser extends Vue {
   async getAddressByZipCode(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const axiosJsonpAdapter = require("axios-jsonp");
-
-    const response = await axios.get("https://zipcoda.net/api", {
-      adapter: axiosJsonpAdapter,
-      params: {
-        zipcode: this.zipcode,
-      },
-    });
-    //JSON形式で取得内容確認
-    console.dir("郵便番号" + JSON.stringify(response));
-    //componentsのパスを確認
-    console.dir(JSON.stringify(response.data.items[0].components));
-    //.join("")でcomponents配列内を連結
-    this.address = response.data.items[0].components.join("");
+    this.errorOfZipcode = "";
+    if (this.zipcode.match(/[0-9]{7}/g)) {
+      const response = await axios.get("https://zipcoda.net/api", {
+        adapter: axiosJsonpAdapter,
+        params: {
+          zipcode: this.zipcode,
+        },
+      });
+      //JSON形式で取得内容確認
+      console.dir("郵便番号" + JSON.stringify(response));
+      //componentsのパスを確認
+      console.dir(JSON.stringify(response.data.items[0].components));
+      //.join("")でcomponents配列内を連結
+      this.address = response.data.items[0].components.join("");
+    } else {
+      this.errorOfZipcode = "半角数字7桁で入力してください";
+    }
   }
 }
 </script>
