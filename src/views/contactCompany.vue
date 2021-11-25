@@ -36,7 +36,7 @@
               >
             </div>
           </div>
-          <div class="row login-btn">
+          <div class="row contact-btn">
             <button class="btn" type="button" @click="submitToCompany">
               <span>送信</span>
             </button>
@@ -73,12 +73,16 @@ export default class ContactCompany extends Vue {
         this.content,
     };
     const url =
-      "https://hooks.slack.com/services/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";
+      "https://hooks.slack.com/services/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";
+
     if (this.name && this.email && this.content) {
-      await fetch(url, {
+      fetch(url, {
         method: "POST",
         body: JSON.stringify(payload),
       })
+        .catch((error) => {
+          throw new Error(error);
+        })
         .then((data) => {
           console.log("Success:", data);
           alert("送信が完了しました。");
@@ -97,15 +101,7 @@ export default class ContactCompany extends Vue {
 </script>
 
 <style scoped>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
+.contact-btn {
+  text-align: center;
 }
 </style>
