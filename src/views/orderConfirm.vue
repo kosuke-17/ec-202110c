@@ -59,24 +59,28 @@
     <h2 class="page-title">お届け先情報</h2>
     <div class="order-confirm-delivery-info">
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationName }}</div>
         <div class="input-field">
           <input id="name" type="text" v-model="destinationName" />
           <label for="name">お名前</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationEmail }}</div>
         <div class="input-field">
           <input id="email" type="email" v-model="destinationEmail" />
           <label for="email">メールアドレス</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationZipcode }}</div>
         <div class="input-field">
           <input
             id="zipcode"
-            type="text"
-            maxlength="7"
+            type="number"
             v-model="destinationZipcode"
+            oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            maxlength="7"
           />
           <label for="zipcode">郵便番号(ハイフンなし)</label>
           <button class="btn" type="button" @click="searchAddress">
@@ -85,17 +89,26 @@
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationAddress }}</div>
         <div class="input-field">
           <input id="address" type="text" v-model="destinationAddress" />
           <label for="address">住所</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationTel }}</div>
         <div class="input-field">
-          <input id="tel" type="tel" v-model="destinationTel" />
-          <label for="tel">電話番号</label>
+          <input
+            id="tel"
+            type="tel"
+            v-model="destinationTel"
+            oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            maxlength="11"
+          />
+          <label for="tel">電話番号(ハイフンなし)</label>
         </div>
       </div>
+      <div class="errorMessage">{{ errorOrderDate }}</div>
       <div class="row order-confirm-delivery-datetime">
         <div class="input-field">
           <!-- typeはdatetime-localでも良い？ -->
@@ -346,6 +359,18 @@ export default class OrderConfirm extends Vue {
   private user = new User(0, "", "", "", "", "", "");
   // 送信用の注文商品をリストで渡す(型の指定をどうするか考える)
   private orderItemFormList: any[] = [];
+  // 宛先氏名のエラーメッセージ
+  private errorDestinationName = "";
+  // 宛先Eメールのエラーメッセージ
+  private errorDestinationEmail = "";
+  // 宛先郵便番号のエラーメッセージ
+  private errorDestinationZipcode = "";
+  // 宛先住所のエラーメッセージ
+  private errorDestinationAddress = "";
+  // 宛先電話番号のエラーメッセージ
+  private errorDestinationTel = "";
+  // 配達日時のエラーメッセージ
+  private errorOrderDate = "";
   // クレジットカード番号
   private creditCardNumber = "";
   //有効期限（月）
@@ -384,8 +409,14 @@ export default class OrderConfirm extends Vue {
 
   /**
    * 注文商品情報の送信.
+   *
+   * @remarks クレジットカード決済（paymentMethod = "2"）を選択された時は、外部APIを呼んでクレジットカード情報を送信する
    */
   async orderItems(): Promise<void> {
+    // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
+    if (this.hasErrorsWithUserInformation() == true) {
+      return;
+    }
     // 支払い方法によって、金額受け渡しのステータスを変える
     if (this.paymentMethod === "1") {
       this.status = "1";
@@ -393,10 +424,7 @@ export default class OrderConfirm extends Vue {
       this.status = "2";
     }
     // リロードするとorderItemFormListがundefindになる(リロード問題発生)
-    // console.dir(JSON.stringify(this.orderItemsList));
     for (let item of this.currentOrderItemList) {
-      // console.log(item.itemId, item.quantity, item.size);
-
       this.orderItemFormList.push({
         itemId: item.itemId,
         orderId: item.orderId,
@@ -460,9 +488,12 @@ export default class OrderConfirm extends Vue {
     );
 
     if (response.data.status === "success") {
+      //成功した場合は、注文完了画面に遷移する
       this.$router.push("/orderFinished");
     } else if (response.data.status === "error") {
-      alert("登録失敗しました。再度カートから購入手続きをお願いします。");
+      //失敗した場合はエラーメッセージを表示する
+      alert("購入できませんでした。再度カートから購入手続きをお願いします。");
+      this.$router.push("/cartList");
     }
   }
 
@@ -486,6 +517,46 @@ export default class OrderConfirm extends Vue {
     } catch (e) {
       alert("正しい郵便番号を入力してください");
     }
+  }
+  /**
+   * お届け先情報のエラーチェック処理.
+   *
+   * @returns エラーがある:true / エラーがない:false
+   */
+  private hasErrorsWithUserInformation(): boolean {
+    let hasError = false;
+    this.errorDestinationName = "";
+    this.errorDestinationEmail = "";
+    this.errorDestinationZipcode = "";
+    this.errorDestinationAddress = "";
+    this.errorDestinationTel = "";
+    this.errorOrderDate = "";
+
+    if (this.destinationName === "") {
+      this.errorDestinationName = "お名前を入力してください";
+      hasError = true;
+    }
+    if (this.destinationEmail === "") {
+      this.errorDestinationEmail = "メールアドレスを入力してください";
+      hasError = true;
+    }
+    if (this.destinationZipcode === "") {
+      this.errorDestinationZipcode = "郵便番号を入力してください";
+      hasError = true;
+    }
+    if (this.destinationAddress === "") {
+      this.errorDestinationAddress = "住所を入力してください";
+      hasError = true;
+    }
+    if (this.destinationTel === "") {
+      this.errorDestinationTel = "電話番号を入力してください";
+      hasError = true;
+    }
+    if (this.deliveryTime === "" || this.orderDate === "") {
+      this.errorOrderDate = "配達日時を選択してください";
+      hasError = true;
+    }
+    return hasError;
   }
   /**
    * クレジットカード情報のエラーチェック処理.
