@@ -188,28 +188,31 @@
 
     <h2 class="page-title">お支払い方法</h2>
     <div class="row order-confirm-payment-method">
-      <span>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="1"
-            v-model="paymentMethod"
-          />
-          <span>代金引換</span>
-        </label>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="2"
-            v-model="paymentMethod"
-          />
-          <span>クレジットカード</span>
-        </label>
-      </span>
+      <div class="selectPaymentMethod">
+        <span>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="1"
+              v-model="paymentMethod"
+            />
+            <span>代金引換</span>
+          </label>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="2"
+              v-model="paymentMethod"
+            />
+            <span>クレジットカード</span>
+          </label>
+        </span>
+      </div>
       <div class="creditCard" v-if="paymentMethod == 2">
         <div class="row creditNum">
+          <div class="errorMessage">{{ errorCreditCardNumber }}</div>
           <div class="input-field col s12">
             <input
               id="creditNum"
@@ -217,15 +220,20 @@
               class="validate"
               oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
               maxlength="16"
+              v-model="creditCardNumber"
             />
             <label for="creditNum">クレジットカード番号</label>
           </div>
         </div>
-
+        <div class="errorMessage">{{ errorCreditCardExpiryDate }}</div>
         <div class="expiryDate">
           <div>
             <label for="expiryDate">有効期限：</label>
-            <select class="browser-default expiryMonth">
+            <select
+              class="browser-default expiryMonth"
+              v-model="creditCardExpiryMonth"
+            >
+              <option value="" disabled selected>選択してください</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -243,7 +251,11 @@
           <div>
             <br />
             <label></label>
-            <select class="browser-default expiryMonth">
+            <select
+              class="browser-default expiryMonth"
+              v-model="creditCardExpiryYear"
+            >
+              <option value="" disabled selected>選択してください</option>
               <option value="2020">2020</option>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
@@ -259,12 +271,20 @@
           </div>
         </div>
         <div class="row">
+          <div class="errorMessage">{{ errorCreditCardName }}</div>
           <div class="input-field col s12">
-            <input id="creditName" type="text" class="validate" />
+            <input
+              id="creditName"
+              type="text"
+              class="validate"
+              maxlength="50"
+              v-model="creditCardName"
+            />
             <label for="creditName">カード名義人</label>
           </div>
         </div>
         <div class="row">
+          <div class="errorMessage">{{ errorSecurityCode }}</div>
           <div class="input-field col s12">
             <input
               id="securityCode"
@@ -272,6 +292,7 @@
               class="validate"
               oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
               maxlength="4"
+              v-model="securityCode"
             />
             <label for="securityCode">セキュリティコード</label>
           </div>
@@ -325,6 +346,25 @@ export default class OrderConfirm extends Vue {
   private user = new User(0, "", "", "", "", "", "");
   // 送信用の注文商品をリストで渡す(型の指定をどうするか考える)
   private orderItemFormList: any[] = [];
+  // クレジットカード番号
+  private creditCardNumber = "";
+  //有効期限（月）
+  private creditCardExpiryMonth = "選択してください";
+  //有効期限（年）
+  private creditCardExpiryYear = "選択してください";
+  //カード名義人
+  private creditCardName = "";
+  //セキュリティコード
+  private securityCode = "";
+  //クレジットカード番号のエラーメッセージ
+  private errorCreditCardNumber = "";
+  //有効期限のエラーメッセージ
+  private errorCreditCardExpiryDate = "";
+  //カード名義人のエラーメッセージ
+  private errorCreditCardName = "";
+  //セキュリティコードのエラーメッセージ
+  private errorSecurityCode = "";
+
   /**
    *注文確認画面表示の準備
    *
@@ -346,6 +386,10 @@ export default class OrderConfirm extends Vue {
    * 注文商品情報の送信.
    */
   async orderInfomation(): Promise<void> {
+    // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
+    if (this.hasErrors() == true) {
+      return;
+    }
     // 支払い方法によって、金額受け渡しのステータスを変える
     if (this.paymentMethod === "1") {
       this.status = "1";
@@ -417,6 +461,71 @@ export default class OrderConfirm extends Vue {
       alert("正しい郵便番号を入力してください");
     }
   }
+  /**
+   * エラーチェック処理.
+   *
+   * @returns エラーがある:true / エラーがない:false
+   */
+  private hasErrors(): boolean {
+    let hasError = false;
+    this.errorCreditCardNumber = "";
+    this.errorCreditCardExpiryDate = "";
+    this.errorCreditCardName = "";
+    this.errorSecurityCode = "";
+
+    if (this.creditCardNumber === "") {
+      this.errorCreditCardNumber = "クレジットカード番号を入力してください";
+      hasError = true;
+    } else if (
+      this.creditCardNumber.length !== 14 &&
+      this.creditCardNumber.length !== 16
+    ) {
+      this.errorCreditCardNumber =
+        "14桁か16桁のクレジットカード番号を入力してください";
+      hasError = true;
+    }
+    if (
+      this.creditCardExpiryMonth === "選択してください" ||
+      this.creditCardExpiryYear === "選択してください"
+    ) {
+      this.errorCreditCardExpiryDate = "有効期限を入力してください";
+      hasError = true;
+    }
+    if (this.creditCardName === "") {
+      this.errorCreditCardName = "カード名義人を入力してください";
+      hasError = true;
+    } else if (this.creditCardName.length > 50) {
+      this.errorCreditCardName = "カード名義人は50文字以内で入力してください";
+      hasError = true;
+    } else if (this.isHalfWidthAlpha(this.creditCardName) === false) {
+      this.errorCreditCardName = "半角のアルファベットで入力してください";
+      hasError = true;
+    }
+    if (this.securityCode === "") {
+      this.errorSecurityCode = "セキュリティコードを入力してください";
+      hasError = true;
+    } else if (
+      this.securityCode.length !== 3 &&
+      this.securityCode.length !== 4
+    ) {
+      this.errorSecurityCode = "3桁か4桁のセキュリティコードを入力してください";
+      hasError = true;
+    }
+    return hasError;
+  }
+
+  /**
+   * 半角英字を含むか判定.
+   *
+   * @returns 半角英字がある:true / 半角英字がない:false
+   */
+  private isHalfWidthAlpha(creditCardName: string) {
+    if (creditCardName.match(/^[A-Za-z]*$/)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 </script>
 
@@ -436,7 +545,7 @@ export default class OrderConfirm extends Vue {
 }
 
 .order-confirm-payment-method {
-  text-align: center;
+  text-align: left;
   width: 60%;
   margin: 0 auto;
 }
@@ -461,6 +570,16 @@ export default class OrderConfirm extends Vue {
   margin-top: 20px;
 }
 
+.errorMessage {
+  color: red;
+}
+
+.selectPaymentMethod {
+  text-align: center;
+}
+.creditNum {
+  margin-top: 20px;
+}
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
