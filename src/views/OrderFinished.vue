@@ -21,6 +21,21 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
+  /**
+   * ログインしていなければ、ログイン画面に戻るように処理を実装.
+   */
+  created(): void {
+    if (this.$store.state.isLogin) {
+      console.log("ログインしています");
+    } else {
+      alert("ログインしてないため、ログイン画面に移動します。");
+      this.$router.push("/loginUser");
+      console.log("ログインしてません");
+    }
+    /**
+     * トップ画面に遷移する処理.
+     */
+  }
   goHome(): void {
     this.$router.push("/");
   }

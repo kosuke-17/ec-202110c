@@ -218,7 +218,6 @@
 </template>
 
 <script lang="ts">
-import { Order } from "@/types/Order";
 import { OrderItem } from "@/types/OrderItem";
 import { User } from "@/types/User";
 import axios from "axios";
@@ -259,9 +258,17 @@ export default class OrderConfirm extends Vue {
   private orderItemFormList: any[] = [];
   /**
    * ショッピングカートに入っている商品の配列を変数に格納.
+   * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
    */
   created(): void {
-    this.currentOrderItemList = this.$store.getters.getOrderItemList;
+    if (this.$store.state.isLogin) {
+      this.currentOrderItemList = this.$store.getters.getOrderItemList;
+      console.log("ログインしています");
+    } else {
+      alert("ログインしてないため、ログイン画面に移動します。");
+      this.$router.push("/loginUser");
+      console.log("ログインしてません");
+    }
   }
 
   /**
@@ -287,29 +294,12 @@ export default class OrderConfirm extends Vue {
         size: item.size,
       });
     }
-    // console.dir(JSON.stringify(this.orderItemFormList));
 
     // サーバーに送るために日付を加工
     const createOrderDate = new Date(this.orderDate);
     const formatOrderDate = format(
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
-    );
-
-    console.dir(
-      JSON.stringify({
-        userId: this.userId,
-        status: this.status,
-        totalPrice: this.totalPrice,
-        destinationName: this.destinationName,
-        destinationEmail: this.destinationEmail,
-        destinationZipcode: this.destinationZipcode,
-        destinationAddress: this.destinationAddress,
-        destinationTel: this.destinationTel,
-        deliveryTime: formatOrderDate,
-        paymentMethod: this.paymentMethod,
-        orderItemFormList: this.orderItemFormList,
-      })
     );
 
     const response = await axios.post(
@@ -328,7 +318,6 @@ export default class OrderConfirm extends Vue {
         orderItemFormList: this.orderItemFormList,
       }
     );
-    console.dir(JSON.stringify(response));
 
     if (response.data.status === "success") {
       this.$router.push("/orderFinished");
