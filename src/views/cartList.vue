@@ -66,11 +66,13 @@
               <td>
                 <div class="text-center">
                   {{
-                    orderItem.calcSubTotalPrice(
-                      orderItem.size,
-                      orderItem.orderToppingList.length,
-                      orderItem.quantity
-                    )
+                    orderItem
+                      .calcSubTotalPrice(
+                        orderItem.size,
+                        orderItem.orderToppingList.length,
+                        orderItem.quantity
+                      )
+                      .toLocaleString()
                   }}円
                 </div>
               </td>
