@@ -44,8 +44,8 @@
             v-model="selectedOrder"
           >
             <option disabled value="">--並び替え--</option>
-            <option>名前昇順</option>
-            <option>名前降順</option>
+            <option>昇順(名前)</option>
+            <option>降順(名前)</option>
             <option>金額が高い順(Mサイズ)</option>
             <option>金額が低い順(Mサイズ)</option>
             <option>金額が高い順(Lサイズ)</option>

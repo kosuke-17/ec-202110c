@@ -87,7 +87,7 @@ export default new Vuex.Store({
      * @param payload - 並び替えの方法（例：昇順、降順）
      */
     changeItemOrder(state, payload) {
-      if (payload == "名前昇順") {
+      if (payload == "昇順(名前)") {
         state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
           const nameA = itemA.name.toUpperCase();
           const nameB = itemB.name.toUpperCase();
@@ -99,7 +99,7 @@ export default new Vuex.Store({
           }
           return 0;
         });
-      } else if (payload == "名前降順") {
+      } else if (payload == "降順(名前)") {
         state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
           const nameA = itemA.name.toUpperCase();
           const nameB = itemB.name.toUpperCase();
