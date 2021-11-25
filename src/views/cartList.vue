@@ -4,7 +4,29 @@
       <h1 class="page-title">ショッピングカート</h1>
       <!-- table -->
       <div class="row">
-        <table class="striped">
+        <div class="card-noItemList">
+          <div v-if="orderItemList.length === 0">
+            <div class="row">
+              <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                  <div class="card-content white-text">
+                    <span class="card-title"
+                      >買い物かごには商品が入っていません。</span
+                    >
+                    <p>
+                      現在、買い物かごには商品が入っていません。ぜひお買い物をお楽しみください。
+                      ご利用をお待ちしております。 トップページはこちら
+                    </p>
+                  </div>
+                  <div class="card-action">
+                    <a href="#">商品一覧画面はこちら</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="striped" v-if="orderItemList.length">
           <thead>
             <tr>
               <th class="cart-table-th">商品名</th>
@@ -180,5 +202,8 @@ export default class cartList extends Vue {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
+}
+.card-noItemList {
+  text-align: center;
 }
 </style>

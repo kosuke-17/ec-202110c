@@ -335,6 +335,7 @@ export default class OrderConfirm extends Vue {
     );
 
     if (response.data.status === "success") {
+      this.$store.commit("resetOrderItemList");
       this.$router.push("/orderFinished");
     } else if (response.data.status === "error") {
       alert("登録失敗しました。再度カートから購入手続きをお願いします。");
@@ -390,4 +391,34 @@ export default class OrderConfirm extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.cart-table-th {
+  text-align: center;
+}
+.cart-item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+  height: 100px;
+  padding: 0 0 15px 0;
+}
+.cart-item-name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.cart-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
+.order-confirm-btn {
+  text-align: center;
+}
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
+}
+</style>
