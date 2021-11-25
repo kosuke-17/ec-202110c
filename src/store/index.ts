@@ -22,6 +22,8 @@ export default new Vuex.Store({
     isLogin: false,
     //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
+    // ログイン後に画面遷移するためのフラグ
+    loginedPageToMoveFlag: "",
   },
   mutations: {
     /**
@@ -210,6 +212,9 @@ export default new Vuex.Store({
      */
     resetOrderItemList(state): void {
       state.orderItemList = new Array<OrderItem>();
+    },
+    setMoveFlag(state, payload): void {
+      state.loginedPageToMoveFlag = payload.setStr;
     },
   }, //end mutations
 

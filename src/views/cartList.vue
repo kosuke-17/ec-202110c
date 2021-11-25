@@ -124,6 +124,9 @@ export default class cartList extends Vue {
       this.$router.push("/orderConfirm");
     } else {
       alert("ログインしてないため、ログイン画面に移動します。");
+      // VuexにFlagをセット
+      this.$store.commit("setMoveFlag", { setStr: "goToOrder" });
+      //ログイン画面に遷移
       this.$router.push("/loginUser");
     }
   }
