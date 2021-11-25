@@ -117,9 +117,15 @@ export default class cartList extends Vue {
    * ショッピングカートに入っている商品の配列を返す.
    *
    * @returns ショッピングカートに入っている商品の配列
+   *          ログインしていなければ、ログイン画面に戻るように処理を実装
    */
   goToOrder(): void {
-    this.$router.push("/orderConfirm");
+    if (this.$store.state.isLogin) {
+      this.$router.push("/orderConfirm");
+    } else {
+      alert("ログインしてないため、ログイン画面に移動します。");
+      this.$router.push("/loginUser");
+    }
   }
 
   /**

@@ -270,18 +270,12 @@ export default class OrderConfirm extends Vue {
   /**
    *注文確認画面表示の準備.
    *
-   * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
-   *          ショッピングカートに入っている商品の配列を変数に格納.
+   * @remarks ショッピングカートに入っている商品の配列を変数に格納.
+   *
    */
   created(): void {
-    if (this.$store.state.isLogin) {
-      this.currentOrderItemList = this.$store.getters.getOrderItemList;
-      console.log("ログインしています");
-    } else {
-      alert("ログインしてないため、ログイン画面に移動します。");
-      this.$router.push("/loginUser");
-      console.log("ログインしてません");
-    }
+    this.currentOrderItemList = this.$store.getters.getOrderItemList;
+
     //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }
