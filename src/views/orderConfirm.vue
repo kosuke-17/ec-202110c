@@ -350,3 +350,35 @@ export default class OrderConfirm extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.cart-table-th {
+  text-align: center;
+}
+.cart-item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+  height: 100px;
+  padding: 0 0 15px 0;
+}
+.cart-item-name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.cart-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
+.order-confirm-btn {
+  text-align: center;
+}
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
+}
+</style>
