@@ -56,6 +56,9 @@ export default class Home extends Vue {
   private email = "";
   private content = "";
 
+  /**
+   * お問い合わせ内容の送信.
+   */
   async submitToCompany(): Promise<void> {
     const payload = {
       text:
