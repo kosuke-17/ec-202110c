@@ -254,7 +254,6 @@ export default class OrderConfirm extends Vue {
   private paymentMethod = "1";
   // ユーザー
   private user = new User(0, "", "", "", "", "", "");
-  // 送信用の注文商品をリストで渡す(型の指定をどうするか考える)
   private orderItemFormList: any[] = [];
   /**
    *注文確認画面表示の準備
