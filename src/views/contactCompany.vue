@@ -51,11 +51,14 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class Home extends Vue {
+export default class ContactCompany extends Vue {
   private name = "";
   private email = "";
   private content = "";
 
+  /**
+   * お問い合わせ内容の送信.
+   */
   async submitToCompany(): Promise<void> {
     const payload = {
       text:

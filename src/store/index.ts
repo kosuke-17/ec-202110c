@@ -285,7 +285,6 @@ export default new Vuex.Store({
      * @param state - ステートオブジェクト
      * @returns - ログイン状態
      */
-
     getLoginStatus(state) {
       return state.isLogin;
     },
