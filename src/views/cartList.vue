@@ -151,7 +151,7 @@ export default class cartList extends Vue {
   }
 
   /**
-   * 消費税を計算して返す
+   * 消費税を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の消費税金額を計算して返す
    * @returns ショッピングカートに入っている商品の消費税金額
@@ -162,7 +162,7 @@ export default class cartList extends Vue {
   }
 
   /**
-   * 合計金額を計算して返す
+   * 合計金額を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
    * @returns ショッピングカートに入っている商品の合計金額
