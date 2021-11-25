@@ -159,12 +159,11 @@ export default class itemList extends Vue {
 
   /**
    * 並び替えした後の商品全件一覧を取得.
-   * @remarks
-   * payloadで指定した並び替え方法を渡す
+   * @remarks payloadで指定した並び替え方法を渡す
    */
   changeOrder(): void {
     this["$store"].commit("changeItemOrder", this.selectedOrder);
-    this.itemList = this["$store"].getters.getSelectedItems;
+    this.itemList = this["$store"].getters.getSelectedItems.slice(0, 9);
   }
 }
 </script>
