@@ -123,7 +123,8 @@ export default class itemList extends Vue {
   /**
    * ページ数を表示する.
    * @remarks 検索結果の商品数(itemList.length)を使用
-   *@returns 表示するページ数
+   * @remarks 検索結果した商品数からページング
+   *　　@returns 表示するページ数
    */
   get getShowPage(): number {
     return Math.ceil((this.itemList.length + 1) / 9);
