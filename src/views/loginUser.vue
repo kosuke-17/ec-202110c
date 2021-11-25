@@ -98,4 +98,13 @@ export default class LoginUser extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.login-page {
+  width: 600px;
+  height: 570px;
+}
+
+.login-btn {
+  text-align: center;
+}
+</style>
