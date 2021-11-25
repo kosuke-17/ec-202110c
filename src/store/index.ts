@@ -243,13 +243,18 @@ export default new Vuex.Store({
       return state.selectedItemList;
     },
     /**
-     * 検索欄で入力されたキーワードで商品を絞り込む
+     * 検索欄で入力されたキーワードで商品を絞り込む.
+     *@remarks 検索されたキーワードを.toLowerCase()と.toUpperCase()で大・小文字を分けずにフィルターをかけて検索する
      *@param state - ステートオブジェクト
      *@returns - 曖昧検索で絞り込まれた商品
      */
     getSearchKeyWord(state) {
       return (keyWord: string) => {
-        return state.itemList.filter((item) => item.name.includes(keyWord));
+        return state.itemList.filter(
+          (item) =>
+            item.name.includes(keyWord.toLowerCase()) ||
+            item.name.includes(keyWord.toUpperCase())
+        );
       };
     },
     /**
