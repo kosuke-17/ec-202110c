@@ -242,7 +242,11 @@ export default new Vuex.Store({
      */
     getSearchKeyWord(state) {
       return (keyWord: string) => {
-        return state.itemList.filter((item) => item.name.includes(keyWord));
+        return state.itemList.filter(
+          (item) =>
+            item.name.includes(keyWord.toLowerCase()) ||
+            item.name.includes(keyWord.toUpperCase())
+        );
       };
     },
     /**
