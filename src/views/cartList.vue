@@ -4,10 +4,10 @@
       <h1 class="page-title">ショッピングカート</h1>
       <!-- table -->
       <div class="row">
-        <div class="card-noItemList">
+        <div class="">
           <div v-if="orderItemList.length === 0">
             <div class="row">
-              <div class="col s12 m6">
+              <div class="col s12 m card-noItemList">
                 <div class="card blue-grey darken-1">
                   <div class="card-content white-text">
                     <span class="card-title"
@@ -15,11 +15,13 @@
                     >
                     <p>
                       現在、買い物かごには商品が入っていません。ぜひお買い物をお楽しみください。
-                      ご利用をお待ちしております。 トップページはこちら
+                      ご利用をお待ちしております。
                     </p>
                   </div>
                   <div class="card-action">
-                    <a href="#">商品一覧画面はこちら</a>
+                    <router-link to="/itemList"
+                      >商品一覧画面はこちら</router-link
+                    >
                   </div>
                 </div>
               </div>
