@@ -20,7 +20,10 @@ export default new Vuex.Store({
     orderItemList: new Array<OrderItem>(),
     //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
+    // ログイン後に画面遷移するためのフラグ
+    loginedPageToMoveFlag: "",
   },
   mutations: {
     /**
@@ -186,6 +189,12 @@ export default new Vuex.Store({
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
     },
+    /**
+     *現在ログインしている情報をオブジェクト化.
+     * @remarks 現在ログインしている情報をUserオブジェクトをインスタンス化してstate.
+     * @param state - ステートオブジェクト
+     * @param payload - 現在ろぐいんしているユーザー情報
+     */
     getUserInfo(state, payload): void {
       state.loginUserInfo = new User(
         payload.userInfo.id,
@@ -203,6 +212,14 @@ export default new Vuex.Store({
      */
     resetOrderItemList(state): void {
       state.orderItemList = new Array<OrderItem>();
+    },
+    /**
+     * 画面遷移用フラグの文字列を格納
+     * @param state - ステート
+     * @param payload - 画面遷移フラグ用の文字列
+     */
+    setMoveFlag(state, payload): void {
+      state.loginedPageToMoveFlag = payload.setStr;
     },
   }, //end mutations
 
@@ -243,13 +260,18 @@ export default new Vuex.Store({
       return state.selectedItemList;
     },
     /**
-     * 検索欄で入力されたキーワードで商品を絞り込む
+     * 検索欄で入力されたキーワードで商品を絞り込む.
+     *@remarks 検索されたキーワードを.toLowerCase()と.toUpperCase()で大・小文字を分けずにフィルターをかけて検索する
      *@param state - ステートオブジェクト
      *@returns - 曖昧検索で絞り込まれた商品
      */
     getSearchKeyWord(state) {
       return (keyWord: string) => {
-        return state.itemList.filter((item) => item.name.includes(keyWord));
+        return state.itemList.filter(
+          (item) =>
+            item.name.includes(keyWord.toLowerCase()) ||
+            item.name.includes(keyWord.toUpperCase())
+        );
       };
     },
     /**
@@ -294,6 +316,15 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+    },
+
+    /**
+     * ログインしているユーザー情報を取得.
+     * @param state - ステートオブジェクト
+     * @returns 現在ログインしているユーザー情報
+     */
+    getLoginUserInfo(state) {
+      return state.loginUserInfo;
     },
   }, //end getters
 

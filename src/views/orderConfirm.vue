@@ -58,16 +58,25 @@
 
     <h2 class="page-title">お届け先情報</h2>
     <div class="order-confirm-delivery-info">
+      <label class="item-topping">
+        <input
+          type="checkbox"
+          v-model="changeAddressFlag"
+          v-on:change="changeAddress()"
+        />
+        <span>お届け先を変更する</span>
+      </label>
+
       <div class="row">
         <div class="input-field">
           <input id="name" type="text" v-model="destinationName" />
-          <label for="name">お名前</label>
+          <label for="name" class="active">お名前</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <input id="email" type="email" v-model="destinationEmail" />
-          <label for="email">メールアドレス</label>
+          <label for="email" class="active">メールアドレス</label>
         </div>
       </div>
       <div class="row">
@@ -78,7 +87,7 @@
             maxlength="7"
             v-model="destinationZipcode"
           />
-          <label for="zipcode">郵便番号(ハイフンなし)</label>
+          <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
           <button class="btn" type="button" @click="searchAddress">
             <span>住所検索</span>
           </button>
@@ -87,13 +96,13 @@
       <div class="row">
         <div class="input-field">
           <input id="address" type="text" v-model="destinationAddress" />
-          <label for="address">住所</label>
+          <label for="address" class="active">住所</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field">
           <input id="tel" type="tel" v-model="destinationTel" />
-          <label for="tel">電話番号</label>
+          <label for="tel" class="active">電話番号</label>
         </div>
       </div>
       <div class="row order-confirm-delivery-datetime">
@@ -255,21 +264,20 @@ export default class OrderConfirm extends Vue {
   // ユーザー
   private user = new User(0, "", "", "", "", "", "");
   private orderItemFormList: any[] = [];
+
+  //届け先を変更するフラグ
+  private changeAddressFlag = false;
   /**
-   *注文確認画面表示の準備
+   *注文確認画面表示の準備.
    *
-   * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
-   *          ショッピングカートに入っている商品の配列を変数に格納.
+   * @remarks ショッピングカートに入っている商品の配列を変数に格納.
+   *
    */
   created(): void {
-    if (this.$store.state.isLogin) {
-      this.currentOrderItemList = this.$store.getters.getOrderItemList;
-      console.log("ログインしています");
-    } else {
-      alert("ログインしてないため、ログイン画面に移動します。");
-      this.$router.push("/loginUser");
-      console.log("ログインしてません");
-    }
+    this.currentOrderItemList = this.$store.getters.getOrderItemList;
+
+    //ログインユーザーの届け先情報を自動入力する
+    this.autoInput();
   }
 
   /**
@@ -348,5 +356,63 @@ export default class OrderConfirm extends Vue {
       alert("正しい郵便番号を入力してください");
     }
   }
+
+  /**
+   * ログインユーザー情報をお届け先情報に自動入力する
+   */
+  autoInput(): void {
+    this.destinationName = this["$store"].getters.getLoginUserInfo._name;
+    this.destinationEmail = this["$store"].getters.getLoginUserInfo._email;
+    this.destinationZipcode = this["$store"].getters.getLoginUserInfo._zipcode;
+    this.destinationAddress = this["$store"].getters.getLoginUserInfo._address;
+    this.destinationTel = this["$store"].getters.getLoginUserInfo._telephone;
+  }
+
+  /**
+   * 届け先入力欄を空欄にする
+   * @remarks 届け先情報を登録されているユーザー情報とは異なる届け先をしていたいとき、
+   *          届け先を変更するにチェックを入れると、自動入力されていた情報がリセットされる
+   */
+  changeAddress(): void {
+    if (this.changeAddressFlag === true) {
+      this.destinationName = "";
+      this.destinationEmail = "";
+      this.destinationZipcode = "";
+      this.destinationAddress = "";
+      this.destinationTel = "";
+    }
+  }
 }
 </script>
+
+<style scoped>
+.cart-table-th {
+  text-align: center;
+}
+.cart-item-icon img {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+  height: 100px;
+  padding: 0 0 15px 0;
+}
+.cart-item-name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.cart-total-price {
+  font-size: 35px;
+  text-align: center;
+}
+
+.order-confirm-btn {
+  text-align: center;
+}
+.price {
+  background-color: #ff4500;
+  border-radius: 50%; /* 角丸にする設定 */
+  color: black;
+}
+</style>
