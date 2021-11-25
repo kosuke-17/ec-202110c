@@ -164,7 +164,7 @@ export default class itemList extends Vue {
    */
   changeOrder(): void {
     this["$store"].commit("changeItemOrder", this.selectedOrder);
-    this.itemList = this["$store"].getters.getSelectedItems;
+    this.itemList = this["$store"].getters.getSelectedItems.slice(0, 9);
   }
 }
 </script>
