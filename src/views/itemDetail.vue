@@ -160,6 +160,9 @@ export default class itemDetail extends Vue {
   //サイズと数量が選択されていない時のエラーメッセージ
   private errorMessage = "";
 
+  /**
+   * 商品詳細情報をAPIから取得.
+   */
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemID = parseInt(this["$route"].params.id);

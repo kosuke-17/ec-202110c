@@ -20,6 +20,7 @@ export default new Vuex.Store({
     orderItemList: new Array<OrderItem>(),
     //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
   },
   mutations: {
@@ -87,10 +88,10 @@ export default new Vuex.Store({
      * @param payload - 並び替えの方法（例：昇順、降順）
      */
     changeItemOrder(state, payload) {
-      if (payload == "名前昇順") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
+      if (payload == "昇順(名前)") {
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const nameA = itemA.name.toUpperCase();
+          const nameB = itemB.name.toUpperCase();
           if (nameA < nameB) {
             return -1;
           }
@@ -99,10 +100,10 @@ export default new Vuex.Store({
           }
           return 0;
         });
-      } else if (payload == "名前降順") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
+      } else if (payload == "降順(名前)") {
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const nameA = itemA.name.toUpperCase();
+          const nameB = itemB.name.toUpperCase();
           if (nameA > nameB) {
             return -1;
           }
@@ -112,9 +113,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が高い順(Mサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceM;
-          const priceB = b.priceM;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceM;
+          const priceB = itemB.priceM;
           if (priceA > priceB) {
             return -1;
           }
@@ -124,9 +125,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が低い順(Mサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceM;
-          const priceB = b.priceM;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceM;
+          const priceB = itemB.priceM;
           if (priceA < priceB) {
             return -1;
           }
@@ -136,9 +137,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が高い順(Lサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceL;
-          const priceB = b.priceL;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceL;
+          const priceB = itemB.priceL;
           if (priceA > priceB) {
             return -1;
           }
@@ -148,9 +149,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が低い順(Lサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceL;
-          const priceB = b.priceL;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceL;
+          const priceB = itemB.priceL;
           if (priceA < priceB) {
             return -1;
           }
@@ -186,6 +187,12 @@ export default new Vuex.Store({
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
     },
+    /**
+     *現在ログインしている情報をオブジェクト化.
+     * @remarks 現在ログインしている情報をUserオブジェクトをインスタンス化してstate.
+     * @param state - ステートオブジェクト
+     * @param payload - 現在ろぐいんしているユーザー情報
+     */
     getUserInfo(state, payload): void {
       state.loginUserInfo = new User(
         payload.userInfo.id,
@@ -196,6 +203,13 @@ export default new Vuex.Store({
         payload.userInfo.address,
         payload.userInfo.telephone
       );
+    },
+    /**
+     * 注文商品カートを初期化
+     * @param state - ステート
+     */
+    resetOrderItemList(state): void {
+      state.orderItemList = new Array<OrderItem>();
     },
   }, //end mutations
 
@@ -236,13 +250,18 @@ export default new Vuex.Store({
       return state.selectedItemList;
     },
     /**
-     * 検索欄で入力されたキーワードで商品を絞り込む
+     * 検索欄で入力されたキーワードで商品を絞り込む.
+     *@remarks 検索されたキーワードを.toLowerCase()と.toUpperCase()で大・小文字を分けずにフィルターをかけて検索する
      *@param state - ステートオブジェクト
      *@returns - 曖昧検索で絞り込まれた商品
      */
     getSearchKeyWord(state) {
       return (keyWord: string) => {
-        return state.itemList.filter((item) => item.name.includes(keyWord));
+        return state.itemList.filter(
+          (item) =>
+            item.name.includes(keyWord.toLowerCase()) ||
+            item.name.includes(keyWord.toUpperCase())
+        );
       };
     },
     /**
@@ -285,9 +304,17 @@ export default new Vuex.Store({
      * @param state - ステートオブジェクト
      * @returns - ログイン状態
      */
-
     getLoginStatus(state) {
       return state.isLogin;
+    },
+
+    /**
+     * ログインしているユーザー情報を取得.
+     * @param state - ステートオブジェクト
+     * @returns 現在ログインしているユーザー情報
+     */
+    getLoginUserInfo(state) {
+      return state.loginUserInfo;
     },
   }, //end getters
 

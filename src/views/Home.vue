@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {}
@@ -25,12 +25,12 @@ export default class Home extends Vue {}
 <style scoped>
 .home {
   height: 750px;
-  background-image: url('/img_coffee/home_coffee.jpg');
+  background-image: url("/img_coffee/home_coffee.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
 .title {
   font-size: 100px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 </style>
