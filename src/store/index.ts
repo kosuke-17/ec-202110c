@@ -187,6 +187,11 @@ export default new Vuex.Store({
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
     },
+    /**
+     *
+     * @param state - ステートオブジェクト
+     * @param payload -
+     */
     getUserInfo(state, payload): void {
       state.loginUserInfo = new User(
         payload.userInfo.id,
@@ -288,6 +293,14 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+    },
+
+    /**
+     * ログインしているユーザー情報を取得.
+     *
+     */
+    getLoginUserInfo(state) {
+      return state.loginUserInfo;
     },
   }, //end getters
 
