@@ -173,7 +173,7 @@ export default class RegisterUser extends Vue {
 
     if (response.data.message == "そのメールアドレスはすでに使われています。") {
       this.errorOfMailAddress =
-        "Error：この「メールアドレス」は既に使用されています。";
+        "この「メールアドレス」は既に使用されています。";
       return;
     }
 
@@ -191,10 +191,10 @@ export default class RegisterUser extends Vue {
     let hasError = false;
     //未入力値チェック（名前）
     if (this.lastName === "" && this.firstName === "") {
-      this.errorOfName = "Error：「名前」が未入力です。";
+      this.errorOfName = "「名前」が未入力です。";
       hasError = true;
     } else if (this.lastName === "" || this.firstName === "") {
-      this.errorOfName = "Error：「姓」または「名」が未入力です。";
+      this.errorOfName = "「姓」または「名」が未入力です。";
       hasError = true;
     } else {
       this.errorOfName = "";
@@ -202,11 +202,10 @@ export default class RegisterUser extends Vue {
 
     //未入力値チェック（メールアドレス）/ ＠が含まれているかのチェック
     if (this.mailAddress === "") {
-      this.errorOfMailAddress = "Error：「メールアドレス」が未入力です。";
+      this.errorOfMailAddress = "「メールアドレス」が未入力です。";
       hasError = true;
     } else if (this.mailAddress.indexOf("@") === -1 && this.mailAddress != "") {
-      this.errorOfMailAddress =
-        "Error：この「メールアドレス」は有効ではありません。";
+      this.errorOfMailAddress = "この「メールアドレス」は有効ではありません。";
       hasError = true;
     } else {
       this.errorOfMailAddress = "";
@@ -214,17 +213,17 @@ export default class RegisterUser extends Vue {
 
     //未入力値チェック（郵便番号）/ 郵便番号が7桁で入力されているかチェック
     if (this.zipcode === "") {
-      this.errorOfZipcode = "Error：「郵便番号」が未入力です。";
+      this.errorOfZipcode = "「郵便番号」が未入力です。";
       hasError = true;
     } else if (String(this.zipcode).length != 7 && this.zipcode != "") {
-      this.errorOfZipcode = "Error：この郵便番号は有効ではありません。";
+      this.errorOfZipcode = "この郵便番号は有効ではありません。";
     } else {
       this.errorOfZipcode = "";
     }
 
     //未入力値チェック（住所）
     if (this.address === "") {
-      this.errorOfAddress = "Error：「住所」が未入力です。";
+      this.errorOfAddress = "「住所」が未入力です。";
       hasError = true;
     } else {
       this.errorOfAddress = "";
@@ -232,13 +231,13 @@ export default class RegisterUser extends Vue {
 
     //未入力値チェック（電話番号）/ 電話番号が10桁未満もしくは12桁以上でないかのチェック
     if (this.telephone === "") {
-      this.errorOfTelephone = "Error：「電話番号」が未入力です。";
+      this.errorOfTelephone = "「電話番号」が未入力です。";
       hasError = true;
     } else if (
       String(this.telephone).length >= 12 ||
       (String(this.telephone).length < 10 && this.telephone != "")
     ) {
-      this.errorOfTelephone = "Error：この電話番号は有効ではありません。";
+      this.errorOfTelephone = "この電話番号は有効ではありません。";
       hasError = true;
     } else {
       this.errorOfTelephone = "";
@@ -246,7 +245,7 @@ export default class RegisterUser extends Vue {
 
     //未入力値チェック（パスワード）
     if (this.password === "") {
-      this.errorOfPassword = "Error：「パスワード」が未入力です。";
+      this.errorOfPassword = "「パスワード」が未入力です。";
       hasError = true;
     } else {
       this.errorOfPassword = "";
@@ -254,14 +253,13 @@ export default class RegisterUser extends Vue {
 
     //未入力値チェック（確認用パスワード）とパスワード一致チェック
     if (this.checkPassword === "") {
-      this.errorOfCheckpassword = "Error：「確認用パスワード」が未入力です。";
+      this.errorOfCheckpassword = "「確認用パスワード」が未入力です。";
       hasError = true;
     } else if (
       this.password !== this.checkPassword &&
       this.checkPassword !== ""
     ) {
-      this.errorOfCheckpassword =
-        "Error：パスワードと確認用パスワードが異なります。";
+      this.errorOfCheckpassword = "パスワードと確認用パスワードが異なります。";
       hasError = true;
     } else {
       this.errorOfCheckpassword = "";
