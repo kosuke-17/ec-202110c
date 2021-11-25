@@ -197,6 +197,9 @@ export default new Vuex.Store({
         payload.userInfo.telephone
       );
     },
+    resetOrderItemList(state): void {
+      state.orderItemList = new Array<OrderItem>();
+    },
   }, //end mutations
 
   actions: {
