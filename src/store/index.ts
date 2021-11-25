@@ -20,6 +20,7 @@ export default new Vuex.Store({
     orderItemList: new Array<OrderItem>(),
     //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
   },
   mutations: {
