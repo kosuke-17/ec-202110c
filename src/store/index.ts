@@ -20,6 +20,7 @@ export default new Vuex.Store({
     orderItemList: new Array<OrderItem>(),
     //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
   },
   mutations: {
@@ -186,6 +187,12 @@ export default new Vuex.Store({
     deleteItem(state, payload): void {
       state.orderItemList.splice(payload.index, 1);
     },
+    /**
+     *現在ログインしている情報をオブジェクト化.
+     * @remarks 現在ログインしている情報をUserオブジェクトをインスタンス化してstate.
+     * @param state - ステートオブジェクト
+     * @param payload - 現在ろぐいんしているユーザー情報
+     */
     getUserInfo(state, payload): void {
       state.loginUserInfo = new User(
         payload.userInfo.id,
@@ -299,6 +306,15 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+    },
+
+    /**
+     * ログインしているユーザー情報を取得.
+     * @param state - ステートオブジェクト
+     * @returns 現在ログインしているユーザー情報
+     */
+    getLoginUserInfo(state) {
+      return state.loginUserInfo;
     },
   }, //end getters
 
