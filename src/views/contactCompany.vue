@@ -51,7 +51,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class Home extends Vue {
+export default class ContactCompany extends Vue {
   private name = "";
   private email = "";
   private content = "";
