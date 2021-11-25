@@ -268,7 +268,7 @@ export default class OrderConfirm extends Vue {
   //届け先を変更するフラグ
   private changeAddressFlag = false;
   /**
-   *注文確認画面表示の準備
+   *注文確認画面表示の準備.
    *
    * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
    *          ショッピングカートに入っている商品の配列を変数に格納.
@@ -282,6 +282,7 @@ export default class OrderConfirm extends Vue {
       this.$router.push("/loginUser");
       console.log("ログインしてません");
     }
+    //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }
 
