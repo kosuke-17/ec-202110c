@@ -298,11 +298,11 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row order-confirm-btn">
-      <button class="btn" type="button" @click="orderInfomation">
-        <span>この内容で注文する</span>
-      </button>
+      <div class="row order-confirm-btn">
+        <button class="btn" type="button" @click="orderItems">
+          <span>この内容で注文する</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -385,16 +385,11 @@ export default class OrderConfirm extends Vue {
   /**
    * 注文商品情報の送信.
    */
-  async orderInfomation(): Promise<void> {
-    // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
-    if (this.hasErrors() == true) {
-      return;
-    }
+  async orderItems(): Promise<void> {
     // 支払い方法によって、金額受け渡しのステータスを変える
     if (this.paymentMethod === "1") {
       this.status = "1";
-    }
-    if (this.paymentMethod === "2") {
+    } else if (this.paymentMethod === "2") {
       this.status = "2";
     }
     // リロードするとorderItemFormListがundefindになる(リロード問題発生)
@@ -417,6 +412,36 @@ export default class OrderConfirm extends Vue {
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
 
+    /**
+     *クレジットカード情報を送信する.
+     *
+     *@returns 本メソッドは非同期でWebAPIを呼び出しクレジットカード情報を送信するためasync/await axiosを利用。
+     *これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要が。
+     */
+    if (this.status === "2") {
+      // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
+      if (this.hasErrorsWithCreditCardInformation() == true) {
+        return;
+      }
+      const creditCardResponse = await axios.post(
+        "http://153.127.48.168:8080/sample-credit-card-web-api/credit-card/payment",
+        {
+          user_id: this.userId,
+          amount: this.totalPrice,
+          card_number: this.creditCardNumber,
+          card_exp_year: this.creditCardExpiryYear,
+          card_exp_month: this.creditCardExpiryMonth,
+          card_name: this.creditCardName,
+          card_cvv: this.securityCode,
+        }
+      );
+      //クレジットカード情報が不正の場合はエラーメッセージを表示する
+      if (creditCardResponse.data.status === "error") {
+        alert("クレジットカード情報が不正です");
+        return;
+        //クレジットカード情報の送信に成功した場合は、注文処理に移る
+      }
+    }
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/order",
       {
@@ -440,6 +465,7 @@ export default class OrderConfirm extends Vue {
       alert("登録失敗しました。再度カートから購入手続きをお願いします。");
     }
   }
+
   /**
    * 郵便番号から住所情報を取得.
    *
@@ -462,11 +488,11 @@ export default class OrderConfirm extends Vue {
     }
   }
   /**
-   * エラーチェック処理.
+   * クレジットカード情報のエラーチェック処理.
    *
    * @returns エラーがある:true / エラーがない:false
    */
-  private hasErrors(): boolean {
+  private hasErrorsWithCreditCardInformation(): boolean {
     let hasError = false;
     this.errorCreditCardNumber = "";
     this.errorCreditCardExpiryDate = "";
