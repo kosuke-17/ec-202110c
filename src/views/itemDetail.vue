@@ -152,7 +152,7 @@ export default class itemDetail extends Vue {
   // 現在選択されている商品の画像
   private currentItemImage = "";
   //選択されているサイズ
-  private size = "";
+  private size = "M";
   //選択されているトッッピングの個数
   private selectedTopping = new Array<Topping>();
   //選択された商品の個数
@@ -166,7 +166,6 @@ export default class itemDetail extends Vue {
     const response = await axios.get(
       `http://153.127.48.168:8080/ecsite-api/item/${itemID}`
     );
-    console.dir(JSON.stringify(response.data.item));
     //外部APIから取得してきたデータを代入
     this.currentOrderItem = new OrderItem(
       0,
@@ -193,27 +192,21 @@ export default class itemDetail extends Vue {
    * ショッピングカートに商品を追加する.
    */
   addItem(): void {
-    //サイズか数量が選択されていないときはエラーメッセージを表示する
-    if (this.size === "" || this.quantity == 0) {
-      this.errorMessage = "サイズと数量を選択してください";
-      return;
-    } else {
-      this["$store"].commit("addItemToCart", {
-        size: this.size,
-        orderToppingList: this.selectedTopping,
-        quantity: this.quantity,
-        orderItem: {
-          id: this.currentOrderItem.item.id,
-          name: this.currentOrderItem.item.name,
-          description: this.currentOrderItem.item.description,
-          priceM: this.currentOrderItem.item.priceM,
-          priceL: this.currentOrderItem.item.priceL,
-          imagePath: this.currentOrderItem.item.imagePath,
-          deleted: this.currentOrderItem.item.deleteId,
-        },
-      });
-      this["$router"].push("/cartList");
-    }
+    this["$store"].commit("addItemToCart", {
+      size: this.size,
+      orderToppingList: this.selectedTopping,
+      quantity: this.quantity,
+      orderItem: {
+        id: this.currentOrderItem.item.id,
+        name: this.currentOrderItem.item.name,
+        description: this.currentOrderItem.item.description,
+        priceM: this.currentOrderItem.item.priceM,
+        priceL: this.currentOrderItem.item.priceL,
+        imagePath: this.currentOrderItem.item.imagePath,
+        deleted: this.currentOrderItem.item.deleteId,
+      },
+    });
+    this["$router"].push("/cartList");
   }
 }
 </script>

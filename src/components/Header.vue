@@ -24,6 +24,9 @@
           <router-link to="/logoutUser" v-if="loginStatus === true">
             <i class="fas fa-sign-out-alt"></i>ログアウト
           </router-link>
+          <router-link to="/contactCompany">
+            <i class="fas fa-sign-out-alt"></i>お問い合わせ
+          </router-link>
         </div>
       </div>
     </div>
