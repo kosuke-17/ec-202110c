@@ -373,8 +373,9 @@ export default class OrderConfirm extends Vue {
   }
 
   /**
-   *
-   * changeAddressFlag
+   * 届け先入力欄を空欄にする
+   * @remarks 届け先情報を登録されているユーザー情報とは異なる届け先をしていたいとき、
+   *          届け先を変更するにチェックを入れると、自動入力されていた情報がリセットされる
    */
   changeAddress(): void {
     if (this.changeAddressFlag === true) {

@@ -188,9 +188,10 @@ export default new Vuex.Store({
       state.orderItemList.splice(payload.index, 1);
     },
     /**
-     *
+     *現在ログインしている情報をオブジェクト化.
+     * @remarks 現在ログインしている情報をUserオブジェクトをインスタンス化してstate.
      * @param state - ステートオブジェクト
-     * @param payload -
+     * @param payload - 現在ろぐいんしているユーザー情報
      */
     getUserInfo(state, payload): void {
       state.loginUserInfo = new User(
@@ -297,7 +298,8 @@ export default new Vuex.Store({
 
     /**
      * ログインしているユーザー情報を取得.
-     *
+     * @param state - ステートオブジェクト
+     * @returns 現在ログインしているユーザー情報
      */
     getLoginUserInfo(state) {
       return state.loginUserInfo;
