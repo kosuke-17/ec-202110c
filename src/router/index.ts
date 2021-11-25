@@ -43,6 +43,11 @@ const routes: Array<RouteConfig> = [
     path: "/",
     component: () => import("../views/Home.vue"),
   },
+  {
+    path: "*",
+    name: "NotFound",
+    component: () => import("../views/notFound.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -321,6 +321,7 @@ export default class OrderConfirm extends Vue {
     );
 
     if (response.data.status === "success") {
+      this.$store.commit("resetOrderItemList");
       this.$router.push("/orderFinished");
     } else if (response.data.status === "error") {
       alert("登録失敗しました。再度カートから購入手続きをお願いします。");
