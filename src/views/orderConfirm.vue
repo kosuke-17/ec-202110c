@@ -451,10 +451,10 @@ export default class OrderConfirm extends Vue {
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
 
-    /**
-     *クレジットカード情報を送信する.
+    /*
+     *クレジットカード情報を送信する。
      *
-     *@returns 本メソッドは非同期でWebAPIを呼び出しクレジットカード情報を送信するためasync/await axiosを利用。
+     *本メソッドは非同期でWebAPIを呼び出しクレジットカード情報を送信するためasync/await axiosを利用。
      *これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要が。
      */
     if (this.status === "2") {
