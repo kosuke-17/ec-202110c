@@ -257,8 +257,10 @@ export default class OrderConfirm extends Vue {
   // 送信用の注文商品をリストで渡す(型の指定をどうするか考える)
   private orderItemFormList: any[] = [];
   /**
-   * ショッピングカートに入っている商品の配列を変数に格納.
+   *　注文確認画面表示の準備
+   *
    * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
+   *          ショッピングカートに入っている商品の配列を変数に格納.
    */
   created(): void {
     if (this.$store.state.isLogin) {
