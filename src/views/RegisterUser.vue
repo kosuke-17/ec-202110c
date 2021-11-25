@@ -58,7 +58,7 @@
           <div class="error">{{ errorOfAddress }}</div>
           <div class="input-field col s12">
             <input id="address" type="text" v-model="address" />
-            <label for="address">住所</label>
+            <label for="address" class="active">住所</label>
           </div>
         </div>
         <div class="row">
@@ -231,6 +231,7 @@ export default class RegisterUser extends Vue {
       hasError = true;
     } else if (String(this.zipcode).length != 7 && this.zipcode != "") {
       this.errorOfZipcode = "この郵便番号は有効ではありません。";
+      hasError = true;
     } else {
       this.errorOfZipcode = "";
     }
@@ -262,8 +263,11 @@ export default class RegisterUser extends Vue {
       this.errorOfPassword = "「パスワード」が未入力です。";
       hasError = true;
     } else if (this.password.length < 8 || 12 < this.password.length) {
-      this.errorOfPassword =
-        "「パスワード」は8文字以上12文字以内で入力して下さい。";
+      this.errorOfPassword = "8文字以上12文字以内で入力して下さい。";
+      hasError = true;
+    } else if (this.isValidPassword() == false) {
+      this.errorOfPassword = "大文字小文字の英字と数字を含め入力して下さい。";
+      hasError = true;
     } else {
       this.errorOfPassword = "";
     }
@@ -306,6 +310,21 @@ export default class RegisterUser extends Vue {
     this.errorOfPassword = "";
     this.errorOfCheckpassword = "";
   }
+  /**
+   * パスワードが大文字小文字の英数字を含んだものになっているか判定.
+   * @returns ture:パスワード問題なし, false:パスワード問題あり
+   */
+  isValidPassword(): boolean {
+    const ratz = /[a-z]/,
+      rAtZ = /[A-Z]/,
+      r0t9 = /[0-9]/;
+    return (
+      ratz.test(this.password) &&
+      rAtZ.test(this.password) &&
+      r0t9.test(this.password)
+    );
+  }
+
   /**
    * 郵便馬号から住所取得.
    * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストール
