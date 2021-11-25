@@ -197,6 +197,10 @@ export default new Vuex.Store({
         payload.userInfo.telephone
       );
     },
+    /**
+     * 注文商品カートを初期化
+     * @param state - ステート
+     */
     resetOrderItemList(state): void {
       state.orderItemList = new Array<OrderItem>();
     },
