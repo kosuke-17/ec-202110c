@@ -88,9 +88,9 @@ export default new Vuex.Store({
      */
     changeItemOrder(state, payload) {
       if (payload == "名前昇順") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const nameA = itemA.name.toUpperCase();
+          const nameB = itemB.name.toUpperCase();
           if (nameA < nameB) {
             return -1;
           }
@@ -100,9 +100,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "名前降順") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const nameA = itemA.name.toUpperCase();
+          const nameB = itemB.name.toUpperCase();
           if (nameA > nameB) {
             return -1;
           }
@@ -112,9 +112,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が高い順(Mサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceM;
-          const priceB = b.priceM;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceM;
+          const priceB = itemB.priceM;
           if (priceA > priceB) {
             return -1;
           }
@@ -124,9 +124,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が低い順(Mサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceM;
-          const priceB = b.priceM;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceM;
+          const priceB = itemB.priceM;
           if (priceA < priceB) {
             return -1;
           }
@@ -136,9 +136,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が高い順(Lサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceL;
-          const priceB = b.priceL;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceL;
+          const priceB = itemB.priceL;
           if (priceA > priceB) {
             return -1;
           }
@@ -148,9 +148,9 @@ export default new Vuex.Store({
           return 0;
         });
       } else if (payload == "金額が低い順(Lサイズ)") {
-        state.selectedItemList = state.itemList.sort(function (a, b) {
-          const priceA = a.priceL;
-          const priceB = b.priceL;
+        state.selectedItemList = state.itemList.sort(function (itemA, itemB) {
+          const priceA = itemA.priceL;
+          const priceB = itemB.priceL;
           if (priceA < priceB) {
             return -1;
           }
