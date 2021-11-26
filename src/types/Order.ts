@@ -1,5 +1,6 @@
-import { Item } from './Item';
-import { User } from './User';
+import { Item } from "./Item";
+import { User } from "./User";
+import { format } from "date-fns";
 
 export class Order {
   constructor(
@@ -39,6 +40,40 @@ export class Order {
   get getCalcSubTotalPrice(): number {
     // ここに注文商品税込合計金額処理を書く
     return 1;
+  }
+
+  // 注文履歴画面の配達日のフォーマットを変更
+  get changeFormatOfDeliveryTime(): string {
+    const formatString = format(this.deliveryTime, "yyyy-MM-dd");
+    return formatString;
+  }
+
+  // 注文履歴画面の支払い状況のフォーマットを変更
+  get changeFormatOfStatus(): string {
+    let nowstatus = "";
+    if (this.status == 1) {
+      nowstatus = "未入金";
+    } else if (this.status == 2) {
+      nowstatus = "入金済";
+    }
+    return nowstatus;
+  }
+
+  // 注文履歴画面の支払い方法のフォーマットを変更
+  get changeFormatOfPaymentMethod(): string {
+    let changedFormat = "";
+    if (this.paymentMethod == 1) {
+      changedFormat = "代引引換";
+    } else if (this.paymentMethod == 2) {
+      changedFormat = "クレジットカード";
+    }
+    return changedFormat;
+  }
+
+  // 注文履歴画面の合計金額のフォーマットを変更
+  get changeFormatOfTotalPrice(): string {
+    const changedPrice = this.totalPrice.toLocaleString();
+    return changedPrice;
   }
 
   public get userId(): number {

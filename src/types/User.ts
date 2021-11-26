@@ -1,7 +1,7 @@
 export class User {
   constructor(
     //ユーザー
-    private _id: number,
+    public _id: number,
     //名前
     private _name: string,
     //Eメール

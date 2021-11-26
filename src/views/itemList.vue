@@ -1,104 +1,105 @@
 <template>
-  <div>
+  <div class="top-wrapper">
     <!-- search form -->
-    <div class="search-wrapper">
-      <div class="container">
-        <form class="search-form">
-          <!-- サジェスト機能 -->
-          <fieldset>
-            <input
-              type="text"
-              name="name"
-              class="search-name-input"
-              v-model="searchKeyWord"
-              autocomplete="on"
-              list="cafe-item"
-            />
-            <datalist id="cafe-item">
-              <div v-for="item of getAllItem" v-bind:key="item.id">
-                <option v-bind:value="item.name"></option>
-              </div>
-            </datalist>
-
-            <button
-              class="btn search-btn"
-              type="button"
-              v-on:click="getSearchKeyWord(searchKeyWord)"
-            >
-              <span>検 索</span>
-            </button>
-          </fieldset>
-        </form>
-      </div>
+    <div class="container">
+      <form class="search-form">
+        <!-- サジェスト機能 -->
+        <fieldset>
+          <input
+            type="text"
+            name="name"
+            class="search-name-input"
+            v-model="searchKeyWord"
+            autocomplete="on"
+            list="cafe-item"
+          />
+          <datalist id="cafe-item">
+            <div v-for="item of getAllItem" v-bind:key="item.id">
+              <option v-bind:value="item.name"></option>
+            </div>
+          </datalist>
+        </fieldset>
+        <button
+          class="btn search-btn"
+          type="button"
+          v-on:click="getSearchKeyWord(searchKeyWord)"
+        >
+          <span>検 索</span>
+        </button>
+      </form>
     </div>
 
     <!-- item list -->
-    <div class="item-wrapper">
-      <div class="container">
-        <div class="changeItemOrder">
-          <select
-            class="btn search-btn"
-            name="itemlist"
-            id="itemlist"
-            v-on:change="changeOrder"
-            v-model="selectedOrder"
-          >
-            <option disabled value="">--並び替え--</option>
-            <option>昇順(名前)</option>
-            <option>降順(名前)</option>
-            <option>金額が高い順(Mサイズ)</option>
-            <option>金額が低い順(Mサイズ)</option>
-            <option>金額が高い順(Lサイズ)</option>
-            <option>金額が低い順(Lサイズ)</option>
-          </select>
-        </div>
-        <div class="items">
-          <div class="item" v-for="item of itemList" v-bind:key="item.id">
-            <div class="item-icon">
+
+    <div class="container">
+      <div class="changeItemOrder">
+        <select
+          class="btn search-btn"
+          name="itemlist"
+          id="itemlist"
+          v-on:change="changeOrder"
+          v-model="selectedOrder"
+        >
+          <option disabled value="">--並び替え--</option>
+          <option>昇順(名前)</option>
+          <option>降順(名前)</option>
+          <option>金額が高い順(Mサイズ)</option>
+          <option>金額が低い順(Mサイズ)</option>
+          <option>金額が高い順(Lサイズ)</option>
+          <option>金額が低い順(Lサイズ)</option>
+        </select>
+      </div>
+    </div>
+    <div class="container">
+      <div class="items">
+        <div class="item" v-for="item of itemList" v-bind:key="item.id">
+          <div class="item-icon">
+            <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
               <img :src="item.imagePath" />
-            </div>
-            <div class="favorite">
-              <div
-                @click="changeFavoriteFlag(item)"
-                v-if="item.isFavorite === false"
-              >
-                <i
-                  class="far fa-heart faa-tada animated-hover"
-                  style="color: #c0c0c0"
-                ></i>
-              </div>
-              <div
-                @click="changeFavoriteFlag(item)"
-                v-if="item.isFavorite === true"
-              >
-                <i
-                  class="fas fa-heart faa-tada animated-hover"
-                  style="color: red"
-                ></i>
-              </div>
-              <div>{{ item.favoriteCount }}</div>
-            </div>
-            <router-link :to="'/itemDetail/' + item.id">{{
-              item.name
-            }}</router-link
-            ><br />
-            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
+            </router-link>
           </div>
+          <div class="favorite">
+            <div
+              @click="changeFavoriteFlag(item)"
+              v-if="item.isFavorite === false"
+            >
+              <i
+                class="far fa-heart faa-tada animated-hover"
+                style="color: #c0c0c0"
+              ></i>
+            </div>
+            <div
+              @click="changeFavoriteFlag(item)"
+              v-if="item.isFavorite === true"
+            >
+              <i
+                class="fas fa-heart faa-tada animated-hover"
+                style="color: red"
+              ></i>
+            </div>
+            <div>{{ item.favoriteCount }}</div>
+          </div>
+          <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+            {{ item.name }} </router-link
+          ><br />
+          <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+          <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
         </div>
       </div>
     </div>
 
     <!-- itemList ページボタン -->
-    <div class="page-btn">
-      <div v-for="page of getShowPage" v-bind:key="page">
-        <button
-          type="button"
-          class="btn"
-          v-on:click="showItemListForOnePage(page)"
-        >
-          {{ page }}
-        </button>
+    <div class="container">
+      <div class="page-btn">
+        <div v-for="page of getShowPage" v-bind:key="page" class="page-num-btn">
+          <button
+            type="button"
+            class="btn"
+            v-on:click="showItemListForOnePage(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -245,8 +246,8 @@ export default class itemList extends Vue {
 
 .search-btn {
   color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #55423d;
+  border-color: #55423d;
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
@@ -262,6 +263,11 @@ export default class itemList extends Vue {
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
+}
+
+fieldset {
+  padding: 0;
+  border: none;
 }
 
 /* ========================================
@@ -280,11 +286,13 @@ export default class itemList extends Vue {
 .items {
   display: flex;
   flex-wrap: wrap; /* 表示内容が多かった時に自動的に複数行に分割される */
+  justify-content: space-around;
 }
 
 .item {
   flex: 0 0 320px; /* paddingやborder含むitem全体の横幅を320pxにする */
   padding: 20px;
+  text-align: center;
 }
 
 .item-icon img {
@@ -298,7 +306,7 @@ export default class itemList extends Vue {
 
 /* サイズをオレンジ〇で囲む */
 .price {
-  background-color: #ff4500;
+  background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
 }
 
@@ -330,5 +338,8 @@ export default class itemList extends Vue {
 
 .fa-heart:before {
   margin-right: 5px;
+}
+.page-num-btn {
+  margin-right: 2%;
 }
 </style>

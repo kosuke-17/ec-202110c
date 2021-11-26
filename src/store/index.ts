@@ -3,9 +3,11 @@ import Vuex from "vuex";
 import axios from "axios";
 import { Item } from "../types/Item";
 import { OrderItem } from "@/types/OrderItem";
+import { Order } from "@/types/Order";
 // 使うためには「npm install --save vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
 import { User } from "@/types/User";
+import { Topping } from "@/types/Topping";
 
 Vue.use(Vuex);
 
@@ -22,6 +24,8 @@ export default new Vuex.Store({
     isLogin: false,
     //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
+    //商品履歴一覧が入る配列
+    orderHistoryList: new Array<Order>(),
     // ログイン後に画面遷移するためのフラグ
     loginedPageToMoveFlag: "",
   },
@@ -56,12 +60,67 @@ export default new Vuex.Store({
     },
 
     /**
+     * 注文一覧情報を作成してstateに格納する.
+     * @param state - ステートオブジェクト
+     * @param payload - 外部APIから商品一覧情報を取得
+     */
+    getOrderHistoryList(state, payload) {
+      state.orderHistoryList = new Array<Order>();
+      for (const order of payload.orders) {
+        state.orderHistoryList.push(
+          new Order(
+            order.userId,
+            order.status,
+            order.totalPrice,
+            order.orderDate,
+            order.distinationName,
+            order.distinationEmail,
+            order.distinationZipcode,
+            order.distinationAddress,
+            order.distinationTel,
+            new Date(order.deliveryTime),
+            order.paymentMethod,
+            order.user,
+            order.orderItemList
+          )
+        );
+      }
+      console.dir("注文履歴:" + JSON.stringify(state.orderHistoryList[0]));
+    },
+
+    /**
      *ショッピングカートに商品を追加する.
      
      * @param state - ステートオブジェクト
      * @param payload - ショッピングカートに入れた商品の詳細情報
      */
     addItemToCart(state, payload): void {
+      let duplicatedToppingFlag = false;
+      // 同じ商品、サイズ、トッピングだったらquantityを加算して、カートリストに重複しないようにする。
+
+      for (const orderItem of state.orderItemList) {
+        for (const orderedTopping of orderItem.orderToppingList) {
+          console.dir(JSON.stringify(payload.orderToppingList));
+
+          if (
+            payload.orderToppingList.find(
+              (orderTopping: Topping) => orderedTopping.id === orderTopping.id
+            )
+          ) {
+            duplicatedToppingFlag = true;
+          }
+        }
+
+        if (
+          orderItem.item.id === payload.orderItem.id &&
+          orderItem.size === payload.size &&
+          duplicatedToppingFlag
+        ) {
+          orderItem.quantity += payload.quantity;
+          return;
+        }
+        duplicatedToppingFlag = false;
+      }
       state.orderItemList.push(
         new OrderItem(
           state.orderItemList.length + 1,
@@ -265,11 +324,29 @@ export default new Vuex.Store({
       const response = await axios.get(
         "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
       );
-      // console.dir("response:" + JSON.stringify(response));
+      console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
       context.commit("getItemList", payload);
+    },
+
+    /**
+     * ログインしているユーザーのIDをもとに注文履歴一覧をAPIから取得.
+     * @remarks 取得した注文履歴一覧をJSON形式でペイロードに格納。
+     * ミューテーションからgetOrderHistoryListメソッドを呼び出してオブジェクト化している
+     * @param context - コンテキスト
+     *
+     */
+    async getOrderHistoryList(context) {
+      const response = await axios.get(
+        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo._id}`
+      );
+      //console.dir("response:" + JSON.stringify(response));
+      const payload = response.data;
+
+      //(memo)ミューテーションから呼び出している
+      context.commit("getOrderHistoryList", payload);
     },
   },
   modules: {},
@@ -281,6 +358,14 @@ export default new Vuex.Store({
      */
     getAllItems(state) {
       return state.itemList;
+    },
+    /**
+     * 注文履歴一覧を取得する.
+     * @param state - ステートオブジェクト
+     * @returns - 商品一覧
+     */
+    getAllOrderHistoryLists(state) {
+      return state.orderHistoryList;
     },
     /**
      * 並び替えした後の商品一覧を取得する.
