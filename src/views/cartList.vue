@@ -4,7 +4,7 @@
       <h1 class="page-title">ショッピングカート</h1>
       <!-- table -->
       <div class="row">
-        <div class="">
+        <div>
           <div v-if="orderItemList.length === 0">
             <div class="row">
               <div class="col s12 m card-noItemList">
@@ -28,76 +28,79 @@
             </div>
           </div>
         </div>
-        <table class="striped" v-if="orderItemList.length">
-          <thead>
-            <tr>
-              <th class="cart-table-th">商品名</th>
-              <th>サイズ、価格(税抜)、数量</th>
-              <th>トッピング、価格(税抜)</th>
-              <th>小計</th>
-            </tr>
-          </thead>
-          <tbody
-            v-for="(orderItem, index) of orderItemList"
-            v-bind:key="orderItem.id"
-          >
-            <tr>
-              <td class="cart-item-name">
-                <div class="cart-item-icon">
-                  <img :src="orderItem.item.imagePath" />
-                </div>
-                <span>{{ orderItem.item.name }}</span>
-              </td>
-              <td>
-                <span class="price">&nbsp;{{ orderItem.size }}</span
-                >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
-                &nbsp;&nbsp; {{ orderItem.quantity }}個
-              </td>
-              <td>
-                <ul
-                  v-for="topping of orderItem.orderToppingList"
-                  v-bind:key="topping.id"
-                >
-                  <li>
-                    {{ topping.name }}&nbsp;（{{
-                      orderItem.toppingPrice(orderItem.size)
-                    }}円）
-                  </li>
-                </ul>
-              </td>
-              <td>
-                <div class="text-center">
-                  {{
-                    orderItem
-                      .calcSubTotalPrice(
-                        orderItem.size,
-                        orderItem.orderToppingList.length,
-                        orderItem.quantity
-                      )
-                      .toLocaleString()
-                  }}円
-                </div>
-              </td>
-              <td>
-                <button class="btn" type="button" @click="deleteItem(index)">
-                  <span>削除</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div v-if="orderItemList.length">
+          <table class="striped">
+            <thead>
+              <tr>
+                <th class="cart-table-th">商品名</th>
+                <th>サイズ、価格(税抜)、数量</th>
+                <th>トッピング、価格(税抜)</th>
+                <th>小計</th>
+              </tr>
+            </thead>
+            <tbody
+              v-for="(orderItem, index) of orderItemList"
+              v-bind:key="orderItem.id"
+            >
+              <tr>
+                <td class="cart-item-name">
+                  <div class="cart-item-icon">
+                    <img :src="orderItem.item.imagePath" />
+                  </div>
+                  <span>{{ orderItem.item.name }}</span>
+                </td>
+                <td>
+                  <span class="price">&nbsp;{{ orderItem.size }}</span
+                  >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
+                  &nbsp;&nbsp; {{ orderItem.quantity }}個
+                </td>
+                <td>
+                  <ul
+                    v-for="topping of orderItem.orderToppingList"
+                    v-bind:key="topping.id"
+                  >
+                    <li>
+                      {{ topping.name }}&nbsp;（{{
+                        orderItem.toppingPrice(orderItem.size)
+                      }}円）
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <div class="text-center">
+                    {{
+                      orderItem
+                        .calcSubTotalPrice(
+                          orderItem.size,
+                          orderItem.orderToppingList.length,
+                          orderItem.quantity
+                        )
+                        .toLocaleString()
+                    }}円
+                  </div>
+                </td>
+                <td>
+                  <button class="btn" type="button" @click="deleteItem(index)">
+                    <span>削除</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-      <div class="row cart-total-price">
-        <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
-        <div>
-          ご注文金額合計：{{ totalPriceIncludeTax.toLocaleString() }}円 (税込)
+          <div class="row cart-total-price">
+            <div>消費税：{{ taxPrice.toLocaleString() }}円</div>
+            <div>
+              ご注文金額合計：{{ totalPriceIncludeTax.toLocaleString() }}円
+              (税込)
+            </div>
+          </div>
+          <div class="row order-confirm-btn">
+            <button class="btn" type="button" @click="goToOrder">
+              <span>注文に進む</span>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="row order-confirm-btn">
-        <button class="btn" type="button" @click="goToOrder">
-          <span>注文に進む</span>
-        </button>
       </div>
     </div>
     <!-- end container -->
