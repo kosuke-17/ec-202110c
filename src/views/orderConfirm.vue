@@ -92,9 +92,8 @@
         <div class="input-field">
           <input
             id="zipcode"
-            type="number"
+            type="text"
             v-model="destinationZipcode"
-            oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
             maxlength="7"
           />
           <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
@@ -519,19 +518,24 @@ export default class OrderConfirm extends Vue {
    * @returns Promiseオブジェクト
    */
   async searchAddress(): Promise<void> {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const axiosJsonpAdapter = require("axios-jsonp");
-      const response = await axios.get("https://zipcoda.net/api", {
-        adapter: axiosJsonpAdapter,
-        params: {
-          zipcode: this.destinationZipcode,
-        },
-      });
-      this.destinationAddress = response.data.items[0].components.join("");
-      console.log("成功");
-    } catch (e) {
-      alert("正しい郵便番号を入力してください");
+    this.errorDestinationZipcode = "";
+    if (!this.destinationZipcode.match(/[0-9]{7}/g)) {
+      this.errorDestinationZipcode = "半角数字7桁で入力してください";
+    } else {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const axiosJsonpAdapter = require("axios-jsonp");
+        const response = await axios.get("https://zipcoda.net/api", {
+          adapter: axiosJsonpAdapter,
+          params: {
+            zipcode: this.destinationZipcode,
+          },
+        });
+        this.destinationAddress = response.data.items[0].components.join("");
+        console.log("成功");
+      } catch (e) {
+        alert("正しい郵便番号を入力してください");
+      }
     }
   }
   /**
@@ -555,9 +559,15 @@ export default class OrderConfirm extends Vue {
     if (this.destinationEmail === "") {
       this.errorDestinationEmail = "メールアドレスを入力してください";
       hasError = true;
+    } else if (!this.destinationEmail.includes("@")) {
+      this.errorDestinationEmail = "メールアドレスの形式が不正です";
+      hasError = true;
     }
     if (this.destinationZipcode === "") {
       this.errorDestinationZipcode = "郵便番号を入力してください";
+      hasError = true;
+    } else if (this.destinationZipcode.includes("-")) {
+      this.errorDestinationZipcode = "ハイフンを含めずに入力してください";
       hasError = true;
     }
     if (this.destinationAddress === "") {
@@ -567,6 +577,8 @@ export default class OrderConfirm extends Vue {
     if (this.destinationTel === "") {
       this.errorDestinationTel = "電話番号を入力してください";
       hasError = true;
+    } else if (this.destinationTel.includes("-")) {
+      this.errorDestinationTel = "ハイフンを含めずに入力してください";
     }
     if (this.deliveryTime === "" || this.orderDate === "") {
       this.errorOrderDate = "配達日時を選択してください";
