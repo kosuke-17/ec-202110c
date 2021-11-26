@@ -18,12 +18,17 @@ html,
 /* ブラウザデフォルトのマージンをクリア */
 body {
   margin: 0;
+  color: #332315;
 }
 
 /* リンクの下線や青字などの装飾をなくす */
 a {
-  color: #332315;
+  color: #dcc6b9;
   text-decoration: none;
+}
+
+a:hover {
+  color: #332315;
 }
 
 /* コンテナ全体の設定 */
@@ -77,6 +82,11 @@ a {
 
 .btn {
   background-color: #55423d;
+  text-align: center;
+  align-items: center;
+}
+.btn:hover {
+  background-color: #debecc;
 }
 
 .row {

@@ -362,6 +362,7 @@ export default class RegisterUser extends Vue {
 
 .register-admin-btn {
   text-align: center;
+  margin: 5% 0 10% 0;
 }
 
 .error {

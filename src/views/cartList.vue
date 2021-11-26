@@ -14,8 +14,9 @@
                       >買い物かごには商品が入っていません。</span
                     >
                     <p>
-                      現在、買い物かごには商品が入っていません。ぜひお買い物をお楽しみください。
-                      ご利用をお待ちしております。
+                      現在、買い物かごには商品が入っていません。
+                      <br />ぜひお買い物をお楽しみください。
+                      ご利用をお待ちしております<i class="far fa-smile"></i>
                     </p>
                   </div>
                   <div class="card-action">
@@ -50,7 +51,7 @@
                   <span>{{ orderItem.item.name }}</span>
                 </td>
                 <td>
-                  <span class="price">&nbsp;{{ orderItem.size }}</span
+                  <span class="price">{{ orderItem.size }}</span
                   >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
                   &nbsp;&nbsp; {{ orderItem.quantity }}個
                 </td>
@@ -215,15 +216,55 @@ export default class cartList extends Vue {
   text-align: center;
 }
 .price {
-  background-color: #ff4500;
+  background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
+  text-align: center;
+  padding: 0 0.5%;
 }
 .card-noItemList {
   text-align: center;
 }
 
+.card {
+  margin: 1% 2% 8%;
+}
+
+.card .card-content {
+  padding: 11% 2%;
+  border-radius: 0 0 2px 2px;
+  background-color: #e2d7cf;
+}
+
+.card .card-content .card-title {
+  display: block;
+  line-height: 32px;
+  margin-bottom: 5%;
+  color: #49382c;
+}
+
+.card .card-content p {
+  color: #49382c;
+}
+
+.card .card-action:last-child {
+  border-radius: 0 0 2 px 2 px;
+  background-color: #e2d7cf;
+}
+
+.card
+  .card-action
+  a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  color: #271c19;
+  margin: 0;
+  font-size: 21px;
+}
+
 .row.order-confirm-btn {
   margin: 0;
+}
+
+.register-admin-btn {
+  margin-bottom: 5% 0 8% 0;
 }
 </style>
