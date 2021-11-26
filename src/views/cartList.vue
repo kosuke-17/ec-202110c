@@ -4,7 +4,31 @@
       <h1 class="page-title">ショッピングカート</h1>
       <!-- table -->
       <div class="row">
-        <table class="striped">
+        <div class="">
+          <div v-if="orderItemList.length === 0">
+            <div class="row">
+              <div class="col s12 m card-noItemList">
+                <div class="card blue-grey darken-1">
+                  <div class="card-content white-text">
+                    <span class="card-title"
+                      >買い物かごには商品が入っていません。</span
+                    >
+                    <p>
+                      現在、買い物かごには商品が入っていません。ぜひお買い物をお楽しみください。
+                      ご利用をお待ちしております。
+                    </p>
+                  </div>
+                  <div class="card-action">
+                    <router-link to="/itemList"
+                      >商品一覧画面はこちら</router-link
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="striped" v-if="orderItemList.length">
           <thead>
             <tr>
               <th class="cart-table-th">商品名</th>
@@ -44,11 +68,13 @@
               <td>
                 <div class="text-center">
                   {{
-                    orderItem.calcSubTotalPrice(
-                      orderItem.size,
-                      orderItem.orderToppingList.length,
-                      orderItem.quantity
-                    )
+                    orderItem
+                      .calcSubTotalPrice(
+                        orderItem.size,
+                        orderItem.orderToppingList.length,
+                        orderItem.quantity
+                      )
+                      .toLocaleString()
                   }}円
                 </div>
               </td>
@@ -95,9 +121,18 @@ export default class cartList extends Vue {
    * ショッピングカートに入っている商品の配列を返す.
    *
    * @returns ショッピングカートに入っている商品の配列
+   *          ログインしていなければ、ログイン画面に戻るように処理を実装
    */
   goToOrder(): void {
-    this.$router.push("/orderConfirm");
+    if (this.$store.state.isLogin) {
+      this.$router.push("/orderConfirm");
+    } else {
+      alert("ログインしてないため、ログイン画面に移動します。");
+      // VuexにFlagをセット
+      this.$store.commit("setMoveFlag", { setStr: "goToOrder" });
+      //ログイン画面に遷移
+      this.$router.push("/loginUser");
+    }
   }
 
   /**
@@ -129,7 +164,7 @@ export default class cartList extends Vue {
   }
 
   /**
-   * 消費税を計算して返す
+   * 消費税を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の消費税金額を計算して返す
    * @returns ショッピングカートに入っている商品の消費税金額
@@ -140,7 +175,7 @@ export default class cartList extends Vue {
   }
 
   /**
-   * 合計金額を計算して返す
+   * 合計金額を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
    * @returns ショッピングカートに入っている商品の合計金額
@@ -180,5 +215,8 @@ export default class cartList extends Vue {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
+}
+.card-noItemList {
+  text-align: center;
 }
 </style>
