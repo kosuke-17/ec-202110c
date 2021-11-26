@@ -1,15 +1,13 @@
 <template>
   <div class="home">
-    <div class="top-wrapper">
-      <div class="container">
-        <h1 class="title">NO COFFEE, NO LIFE</h1>
-        <div class="btn-wrapper">
-          <router-link class="btn" to="/registerUser"> 会員登録 </router-link>
-          <p>or</p>
-          <router-link class="btn" to="/loginUser">
-            <i class="fas fa-sign-in-alt"></i>ログイン
-          </router-link>
-        </div>
+    <div class="container">
+      <h1 class="title">NO COFFEE, NO LIFE</h1>
+      <div class="btn-wrapper">
+        <router-link class="btn" to="/registerUser"> 会員登録 </router-link>
+        <p>or</p>
+        <router-link class="btn" to="/loginUser">
+          <i class="fas fa-sign-in-alt"></i>ログイン
+        </router-link>
       </div>
     </div>
   </div>
@@ -24,9 +22,10 @@ export default class Home extends Vue {}
 
 <style scoped>
 .home {
-  height: 750px;
+  width: 100%;
+
   background-image: url("/img_coffee/home_coffee.jpg");
-  background-size: 100% 100%;
+  background-size: 100% 100vh;
   background-repeat: no-repeat;
 }
 .title {

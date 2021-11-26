@@ -1,227 +1,225 @@
 <template>
-  <div class="container">
-    <h1 class="page-title">注文内容確認</h1>
-    <!-- table -->
-    <div class="row">
-      <table class="striped">
-        <thead>
-          <tr>
-            <th class="cart-table-th">商品名</th>
-            <th>サイズ、価格(税抜)、数量</th>
-            <th>トッピング、価格(税抜)</th>
-            <th>小計</th>
-          </tr>
-        </thead>
-        <tbody
-          v-for="(orderItem, index) of currentOrderItemList"
-          v-bind:key="orderItem.id"
-        >
-          <tr>
-            <td class="cart-item-name">
-              <div class="cart-item-icon">
-                <img :src="orderItem.item.imagePath" />
-              </div>
-              <span>{{ orderItem.item.name }}</span>
-            </td>
-            <td>
-              <span class="price">&nbsp;{{ orderItem.size }}</span
-              >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
-              &nbsp;&nbsp; {{ orderItem.quantity }}個
-            </td>
-            <td>
-              <ul
-                v-for="topping of orderItem.orderToppingList"
-                v-bind:key="topping.id"
-              >
-                <li>{{ topping.name }}</li>
-              </ul>
-            </td>
-            <td>
-              <div class="text-center">
-                {{
-                  orderItem.calcSubTotalPrice(
-                    orderItem.size,
-                    orderItem.orderToppingList.length,
-                    orderItem.quantity
-                  )
-                }}円
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="row cart-total-price">
-      <div>消費税：8,000円</div>
-      <div>ご注文金額合計：38,000円 (税込)</div>
-    </div>
+  <div class="top-wrapper">
+    <div class="container">
+      <h1 class="page-title">注文内容確認</h1>
+      <!-- table -->
+      <div class="row">
+        <table class="striped">
+          <thead>
+            <tr>
+              <th class="cart-table-th">商品名</th>
+              <th>サイズ、価格(税抜)、数量</th>
+              <th>トッピング、価格(税抜)</th>
+              <th>小計</th>
+            </tr>
+          </thead>
+          <tbody
+            v-for="(orderItem, index) of currentOrderItemList"
+            v-bind:key="orderItem.id"
+          >
+            <tr>
+              <td class="cart-item-name">
+                <div class="cart-item-icon">
+                  <img :src="orderItem.item.imagePath" />
+                </div>
+                <span>{{ orderItem.item.name }}</span>
+              </td>
+              <td>
+                <span class="price">&nbsp;{{ orderItem.size }}</span
+                >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
+                &nbsp;&nbsp; {{ orderItem.quantity }}個
+              </td>
+              <td>
+                <ul
+                  v-for="topping of orderItem.orderToppingList"
+                  v-bind:key="topping.id"
+                >
+                  <li>{{ topping.name }}</li>
+                </ul>
+              </td>
+              <td>
+                <div class="text-center">
+                  {{
+                    orderItem.calcSubTotalPrice(
+                      orderItem.size,
+                      orderItem.orderToppingList.length,
+                      orderItem.quantity
+                    )
+                  }}円
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row cart-total-price">
+        <div>消費税：8,000円</div>
+        <div>ご注文金額合計：38,000円 (税込)</div>
+      </div>
 
-    <h2 class="page-title">お届け先情報</h2>
-    <div class="order-confirm-delivery-info">
-      <label class="item-topping">
-        <input
-          type="checkbox"
-          v-model="changeAddressFlag"
-          v-on:change="changeAddress()"
-        />
-        <span>お届け先を変更する</span>
-      </label>
+      <h2 class="page-title">お届け先情報</h2>
+      <div class="order-confirm-delivery-info">
+        <label class="item-topping">
+          <input
+            type="checkbox"
+            v-model="changeAddressFlag"
+            v-on:change="changeAddress()"
+          />
+          <span>お届け先を変更する</span>
+        </label>
 
-      <div class="row">
-        <div class="input-field">
-          <input id="name" type="text" v-model="destinationName" />
-          <label for="name" class="active">お名前</label>
+        <div class="row">
+          <div class="input-field">
+            <input id="name" type="text" v-model="destinationName" />
+            <label for="name" class="active">お名前</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field">
+            <input id="email" type="email" v-model="destinationEmail" />
+            <label for="email" class="active">メールアドレス</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field">
+            {{ errorOfZipcode }}
+            <input id="zipcode" type="number" v-model="destinationZipcode" />
+            <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
+            <button class="btn" type="button" @click="searchAddress">
+              <span>住所検索</span>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field">
+            <input id="address" type="text" v-model="destinationAddress" />
+            <label for="address" class="active">住所</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field">
+            <input id="tel" type="tel" v-model="destinationTel" />
+            <label for="tel" class="active">電話番号</label>
+          </div>
+        </div>
+        <div class="row order-confirm-delivery-datetime">
+          <div class="input-field">
+            <!-- typeはdatetime-localでも良い？ -->
+            <input id="deliveryDate" type="date" v-model="orderDate" />
+            <label for="address">配達日時</label>
+          </div>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="10"
+              v-model="deliveryTime"
+            />
+            <span>10時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="11"
+              v-model="deliveryTime"
+            />
+            <span>11時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="12"
+              v-model="deliveryTime"
+            />
+            <span>12時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="13"
+              v-model="deliveryTime"
+            />
+            <span>13時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="14"
+              v-model="deliveryTime"
+            />
+            <span>14時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="15"
+              v-model="deliveryTime"
+            />
+            <span>15時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="16時"
+              v-model="deliveryTime"
+            />
+            <span>16時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="17"
+              v-model="deliveryTime"
+            />
+            <span>17時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="18"
+              v-model="deliveryTime"
+            />
+            <span>18時</span>
+          </label>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field">
-          <input id="email" type="email" v-model="destinationEmail" />
-          <label for="email" class="active">メールアドレス</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field">
-          <input
-            id="zipcode"
-            type="text"
-            maxlength="7"
-            v-model="destinationZipcode"
-          />
-          <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
-          <button class="btn" type="button" @click="searchAddress">
-            <span>住所検索</span>
-          </button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field">
-          <input id="address" type="text" v-model="destinationAddress" />
-          <label for="address" class="active">住所</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field">
-          <input id="tel" type="tel" v-model="destinationTel" />
-          <label for="tel" class="active">電話番号</label>
-        </div>
-      </div>
-      <div class="row order-confirm-delivery-datetime">
-        <div class="input-field">
-          <!-- typeはdatetime-localでも良い？ -->
-          <input id="deliveryDate" type="date" v-model="orderDate" />
-          <label for="address">配達日時</label>
-        </div>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="10"
-            v-model="deliveryTime"
-          />
-          <span>10時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="11"
-            v-model="deliveryTime"
-          />
-          <span>11時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="12"
-            v-model="deliveryTime"
-          />
-          <span>12時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="13"
-            v-model="deliveryTime"
-          />
-          <span>13時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="14"
-            v-model="deliveryTime"
-          />
-          <span>14時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="15"
-            v-model="deliveryTime"
-          />
-          <span>15時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="16時"
-            v-model="deliveryTime"
-          />
-          <span>16時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="17"
-            v-model="deliveryTime"
-          />
-          <span>17時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="18"
-            v-model="deliveryTime"
-          />
-          <span>18時</span>
-        </label>
-      </div>
-    </div>
 
-    <h2 class="page-title">お支払い方法</h2>
-    <div class="row order-confirm-payment-method">
-      <span>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="1"
-            v-model="paymentMethod"
-          />
-          <span>代金引換</span>
-        </label>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="2"
-            v-model="paymentMethod"
-          />
-          <span>クレジットカード</span>
-        </label>
-      </span>
-    </div>
-    <div class="row order-confirm-btn">
-      <button class="btn" type="button" @click="orderInfomation">
-        <span>この内容で注文する</span>
-      </button>
+      <h2 class="page-title">お支払い方法</h2>
+      <div class="row order-confirm-payment-method">
+        <span>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="1"
+              v-model="paymentMethod"
+            />
+            <span>代金引換</span>
+          </label>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="2"
+              v-model="paymentMethod"
+            />
+            <span>クレジットカード</span>
+          </label>
+        </span>
+      </div>
+      <div class="row order-confirm-btn">
+        <button class="btn" type="button" @click="orderInfomation">
+          <span>この内容で注文する</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -267,6 +265,10 @@ export default class OrderConfirm extends Vue {
 
   //届け先を変更するフラグ
   private changeAddressFlag = false;
+
+  //郵便番号エラーメッセージ
+  private errorOfZipcode = "";
+
   /**
    *注文確認画面表示の準備.
    *
@@ -347,7 +349,7 @@ export default class OrderConfirm extends Vue {
    * @returns Promiseオブジェクト
    */
   async searchAddress(): Promise<void> {
-    try {
+    if (this.destinationZipcode.match(/\d{3}-?\d{4}/)) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const axiosJsonpAdapter = require("axios-jsonp");
       const response = await axios.get("https://zipcoda.net/api", {
@@ -358,8 +360,8 @@ export default class OrderConfirm extends Vue {
       });
       this.destinationAddress = response.data.items[0].components.join("");
       console.log("成功");
-    } catch (e) {
-      alert("正しい郵便番号を入力してください");
+    } else {
+      this.errorOfZipcode = "数字7桁で入力してください";
     }
   }
 

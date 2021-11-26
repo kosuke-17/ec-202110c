@@ -7,6 +7,7 @@
 /* widthの合計にpaddingやborderが含まれるようになるのでレイアウト崩れを起こしにくくする */
 * {
   box-sizing: border-box;
+  padding: 0;
 }
 
 /* ブラウザデフォルトのマージンをクリア */
@@ -51,9 +52,9 @@ a {
   color: #b3aeb5;
 }
 
-/* 全てのページに対して上記メニューバー分の100pxを空ける */
+/* 全てのページに対して上記メニューバー分の8%を空ける */
 .top-wrapper {
-  padding-top: 100px;
+  padding-top: 8%;
 }
 
 /* エラーメッセージを赤字に設定 */
