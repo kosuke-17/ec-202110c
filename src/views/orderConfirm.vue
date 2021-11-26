@@ -562,6 +562,22 @@ export default class OrderConfirm extends Vue {
       this.errorOrderDate = "配達日時を選択してください";
       hasError = true;
     }
+    //現在から3時間後ではない配達時間が指定された場合はエラーメッセージを返す。
+    //選択された配達日から年月日をそれぞれ取得する。
+    const year = new Date(this.orderDate).getFullYear();
+    const month = new Date(this.orderDate).getMonth();
+    const date = new Date(this.orderDate).getDate();
+    //選択された配達日時と現在のDateオブジェクトを作成する。
+    const selectedDate = new Date(year, month, date, Number(this.deliveryTime));
+    const orderedDate = new Date();
+    //現在から3時間後の日時が選択されているか、時間差をミリ秒で計算する。
+    const enoughTimeToDeliver =
+      (selectedDate.getTime() - orderedDate.getTime()) / (60 * 60 * 1000);
+    //時間差が3時間以下の場合はエラーメッセージを表示する。
+    if (enoughTimeToDeliver <= 3) {
+      this.errorOrderDate = "今から3時間後の日時を入力してください";
+      hasError = true;
+    }
     return hasError;
   }
   /**
