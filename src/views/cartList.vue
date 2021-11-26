@@ -103,8 +103,8 @@
         </div>
       </div>
     </div>
-    <!-- end container -->
   </div>
+  <!-- end container -->
 </template>
 
 <script lang="ts">
@@ -221,5 +221,9 @@ export default class cartList extends Vue {
 }
 .card-noItemList {
   text-align: center;
+}
+
+.row.order-confirm-btn {
+  margin: 0;
 }
 </style>

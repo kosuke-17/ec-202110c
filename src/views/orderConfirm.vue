@@ -1,336 +1,337 @@
 <template>
-  <div class="container">
-    <h1 class="page-title">注文内容確認</h1>
-    <!-- table -->
-    <div class="row">
-      <table class="striped">
-        <thead>
-          <tr>
-            <th class="cart-table-th">商品名</th>
-            <th>サイズ、価格(税抜)、数量</th>
-            <th>トッピング、価格(税抜)</th>
-            <th>小計</th>
-          </tr>
-        </thead>
-        <tbody
-          v-for="(orderItem, index) of currentOrderItemList"
-          v-bind:key="orderItem.id"
-        >
-          <tr>
-            <td class="cart-item-name">
-              <div class="cart-item-icon">
-                <img :src="orderItem.item.imagePath" />
-              </div>
-              <span>{{ orderItem.item.name }}</span>
-            </td>
-            <td>
-              <span class="price">&nbsp;{{ orderItem.size }}</span
-              >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
-              &nbsp;&nbsp; {{ orderItem.quantity }}個
-            </td>
-            <td>
-              <ul
-                v-for="topping of orderItem.orderToppingList"
-                v-bind:key="topping.id"
-              >
-                <li>
-                  {{ topping.name }}&nbsp;（{{
-                    orderItem.toppingPrice(orderItem.size)
-                  }}円）
-                </li>
-              </ul>
-            </td>
-            <td>
-              <div class="text-center">
-                {{
-                  orderItem
-                    .calcSubTotalPrice(
-                      orderItem.size,
-                      orderItem.orderToppingList.length,
-                      orderItem.quantity
-                    )
-                    .toLocaleString()
-                }}円
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="row cart-total-price">
-      <div>消費税：{{ taxPrice }}円</div>
-      <div>ご注文金額合計：{{ totalPriceIncludeTax }}円 (税込)</div>
-    </div>
-
-    <h2 class="page-title">お届け先情報</h2>
-    <div class="order-confirm-delivery-info">
-      <label class="item-topping">
-        <input
-          type="checkbox"
-          v-model="changeAddressFlag"
-          v-on:change="changeAddress()"
-        />
-        <span>お届け先を変更する</span>
-      </label>
-
+  <div class="top-wrapper">
+    <div class="container">
+      <h1 class="page-title">注文内容確認</h1>
+      <!-- table -->
       <div class="row">
-        <div class="errorMessage">{{ errorDestinationName }}</div>
-        <div class="input-field">
-          <input id="name" type="text" v-model="destinationName" />
-          <label for="name" class="active">お名前</label>
-        </div>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th class="cart-table-th">商品名</th>
+              <th>サイズ、価格(税抜)、数量</th>
+              <th>トッピング、価格(税抜)</th>
+              <th>小計</th>
+            </tr>
+          </thead>
+          <tbody
+            v-for="(orderItem, index) of currentOrderItemList"
+            v-bind:key="orderItem.id"
+          >
+            <tr>
+              <td class="cart-item-name">
+                <div class="cart-item-icon">
+                  <img :src="orderItem.item.imagePath" />
+                </div>
+                <span>{{ orderItem.item.name }}</span>
+              </td>
+              <td>
+                <span class="price">&nbsp;{{ orderItem.size }}</span
+                >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
+                &nbsp;&nbsp; {{ orderItem.quantity }}個
+              </td>
+              <td>
+                <ul
+                  v-for="topping of orderItem.orderToppingList"
+                  v-bind:key="topping.id"
+                >
+                  <li>
+                    {{ topping.name }}&nbsp;（{{
+                      orderItem.toppingPrice(orderItem.size)
+                    }}円）
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <div class="text-center">
+                  {{
+                    orderItem
+                      .calcSubTotalPrice(
+                        orderItem.size,
+                        orderItem.orderToppingList.length,
+                        orderItem.quantity
+                      )
+                      .toLocaleString()
+                  }}円
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="row">
-        <div class="errorMessage">{{ errorDestinationEmail }}</div>
-        <div class="input-field">
-          <input id="email" type="email" v-model="destinationEmail" />
-          <label for="email" class="active">メールアドレス</label>
-        </div>
+      <div class="row cart-total-price">
+        <div>消費税：{{ taxPrice }}円</div>
+        <div>ご注文金額合計：{{ totalPriceIncludeTax }}円 (税込)</div>
       </div>
-      <div class="row">
-        <div class="errorMessage">{{ errorDestinationZipcode }}</div>
-        <div class="input-field">
+
+      <h2 class="page-title">お届け先情報</h2>
+      <div class="order-confirm-delivery-info">
+        <label class="item-topping">
           <input
-            id="zipcode"
-            type="text"
-            v-model="destinationZipcode"
-            maxlength="7"
+            type="checkbox"
+            v-model="changeAddressFlag"
+            v-on:change="changeAddress()"
           />
-          <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
-          <button class="btn" type="button" @click="searchAddress">
-            <span>住所検索</span>
+          <span>お届け先を変更する</span>
+        </label>
+
+        <div class="row">
+          <div class="errorMessage">{{ errorDestinationName }}</div>
+          <div class="input-field">
+            <input id="name" type="text" v-model="destinationName" />
+            <label for="name" class="active">お名前</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorDestinationEmail }}</div>
+          <div class="input-field">
+            <input id="email" type="email" v-model="destinationEmail" />
+            <label for="email" class="active">メールアドレス</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorDestinationZipcode }}</div>
+          <div class="input-field">
+            <input
+              id="zipcode"
+              type="text"
+              v-model="destinationZipcode"
+              maxlength="7"
+            />
+            <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
+            <button class="btn" type="button" @click="searchAddress">
+              <span>住所検索</span>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorDestinationAddress }}</div>
+          <div class="input-field">
+            <input id="address" type="text" v-model="destinationAddress" />
+            <label for="address" class="active">住所</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorDestinationTel }}</div>
+          <div class="input-field">
+            <input
+              id="tel"
+              type="tel"
+              v-model="destinationTel"
+              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="11"
+            />
+            <label for="tel" class="active">電話番号(ハイフンなし)</label>
+          </div>
+        </div>
+        <div class="errorMessage">{{ errorOrderDate }}</div>
+        <div class="row order-confirm-delivery-datetime">
+          <div class="input-field">
+            <!-- typeはdatetime-localでも良い？ -->
+            <input id="deliveryDate" type="date" v-model="orderDate" />
+            <label for="address">配達日時</label>
+          </div>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="10"
+              v-model="deliveryTime"
+            />
+            <span>10時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="11"
+              v-model="deliveryTime"
+            />
+            <span>11時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="12"
+              v-model="deliveryTime"
+            />
+            <span>12時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="13"
+              v-model="deliveryTime"
+            />
+            <span>13時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="14"
+              v-model="deliveryTime"
+            />
+            <span>14時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="15"
+              v-model="deliveryTime"
+            />
+            <span>15時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="16時"
+              v-model="deliveryTime"
+            />
+            <span>16時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="17"
+              v-model="deliveryTime"
+            />
+            <span>17時</span>
+          </label>
+          <label class="order-confirm-delivery-time">
+            <input
+              name="deliveryTime"
+              type="radio"
+              value="18"
+              v-model="deliveryTime"
+            />
+            <span>18時</span>
+          </label>
+        </div>
+      </div>
+
+      <h2 class="page-title">お支払い方法</h2>
+      <div class="row order-confirm-payment-method">
+        <div class="selectPaymentMethod">
+          <span>
+            <label class="order-confirm-payment-method-radio">
+              <input
+                name="paymentMethod"
+                type="radio"
+                value="1"
+                v-model="paymentMethod"
+              />
+              <span>代金引換</span>
+            </label>
+            <label class="order-confirm-payment-method-radio">
+              <input
+                name="paymentMethod"
+                type="radio"
+                value="2"
+                v-model="paymentMethod"
+              />
+              <span>クレジットカード</span>
+            </label>
+          </span>
+        </div>
+        <div class="creditCard" v-if="paymentMethod == 2">
+          <div class="row creditNum">
+            <div class="errorMessage">{{ errorCreditCardNumber }}</div>
+            <div class="input-field col s12">
+              <input
+                id="creditNum"
+                type="number"
+                class="validate"
+                oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="16"
+                v-model="creditCardNumber"
+              />
+              <label for="creditNum">クレジットカード番号</label>
+            </div>
+          </div>
+          <div class="errorMessage">{{ errorCreditCardExpiryDate }}</div>
+          <div class="expiryDate">
+            <div>
+              <label for="expiryDate">有効期限：</label>
+              <select
+                class="browser-default expiryMonth"
+                v-model="creditCardExpiryMonth"
+              >
+                <option value="" disabled selected>選択してください</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div>
+              <br />
+              <label></label>
+              <select
+                class="browser-default expiryMonth"
+                v-model="creditCardExpiryYear"
+              >
+                <option value="" disabled selected>選択してください</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="errorMessage">{{ errorCreditCardName }}</div>
+            <div class="input-field col s12">
+              <input
+                id="creditName"
+                type="text"
+                class="validate"
+                maxlength="50"
+                v-model="creditCardName"
+              />
+              <label for="creditName">カード名義人</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="errorMessage">{{ errorSecurityCode }}</div>
+            <div class="input-field col s12">
+              <input
+                id="securityCode"
+                type="number"
+                class="validate"
+                oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                maxlength="4"
+                v-model="securityCode"
+              />
+              <label for="securityCode">セキュリティコード</label>
+            </div>
+          </div>
+        </div>
+        <div class="row order-confirm-btn">
+          <button class="btn" type="button" @click="orderItems">
+            <span>この内容で注文する</span>
           </button>
         </div>
       </div>
-      <div class="row">
-        <div class="errorMessage">{{ errorDestinationAddress }}</div>
-        <div class="input-field">
-          <input id="address" type="text" v-model="destinationAddress" />
-          <label for="address" class="active">住所</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="errorMessage">{{ errorDestinationTel }}</div>
-        <div class="input-field">
-          <input
-            id="tel"
-            type="tel"
-            v-model="destinationTel"
-            oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-            maxlength="11"
-          />
-          <label for="tel" class="active">電話番号(ハイフンなし)</label>
-        </div>
-      </div>
-      <div class="errorMessage">{{ errorOrderDate }}</div>
-      <div class="row order-confirm-delivery-datetime">
-        <div class="input-field">
-          <!-- typeはdatetime-localでも良い？ -->
-          <input id="deliveryDate" type="date" v-model="orderDate" />
-          <label for="address">配達日時</label>
-        </div>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="10"
-            v-model="deliveryTime"
-          />
-          <span>10時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="11"
-            v-model="deliveryTime"
-          />
-          <span>11時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="12"
-            v-model="deliveryTime"
-          />
-          <span>12時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="13"
-            v-model="deliveryTime"
-          />
-          <span>13時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="14"
-            v-model="deliveryTime"
-          />
-          <span>14時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="15"
-            v-model="deliveryTime"
-          />
-          <span>15時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="16時"
-            v-model="deliveryTime"
-          />
-          <span>16時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="17"
-            v-model="deliveryTime"
-          />
-          <span>17時</span>
-        </label>
-        <label class="order-confirm-delivery-time">
-          <input
-            name="deliveryTime"
-            type="radio"
-            value="18"
-            v-model="deliveryTime"
-          />
-          <span>18時</span>
-        </label>
-      </div>
-    </div>
-
-    <h2 class="page-title">お支払い方法</h2>
-    <div class="row order-confirm-payment-method">
-      <div class="selectPaymentMethod">
-        <span>
-          <label class="order-confirm-payment-method-radio">
-            <input
-              name="paymentMethod"
-              type="radio"
-              value="1"
-              v-model="paymentMethod"
-            />
-            <span>代金引換</span>
-          </label>
-          <label class="order-confirm-payment-method-radio">
-            <input
-              name="paymentMethod"
-              type="radio"
-              value="2"
-              v-model="paymentMethod"
-            />
-            <span>クレジットカード</span>
-          </label>
-        </span>
-      </div>
-      <div class="creditCard" v-if="paymentMethod == 2">
-        <div class="row creditNum">
-          <div class="errorMessage">{{ errorCreditCardNumber }}</div>
-          <div class="input-field col s12">
-            <input
-              id="creditNum"
-              type="number"
-              class="validate"
-              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-              maxlength="16"
-              v-model="creditCardNumber"
-            />
-            <label for="creditNum">クレジットカード番号</label>
-          </div>
-        </div>
-        <div class="errorMessage">{{ errorCreditCardExpiryDate }}</div>
-        <div class="expiryDate">
-          <div>
-            <label for="expiryDate">有効期限：</label>
-            <select
-              class="browser-default expiryMonth"
-              v-model="creditCardExpiryMonth"
-            >
-              <option value="" disabled selected>選択してください</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-          </div>
-          <div>
-            <br />
-            <label></label>
-            <select
-              class="browser-default expiryMonth"
-              v-model="creditCardExpiryYear"
-            >
-              <option value="" disabled selected>選択してください</option>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-              <option value="2029">2029</option>
-              <option value="2030">2030</option>
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="errorMessage">{{ errorCreditCardName }}</div>
-          <div class="input-field col s12">
-            <input
-              id="creditName"
-              type="text"
-              class="validate"
-              maxlength="50"
-              v-model="creditCardName"
-            />
-            <label for="creditName">カード名義人</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="errorMessage">{{ errorSecurityCode }}</div>
-          <div class="input-field col s12">
-            <input
-              id="securityCode"
-              type="number"
-              class="validate"
-              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-              maxlength="4"
-              v-model="securityCode"
-            />
-            <label for="securityCode">セキュリティコード</label>
-          </div>
-        </div>
-      </div>
-      <div class="row order-confirm-btn">
-        <button class="btn" type="button" @click="orderItems">
-          <span>この内容で注文する</span>
-        </button>
-      </div>
-      <div><button class="btn" type="button" @click="onclick"></button></div>
     </div>
   </div>
 </template>
@@ -405,6 +406,10 @@ export default class OrderConfirm extends Vue {
   private errorSecurityCode = "";
   //届け先を変更するフラグ
   private changeAddressFlag = false;
+
+  //郵便番号エラーメッセージ
+  private errorOfZipcode = "";
+
   /**
    *注文確認画面表示の準備.
    *

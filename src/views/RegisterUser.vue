@@ -1,5 +1,5 @@
 <template>
-  <body>
+  <div class="top-wrapper">
     <div class="container">
       <div class="row register-page">
         <div class="error">{{ errorOfName }}</div>
@@ -46,6 +46,8 @@
             <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
             </button>
+
+            <div>{{ errorMess }}</div>
           </div>
         </div>
         <div class="row">
@@ -108,7 +110,7 @@
         </div>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script lang="ts">
@@ -150,6 +152,8 @@ export default class RegisterUser extends Vue {
   private errorOfPassword = "";
   // エラーメッセージ（確認用パスワード）
   private errorOfCheckpassword = "";
+  //
+  private errorMess = "";
 
   /**
    * ユーザー情報を登録する.
@@ -325,7 +329,9 @@ export default class RegisterUser extends Vue {
    * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストール
    *           使うためには「npm install --save-dev axios-jsonp」を行う
    */
+
   async getAddressByZipCode(): Promise<void> {
+    this.errorMess = "";
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const axiosJsonpAdapter = require("axios-jsonp");
     this.errorOfZipcode = "";
@@ -362,9 +368,7 @@ export default class RegisterUser extends Vue {
   color: red;
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.row.register-page {
+  margin: 0 auto;
 }
 </style>

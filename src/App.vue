@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <Header />
-    <div class="top-wrapper">
-      <router-view />
-    </div>
+
+    <router-view />
+
     <Footer />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Header from './components/Header.vue';
-import Footer from './components/Footer.vue';
+import { Component, Vue } from "vue-property-decorator";
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
 
 @Component({
   components: {
@@ -24,7 +24,7 @@ export default class App extends Vue {}
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   /* width: 800px; */
   width: 100%;
   margin: auto;
