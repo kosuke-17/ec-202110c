@@ -44,6 +44,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/logoutUser.vue"),
   },
   {
+    path: "/loginAdministrator",
+    component: () => import("../views/loginAdministrator.vue"),
+  },
+  {
     path: "/",
     component: () => import("../views/Home.vue"),
   },

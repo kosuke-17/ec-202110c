@@ -22,6 +22,9 @@
           <router-link to="/loginUser" v-if="loginStatus === false">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
+          <router-link to="/loginAdministrator" v-if="loginStatus === false">
+            <i class="fas fa-sign-out-alt"></i>管理者はこちら
+          </router-link>
           <router-link to="/orderHistory" v-if="loginStatus === true">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
@@ -38,9 +41,20 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Header extends Vue {
-  // ユーザーのログイン状態でナビゲーションの項目を変化
+  private loginUserOrAdmin = false;
+  /**
+   * 会員または管理者のログイン状態でナビゲーションの項目を変化
+   * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
+   */
   get loginStatus(): boolean {
-    return this["$store"].getters.getLoginStatus;
+    if (this["$store"].getters.getLoginStatus) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+    }
+    if (this["$store"].getters.getLoginAdmin) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+    }
+
+    return this.loginUserOrAdmin;
   }
 }
 </script>
