@@ -274,19 +274,17 @@ export default new Vuex.Store({
     },
 
     /**
-     * 注文履歴一覧をAPIから取得.
+     * ログインしているユーザーのIDをもとに注文履歴一覧をAPIから取得.
      * @remarks 取得した注文履歴一覧をJSON形式でペイロードに格納。
      * ミューテーションからgetOrderHistoryListメソッドを呼び出してオブジェクト化している
      * @param context - コンテキスト
      *
      */
-
     async getOrderHistoryList(context) {
-      console.log(`ログイン中のユーザーID：${this.state.loginUserInfo.id}`);
       const response = await axios.get(
-        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo.id}`
+        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo._id}`
       );
-      console.dir("response:" + JSON.stringify(response));
+      //console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している

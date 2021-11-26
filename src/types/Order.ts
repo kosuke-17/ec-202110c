@@ -42,11 +42,13 @@ export class Order {
     return 1;
   }
 
+  // 注文履歴画面の配達日のフォーマットを変更
   get changeFormatOfDeliveryTime(): string {
     const formatString = format(this.deliveryTime, "yyyy-MM-dd");
     return formatString;
   }
 
+  // 注文履歴画面の支払い状況のフォーマットを変更
   get changeFormatOfStatus(): string {
     let nowstatus = "";
     if (this.status == 1) {
@@ -57,6 +59,7 @@ export class Order {
     return nowstatus;
   }
 
+  // 注文履歴画面の支払い方法のフォーマットを変更
   get changeFormatOfPaymentMethod(): string {
     let changedFormat = "";
     if (this.paymentMethod == 1) {
@@ -65,6 +68,12 @@ export class Order {
       changedFormat = "クレジットカード";
     }
     return changedFormat;
+  }
+
+  // 注文履歴画面の合計金額のフォーマットを変更
+  get changeFormatOfTotalPrice(): string {
+    const changedPrice = this.totalPrice.toLocaleString();
+    return changedPrice;
   }
 
   public get userId(): number {

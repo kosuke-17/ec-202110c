@@ -9,13 +9,14 @@
             <tr>
               <th class="cart-table-th">注文日</th>
               <th>配達日</th>
-              <th>現在の状況</th>
+              <th>支払い状況</th>
               <th>支払い方法</th>
               <th>商品名</th>
               <th>合計金額</th>
             </tr>
           </thead>
-          <tbody v-for="order of orderHistoryList" v-bind:key="order.id">
+          <div>{{ errorMessage }}</div>
+          <tbody v-for="order of orderHistory" v-bind:key="order.id">
             <tr>
               <td class="cart-item-name">
                 <span>{{ order.orderDate }}</span>
@@ -33,7 +34,7 @@
                 <span>{{ order.orderItemList[0].item.name }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.totalPrice + "円" }}</span>
+                <span>{{ order.changeFormatOfTotalPrice + "円" }}</span>
               </td>
             </tr>
           </tbody>
@@ -52,6 +53,7 @@ import { Order } from "../types/Order";
 export default class OrderHistory extends Vue {
   //注文履歴一覧を格納する配列
   private orderHistoryList = Array<Order>();
+  private errorMessage = "";
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから注文履歴一覧を取得する.
@@ -62,8 +64,20 @@ export default class OrderHistory extends Vue {
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getOrderHistoryList");
+    console.log(this["$store"].getters.getAllOrderHistoryLists.length);
+    if (this["$store"].getters.getAllOrderHistoryLists.length == 0) {
+      this.errorMessage = "注文履歴がありません";
+    } else {
+      this.errorMessage = "";
+    }
+  }
 
-    this.orderHistoryList = this["$store"].getters.getAllOrderHistoryLists;
+  /**
+   * Vuexストア内の注文履歴一覧を取得する。
+   * @Return 非同期で取得したVuexストア内の注文履歴一覧を取得し返す。
+   */
+  get orderHistory(): Array<Order> {
+    return this["$store"].getters.getAllOrderHistoryLists;
   }
 }
 </script>
