@@ -482,10 +482,13 @@ export default class OrderConfirm extends Vue {
         //クレジットカード情報の送信に成功した場合は、注文処理に移る
       }
     }
+    // ログインしているユーザーのIDを格納
+    const userId = this.$store.state.loginUserInfo.id;
+
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/order",
       {
-        userId: this.userId,
+        userId: userId,
         status: this.status,
         totalPrice: this.totalPrice,
         destinationName: this.destinationName,
@@ -498,6 +501,7 @@ export default class OrderConfirm extends Vue {
         orderItemFormList: this.orderItemFormList,
       }
     );
+    console.log(response.data);
 
     console.dir("確認したい内容" + JSON.stringify(response));
     if (response.data.status === "success") {

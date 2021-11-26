@@ -328,6 +328,7 @@ export default new Vuex.Store({
       return (keyWord: string) => {
         return state.itemList.filter(
           (item) =>
+            item.name.includes(keyWord) ||
             item.name.includes(keyWord.toLowerCase()) ||
             item.name.includes(keyWord.toUpperCase())
         );
