@@ -48,7 +48,7 @@ header {
   height: 65px;
 
   width: 100%;
-  background-color: #d2b48c;
+  background-color: #ede4cd;
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
   z-index: 10; /* ヘッダが一番上に表示されるようにする(数が多いほど上に来る。例えば-1にするとヘッダが裏側に行き見えなくなります) */
 }

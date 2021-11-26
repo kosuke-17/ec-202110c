@@ -54,11 +54,12 @@
       <div class="items">
         <div class="item" v-for="item of itemList" v-bind:key="item.id">
           <div class="item-icon">
-            <img :src="item.imagePath" />
+            <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+              <img :src="item.imagePath" />
+            </router-link>
           </div>
-          <router-link :to="'/itemDetail/' + item.id">{{
-            item.name
-          }}</router-link
+          <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+            {{ item.name }} </router-link
           ><br />
           <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
           <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
@@ -212,8 +213,8 @@ export default class itemList extends Vue {
 
 .search-btn {
   color: #fff;
-  background-color: #337ab7;
-  border-color: #2e6da4;
+  background-color: #55423d;
+  border-color: #55423d;
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
@@ -258,6 +259,7 @@ fieldset {
 .item {
   flex: 0 0 320px; /* paddingやborder含むitem全体の横幅を320pxにする */
   padding: 20px;
+  text-align: center;
 }
 
 .item-icon img {
@@ -271,7 +273,7 @@ fieldset {
 
 /* サイズをオレンジ〇で囲む */
 .price {
-  background-color: #ff4500;
+  background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
 }
 
