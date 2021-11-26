@@ -716,7 +716,8 @@ export default class OrderConfirm extends Vue {
    * @returns ショッピングカートに入っている商品の合計金額
    */
   get totalPriceIncludeTax(): number {
-    return this.totalPriceWithoutTax() + this.taxPrice;
+    this.totalPrice = this.totalPriceWithoutTax() + this.taxPrice;
+    return this.totalPrice;
   }
 }
 </script>
