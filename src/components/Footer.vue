@@ -2,7 +2,7 @@
   <footer>
     <div class="container">
       <div class="footer">
-        <div class="footer-center">©️ xxx Inc.</div>
+        <div class="footer-center">©️ Raku*2 coffee Inc.</div>
       </div>
     </div>
   </footer>
@@ -19,9 +19,10 @@ export default class Header extends Vue {}
 <style scoped>
 footer {
   /* height: 65px; */
-  padding: 1% 0;
+  padding: 0.5% 0;
   color: white;
-  background-color: rgb(84, 92, 100);
+  font-size: 5px;
+  background-color: #271c19;
 }
 
 .footer {

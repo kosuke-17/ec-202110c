@@ -2,10 +2,8 @@
   <header>
     <div class="container">
       <div class="header">
-        <div class="header-left">
-          <router-link to="/"
-            ><img class="logo" src="/img_coffee/header_logo.png"
-          /></router-link>
+        <div class="header-left logo">
+          <router-link to="/"> Raku*2 coffee </router-link>
         </div>
 
         <div class="header-right">
@@ -60,8 +58,16 @@ header {
 }
 
 .logo {
-  width: 130px;
-  margin-top: 15px;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo a {
+  color: #332315;
 }
 
 .header-right {
