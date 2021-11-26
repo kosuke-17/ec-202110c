@@ -23,13 +23,10 @@ export default new Vuex.Store({
     isLogin: false,
     //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
-<<<<<<< HEAD
     //商品履歴一覧が入る配列
     orderHistoryList: new Array<Order>(),
-=======
     // ログイン後に画面遷移するためのフラグ
     loginedPageToMoveFlag: "",
->>>>>>> bbc8ff6862aaf2c445bcb337890666086a5e9f9e
   },
   mutations: {
     /**
@@ -286,7 +283,7 @@ export default new Vuex.Store({
     async getOrderHistoryList(context) {
       console.log(`ログイン中のユーザーID：${this.state.loginUserInfo.id}`);
       const response = await axios.get(
-        `http://153.127.48.168:8080/ecsite-api/order/orders/aloha/1111`
+        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/00`
       );
       console.dir("response:" + JSON.stringify(response));
       const payload = response.data;

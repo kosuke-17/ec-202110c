@@ -499,6 +499,7 @@ export default class OrderConfirm extends Vue {
       }
     );
 
+    console.dir("確認したい内容" + JSON.stringify(response));
     if (response.data.status === "success") {
       //成功した場合は、注文完了画面に遷移する
       this.$store.commit("resetOrderItemList");
