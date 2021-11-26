@@ -22,13 +22,13 @@
                 <span>{{ order.orderDate }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.deliveryTime }}</span>
+                <span>{{ order.changeFormatOfDeliveryTime }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.status }}</span>
+                <span>{{ order.changeFormatOfStatus }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.paymentMethod }}</span>
+                <span>{{ order.changeFormatOfPaymentMethod }}</span>
               </td>
               <td class="cart-item-name">
                 <span>{{ order.orderItemList[0].item.name }}</span>
@@ -37,7 +37,7 @@
                 <span>{{ order.orderItemList[0].item.orderToppingList }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.orderItemList[0].subTotal }}</span>
+                <span>{{ order.orderItemList[0].subTotal + "円" }}</span>
               </td>
             </tr>
           </tbody>
@@ -61,7 +61,7 @@ export default class OrderHistory extends Vue {
    * Vuexストアのアクション経由で非同期でWebAPIから注文履歴一覧を取得する.
    *
    * @remarks 全商品一覧をAPIからアクションで取得
-   * ミューテーションでオブジェクト化したものを注文履歴一覧配列に格納
+   * ミューテーションで商品オブジェクト化したものを注文一覧配列に格納
    *
    */
   async created(): Promise<void> {

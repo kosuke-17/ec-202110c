@@ -1,5 +1,6 @@
-import { Item } from './Item';
-import { User } from './User';
+import { Item } from "./Item";
+import { User } from "./User";
+import { format } from "date-fns";
 
 export class Order {
   constructor(
@@ -39,6 +40,29 @@ export class Order {
   get getCalcSubTotalPrice(): number {
     // ここに注文商品税込合計金額処理を書く
     return 1;
+  }
+
+  get changeFormatOfDeliveryTime(): string {
+    const formatString = format(this.deliveryTime, "yyyy-MM-dd");
+    return formatString;
+  }
+
+  get changeFormatOfStatus(): string {
+    let nowstatus = "";
+    if (this.status == 0) {
+      nowstatus = "発送待ち";
+    }
+    return nowstatus;
+  }
+
+  get changeFormatOfPaymentMethod(): string {
+    let changedFormat = "";
+    if (this.paymentMethod == 1) {
+      changedFormat = "代引引換";
+    } else if (this.paymentMethod == 2) {
+      changedFormat = "クレジットカード";
+    }
+    return changedFormat;
   }
 
   public get userId(): number {

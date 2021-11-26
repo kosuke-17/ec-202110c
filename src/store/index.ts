@@ -52,7 +52,7 @@ export default new Vuex.Store({
     },
 
     /**
-     * 注文履歴一覧情報を作成してstateに格納する.
+     * 注文一覧情報を作成してstateに格納する.
      * @param state - ステートオブジェクト
      * @param payload - 外部APIから商品一覧情報を取得
      */
@@ -69,7 +69,7 @@ export default new Vuex.Store({
             order.distinationZipcode,
             order.distinationAddress,
             order.distinationTel,
-            order.deliveryTime,
+            new Date(order.deliveryTime),
             order.paymentMethod,
             order.user,
             order.orderItemList
