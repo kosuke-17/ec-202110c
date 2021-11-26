@@ -2,10 +2,8 @@
   <header>
     <div class="container">
       <div class="header">
-        <div class="header-left">
-          <router-link to="/"
-            ><img class="logo" src="/img_coffee/header_logo.png"
-          /></router-link>
+        <div class="header-left logo">
+          <router-link to="/"> Raku*2 coffee </router-link>
         </div>
 
         <div class="header-right">
@@ -67,7 +65,7 @@ header {
   height: 65px;
 
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #ede4cd;
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
   z-index: 10; /* ヘッダが一番上に表示されるようにする(数が多いほど上に来る。例えば-1にするとヘッダが裏側に行き見えなくなります) */
 }
@@ -77,8 +75,16 @@ header {
 }
 
 .logo {
-  width: 130px;
-  margin-top: 15px;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.logo a {
+  color: #332315;
 }
 
 .header-right {
@@ -90,7 +96,7 @@ header {
 .header-right a {
   line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
-  color: gray;
+  color: #332315;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */
   /* float: left; */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */

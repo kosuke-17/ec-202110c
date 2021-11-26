@@ -1,5 +1,5 @@
 <template>
-  <body>
+  <div class="top-wrapper">
     <div class="container">
       <div class="row login-page">
         <div class="col s12 z-depth-6 card-panel">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script lang="ts">
@@ -111,5 +111,9 @@ export default class LoginUser extends Vue {
 
 .login-btn {
   text-align: center;
+}
+
+.top-wrapper {
+  height: 97vh;
 }
 </style>
