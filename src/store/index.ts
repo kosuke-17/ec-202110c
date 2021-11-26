@@ -6,6 +6,7 @@ import { OrderItem } from "@/types/OrderItem";
 // 使うためには「npm install --save vuex-persistedstate」を行う
 import createPersistedState from "vuex-persistedstate";
 import { User } from "@/types/User";
+import { Topping } from "@/types/Topping";
 
 Vue.use(Vuex);
 
@@ -58,6 +59,33 @@ export default new Vuex.Store({
      * @param payload - ショッピングカートに入れた商品の詳細情報
      */
     addItemToCart(state, payload): void {
+      let duplicatedToppingFlag = false;
+      // 同じ商品、サイズ、トッピングだったらquantityを+1して、カートリストに重複しないようにする。
+      // console.dir("ペーロード:" + JSON.stringify(payload.orderToppingList));
+
+      for (const orderItem of state.orderItemList) {
+        for (const orderedTopping of orderItem.orderToppingList) {
+          console.dir(JSON.stringify(payload.orderToppingList));
+
+          if (
+            payload.orderToppingList.find(
+              (orderTopping: Topping) => orderedTopping.id === orderTopping.id
+            )
+          ) {
+            duplicatedToppingFlag = true;
+          }
+        }
+
+        if (
+          orderItem.item.id === payload.orderItem.id &&
+          orderItem.size === payload.size &&
+          duplicatedToppingFlag
+        ) {
+          orderItem.quantity += payload.quantity;
+          return;
+        }
+        duplicatedToppingFlag = false;
+      }
       state.orderItemList.push(
         new OrderItem(
           state.orderItemList.length + 1,
