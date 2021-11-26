@@ -36,7 +36,7 @@
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
                   <router-link to="/registerUser">
-                    <a>管理者登録はこちら</a>
+                    会員登録はこちら
                   </router-link>
                 </p>
               </div>
