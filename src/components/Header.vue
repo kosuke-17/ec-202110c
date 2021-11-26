@@ -30,6 +30,9 @@
           <router-link to="/logoutUser" v-if="loginStatus === true">
             <i class="fas fa-sign-out-alt"></i>ログアウト
           </router-link>
+          <router-link to="/loginAdministrator" v-if="loginStatus === false">
+            <i class="fas fa-sign-out-alt"></i>管理者はこちら
+          </router-link>
         </div>
       </div>
     </div>
