@@ -7,6 +7,12 @@
 /* widthの合計にpaddingやborderが含まれるようになるのでレイアウト崩れを起こしにくくする */
 * {
   box-sizing: border-box;
+  padding: 0;
+}
+
+html,
+　body {
+  height: 100%;
 }
 
 /* ブラウザデフォルトのマージンをクリア */
@@ -16,6 +22,7 @@ body {
 
 /* リンクの下線や青字などの装飾をなくす */
 a {
+  color: #332315;
   text-decoration: none;
 }
 
@@ -51,9 +58,10 @@ a {
   color: #b3aeb5;
 }
 
-/* 全てのページに対して上記メニューバー分の100pxを空ける */
+/* 全てのページに対して上記メニューバー分の8%を空ける */
 .top-wrapper {
-  padding-top: 100px;
+  padding-top: 8% 0 2% 0;
+  background-color: #f8f4e6;
 }
 
 /* エラーメッセージを赤字に設定 */
@@ -65,4 +73,12 @@ a {
   text-align: center;
   font-size: 32px;
   margin-bottom: 30px;
+}
+
+.btn {
+  background-color: #55423d;
+}
+
+.row {
+  margin: 0 auto;
 }
