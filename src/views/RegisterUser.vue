@@ -41,13 +41,7 @@
         <div class="row">
           <div class="error">{{ errorOfZipcode }}</div>
           <div class="input-field col s12">
-            <input
-              id="zipcode"
-              type="number"
-              v-model="zipcode"
-              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-              maxlength="7"
-            />
+            <input id="zipcode" type="text" v-model="zipcode" maxlength="7" />
             <label for="zipcode">郵便番号(ハイフンなし)</label>
             <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
@@ -66,10 +60,10 @@
           <div class="input-field col s12">
             <input
               id="tel"
-              type="number"
+              type="tel"
               v-model="telephone"
               oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-              maxlength="14"
+              maxlength="11"
             />
             <label for="tel">電話番号(ハイフンなし)</label>
           </div>
@@ -218,7 +212,7 @@ export default class RegisterUser extends Vue {
     if (this.mailAddress === "") {
       this.errorOfMailAddress = "「メールアドレス」が未入力です。";
       hasError = true;
-    } else if (this.mailAddress.indexOf("@") === -1 && this.mailAddress != "") {
+    } else if (this.mailAddress.indexOf("@") === -1) {
       this.errorOfMailAddress = "この「メールアドレス」は有効ではありません。";
       hasError = true;
     } else {
@@ -229,7 +223,7 @@ export default class RegisterUser extends Vue {
     if (this.zipcode === "") {
       this.errorOfZipcode = "「郵便番号」が未入力です。";
       hasError = true;
-    } else if (String(this.zipcode).length != 7 && this.zipcode != "") {
+    } else if (this.zipcode.length != 7 || !this.zipcode.match(/^[0-9]+$/)) {
       this.errorOfZipcode = "この郵便番号は有効ではありません。";
       hasError = true;
     } else {
@@ -249,8 +243,9 @@ export default class RegisterUser extends Vue {
       this.errorOfTelephone = "「電話番号」が未入力です。";
       hasError = true;
     } else if (
-      String(this.telephone).length >= 12 ||
-      (String(this.telephone).length < 10 && this.telephone != "")
+      this.telephone.length >= 12 ||
+      this.telephone.length < 10 ||
+      !this.telephone.match(/^[0-9]+$/)
     ) {
       this.errorOfTelephone = "この電話番号は有効ではありません。";
       hasError = true;
