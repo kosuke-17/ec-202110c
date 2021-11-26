@@ -579,6 +579,7 @@ export default class OrderConfirm extends Vue {
       hasError = true;
     } else if (this.destinationTel.includes("-")) {
       this.errorDestinationTel = "ハイフンを含めずに入力してください";
+      hasError = true;
     }
     if (this.deliveryTime === "" || this.orderDate === "") {
       this.errorOrderDate = "配達日時を選択してください";
