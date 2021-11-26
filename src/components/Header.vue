@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="header-left logo">
-          <router-link to="/"> Raku*2 coffee </router-link>
+          <router-link to="/"> Raku＊2 coffee </router-link>
         </div>
 
         <div class="header-right">
@@ -96,10 +96,14 @@ header {
 .header-right a {
   line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
-  color: #332315;
+  color: #9d8e87;
   display: block; /* a要素をブロック要素に変更(borderまでがクリックできるようになる) */
   /* float: left; */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */
+}
+
+.header-right a:hover {
+  color: #332315;
 }
 /* fontawesome(ログインアイコンの設定) */
 .fas {

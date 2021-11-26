@@ -18,12 +18,17 @@ html,
 /* ブラウザデフォルトのマージンをクリア */
 body {
   margin: 0;
+  color: #332315;
 }
 
 /* リンクの下線や青字などの装飾をなくす */
 a {
-  color: #332315;
+  color: #dcc6b9;
   text-decoration: none;
+}
+
+a:hover {
+  color: #332315;
 }
 
 /* コンテナ全体の設定 */
@@ -39,6 +44,13 @@ a {
   padding-top: 80px;
   padding-bottom: 50px;
   color: #5f5d60;
+}
+
+h1 {
+  line-height: 1;
+  margin: 0;
+  font-size: 32px;
+  color: #36271c;
 }
 
 .heading h2 {
@@ -77,8 +89,17 @@ a {
 
 .btn {
   background-color: #55423d;
+  text-align: center;
+  align-items: center;
+}
+.btn:hover {
+  background-color: #debecc;
 }
 
 .row {
   margin: 0 auto;
+}
+
+input:focus {
+  color: black;
 }

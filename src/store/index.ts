@@ -50,7 +50,11 @@ export default new Vuex.Store({
             item.priceL,
             item.imagePath,
             item.deleteId,
-            item.toppingList
+            item.toppingList,
+            //最初はいいねしていない
+            false,
+            //モックの数値をランダムで表示する
+            Math.floor(Math.random() * 10)
           )
         );
       }
@@ -135,7 +139,9 @@ export default new Vuex.Store({
             payload.orderItem.priceL,
             payload.orderItem.imagePath,
             payload.orderItem.deleteId,
-            payload.orderItem.toppingList
+            payload.orderItem.toppingList,
+            false,
+            0
           ),
           payload.orderToppingList
         )
@@ -298,6 +304,31 @@ export default new Vuex.Store({
     setMoveFlag(state, payload): void {
       state.loginedPageToMoveFlag = payload.setStr;
     },
+
+    /**
+     * いいねのフラグといいね数を変更する.
+     *
+     * @remarks ペイロードとして送られてきたItemオブジェクトをItemリストから検索する。
+     *          いいねがされていなかったら、isFavorite = trueにして、いいね数を＋１する。
+     *          いいねされていたら、isFavorite = falseにして、いいね数を-1する。
+     * @param state - ステートオブジェクト
+     * @param payload - いいねボタンをクリックされたItemオブジェクト
+     */
+    changeFavoriteFlag(state, payload): void {
+      const targetItem = [];
+      for (const item of state.itemList) {
+        if (item === payload.item) {
+          targetItem.push(item);
+        }
+      }
+      if (targetItem[0].isFavorite === false) {
+        targetItem[0].isFavorite = true;
+        targetItem[0].favoriteCount++;
+      } else {
+        targetItem[0].isFavorite = false;
+        targetItem[0].favoriteCount--;
+      }
+    },
   }, //end mutations
 
   actions: {
@@ -404,7 +435,9 @@ export default new Vuex.Store({
               orderItem._item._priceL,
               orderItem._item._imagePath,
               orderItem._item._deleteId,
-              orderItem._item._toppingList
+              orderItem._item._toppingList,
+              false,
+              0
             ),
             orderItem._orderToppingList
           )
