@@ -33,17 +33,23 @@
                 v-for="topping of orderItem.orderToppingList"
                 v-bind:key="topping.id"
               >
-                <li>{{ topping.name }}</li>
+                <li>
+                  {{ topping.name }}&nbsp;（{{
+                    orderItem.toppingPrice(orderItem.size)
+                  }}円）
+                </li>
               </ul>
             </td>
             <td>
               <div class="text-center">
                 {{
-                  orderItem.calcSubTotalPrice(
-                    orderItem.size,
-                    orderItem.orderToppingList.length,
-                    orderItem.quantity
-                  )
+                  orderItem
+                    .calcSubTotalPrice(
+                      orderItem.size,
+                      orderItem.orderToppingList.length,
+                      orderItem.quantity
+                    )
+                    .toLocaleString()
                 }}円
               </div>
             </td>
@@ -52,8 +58,8 @@
       </table>
     </div>
     <div class="row cart-total-price">
-      <div>消費税：8,000円</div>
-      <div>ご注文金額合計：38,000円 (税込)</div>
+      <div>消費税：{{ taxPrice }}円</div>
+      <div>ご注文金額合計：{{ totalPriceIncludeTax }}円 (税込)</div>
     </div>
 
     <h2 class="page-title">お届け先情報</h2>
@@ -68,24 +74,27 @@
       </label>
 
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationName }}</div>
         <div class="input-field">
           <input id="name" type="text" v-model="destinationName" />
           <label for="name" class="active">お名前</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationEmail }}</div>
         <div class="input-field">
           <input id="email" type="email" v-model="destinationEmail" />
           <label for="email" class="active">メールアドレス</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationZipcode }}</div>
         <div class="input-field">
           <input
             id="zipcode"
             type="text"
-            maxlength="7"
             v-model="destinationZipcode"
+            maxlength="7"
           />
           <label for="zipcode" class="active">郵便番号(ハイフンなし)</label>
           <button class="btn" type="button" @click="searchAddress">
@@ -94,17 +103,26 @@
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationAddress }}</div>
         <div class="input-field">
           <input id="address" type="text" v-model="destinationAddress" />
           <label for="address" class="active">住所</label>
         </div>
       </div>
       <div class="row">
+        <div class="errorMessage">{{ errorDestinationTel }}</div>
         <div class="input-field">
-          <input id="tel" type="tel" v-model="destinationTel" />
-          <label for="tel" class="active">電話番号</label>
+          <input
+            id="tel"
+            type="tel"
+            v-model="destinationTel"
+            oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+            maxlength="11"
+          />
+          <label for="tel" class="active">電話番号(ハイフンなし)</label>
         </div>
       </div>
+      <div class="errorMessage">{{ errorOrderDate }}</div>
       <div class="row order-confirm-delivery-datetime">
         <div class="input-field">
           <!-- typeはdatetime-localでも良い？ -->
@@ -197,31 +215,122 @@
 
     <h2 class="page-title">お支払い方法</h2>
     <div class="row order-confirm-payment-method">
-      <span>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="1"
-            v-model="paymentMethod"
-          />
-          <span>代金引換</span>
-        </label>
-        <label class="order-confirm-payment-method-radio">
-          <input
-            name="paymentMethod"
-            type="radio"
-            value="2"
-            v-model="paymentMethod"
-          />
-          <span>クレジットカード</span>
-        </label>
-      </span>
-    </div>
-    <div class="row order-confirm-btn">
-      <button class="btn" type="button" @click="orderInfomation">
-        <span>この内容で注文する</span>
-      </button>
+      <div class="selectPaymentMethod">
+        <span>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="1"
+              v-model="paymentMethod"
+            />
+            <span>代金引換</span>
+          </label>
+          <label class="order-confirm-payment-method-radio">
+            <input
+              name="paymentMethod"
+              type="radio"
+              value="2"
+              v-model="paymentMethod"
+            />
+            <span>クレジットカード</span>
+          </label>
+        </span>
+      </div>
+      <div class="creditCard" v-if="paymentMethod == 2">
+        <div class="row creditNum">
+          <div class="errorMessage">{{ errorCreditCardNumber }}</div>
+          <div class="input-field col s12">
+            <input
+              id="creditNum"
+              type="number"
+              class="validate"
+              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="16"
+              v-model="creditCardNumber"
+            />
+            <label for="creditNum">クレジットカード番号</label>
+          </div>
+        </div>
+        <div class="errorMessage">{{ errorCreditCardExpiryDate }}</div>
+        <div class="expiryDate">
+          <div>
+            <label for="expiryDate">有効期限：</label>
+            <select
+              class="browser-default expiryMonth"
+              v-model="creditCardExpiryMonth"
+            >
+              <option value="" disabled selected>選択してください</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </div>
+          <div>
+            <br />
+            <label></label>
+            <select
+              class="browser-default expiryMonth"
+              v-model="creditCardExpiryYear"
+            >
+              <option value="" disabled selected>選択してください</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorCreditCardName }}</div>
+          <div class="input-field col s12">
+            <input
+              id="creditName"
+              type="text"
+              class="validate"
+              maxlength="50"
+              v-model="creditCardName"
+            />
+            <label for="creditName">カード名義人</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="errorMessage">{{ errorSecurityCode }}</div>
+          <div class="input-field col s12">
+            <input
+              id="securityCode"
+              type="number"
+              class="validate"
+              oninput="javascript:if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              maxlength="4"
+              v-model="securityCode"
+            />
+            <label for="securityCode">セキュリティコード</label>
+          </div>
+        </div>
+      </div>
+      <div class="row order-confirm-btn">
+        <button class="btn" type="button" @click="orderItems">
+          <span>この内容で注文する</span>
+        </button>
+      </div>
+      <div><button class="btn" type="button" @click="onclick"></button></div>
     </div>
   </div>
 </template>
@@ -264,49 +373,80 @@ export default class OrderConfirm extends Vue {
   // ユーザー
   private user = new User(0, "", "", "", "", "", "");
   private orderItemFormList: any[] = [];
-
+  // 宛先氏名のエラーメッセージ
+  private errorDestinationName = "";
+  // 宛先Eメールのエラーメッセージ
+  private errorDestinationEmail = "";
+  // 宛先郵便番号のエラーメッセージ
+  private errorDestinationZipcode = "";
+  // 宛先住所のエラーメッセージ
+  private errorDestinationAddress = "";
+  // 宛先電話番号のエラーメッセージ
+  private errorDestinationTel = "";
+  // 配達日時のエラーメッセージ
+  private errorOrderDate = "";
+  // クレジットカード番号
+  private creditCardNumber = "";
+  //有効期限（月）
+  private creditCardExpiryMonth = "選択してください";
+  //有効期限（年）
+  private creditCardExpiryYear = "選択してください";
+  //カード名義人
+  private creditCardName = "";
+  //セキュリティコード
+  private securityCode = "";
+  //クレジットカード番号のエラーメッセージ
+  private errorCreditCardNumber = "";
+  //有効期限のエラーメッセージ
+  private errorCreditCardExpiryDate = "";
+  //カード名義人のエラーメッセージ
+  private errorCreditCardName = "";
+  //セキュリティコードのエラーメッセージ
+  private errorSecurityCode = "";
   //届け先を変更するフラグ
   private changeAddressFlag = false;
   /**
    *注文確認画面表示の準備.
    *
-   * @remarks ログインしていなければ、ログイン画面に戻るように処理を実装
-   *          ショッピングカートに入っている商品の配列を変数に格納.
+   * @remarks ショッピングカートに入っている商品の配列を変数に格納.
+   *
    */
   created(): void {
-    if (this.$store.state.isLogin) {
-      this.currentOrderItemList = this.$store.getters.getOrderItemList;
-      console.log("ログインしています");
-    } else {
-      alert("ログインしてないため、ログイン画面に移動します。");
-      this.$router.push("/loginUser");
-      console.log("ログインしてません");
-    }
+    this.currentOrderItemList = this.$store.getters.getOrderItemList;
+
     //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }
 
   /**
    * 注文商品情報の送信.
+   *
+   * @remarks クレジットカード決済（paymentMethod = "2"）を選択された時は、外部APIを呼んでクレジットカード情報を送信する
    */
-  async orderInfomation(): Promise<void> {
+  async orderItems(): Promise<void> {
+    // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
+    if (this.hasErrorsWithUserInformation() == true) {
+      return;
+    }
     // 支払い方法によって、金額受け渡しのステータスを変える
     if (this.paymentMethod === "1") {
       this.status = "1";
-    }
-    if (this.paymentMethod === "2") {
+    } else if (this.paymentMethod === "2") {
       this.status = "2";
     }
-    // リロードするとorderItemFormListがundefindになる(リロード問題発生)
-    // console.dir(JSON.stringify(this.orderItemsList));
+    // カートリストの中にある商品情報を格納
+    let orderToppingList = [];
     for (let item of this.currentOrderItemList) {
-      // console.log(item.itemId, item.quantity, item.size);
-
+      // トッピング情報を格納
+      for (let topping of item.orderToppingList) {
+        orderToppingList.push(topping.id);
+      }
       this.orderItemFormList.push({
         itemId: item.itemId,
         orderId: item.orderId,
         quantity: item.quantity,
         size: item.size,
+        orderToppingFormList: orderToppingList,
       });
     }
 
@@ -316,11 +456,45 @@ export default class OrderConfirm extends Vue {
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
+    console.log("userId:" + this.userId);
+
+    /*
+     *クレジットカード情報を送信する。
+     *
+     *本メソッドは非同期でWebAPIを呼び出しクレジットカード情報を送信するためasync/await axiosを利用。
+     *これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要が。
+     */
+    if (this.status === "2") {
+      // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
+      if (this.hasErrorsWithCreditCardInformation() == true) {
+        return;
+      }
+      const creditCardResponse = await axios.post(
+        "http://153.127.48.168:8080/sample-credit-card-web-api/credit-card/payment",
+        {
+          user_id: this.userId,
+          amount: this.totalPrice,
+          card_number: this.creditCardNumber,
+          card_exp_year: this.creditCardExpiryYear,
+          card_exp_month: this.creditCardExpiryMonth,
+          card_name: this.creditCardName,
+          card_cvv: this.securityCode,
+        }
+      );
+      //クレジットカード情報が不正の場合はエラーメッセージを表示する
+      if (creditCardResponse.data.status === "error") {
+        alert("クレジットカード情報が不正です");
+        return;
+        //クレジットカード情報の送信に成功した場合は、注文処理に移る
+      }
+    }
+    // ログインしているユーザーのIDを格納
+    const userId = this.$store.state.loginUserInfo.id;
 
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/order",
       {
-        userId: this.userId,
+        userId: userId,
         status: this.status,
         totalPrice: this.totalPrice,
         destinationName: this.destinationName,
@@ -333,36 +507,183 @@ export default class OrderConfirm extends Vue {
         orderItemFormList: this.orderItemFormList,
       }
     );
+    console.log(response.data);
 
+    console.dir("確認したい内容" + JSON.stringify(response));
     if (response.data.status === "success") {
+      //成功した場合は、注文完了画面に遷移する
       this.$store.commit("resetOrderItemList");
       this.$router.push("/orderFinished");
     } else if (response.data.status === "error") {
-      alert("登録失敗しました。再度カートから購入手続きをお願いします。");
+      //失敗した場合はエラーメッセージを表示する
+      alert("購入できませんでした。再度カートから購入手続きをお願いします。");
+      this.$router.push("/cartList");
     }
   }
+
   /**
    * 郵便番号から住所情報を取得.
    *
    * @returns Promiseオブジェクト
    */
   async searchAddress(): Promise<void> {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const axiosJsonpAdapter = require("axios-jsonp");
-      const response = await axios.get("https://zipcoda.net/api", {
-        adapter: axiosJsonpAdapter,
-        params: {
-          zipcode: this.destinationZipcode,
-        },
-      });
-      this.destinationAddress = response.data.items[0].components.join("");
-      console.log("成功");
-    } catch (e) {
-      alert("正しい郵便番号を入力してください");
+    this.errorDestinationZipcode = "";
+    if (!this.destinationZipcode.match(/[0-9]{7}/g)) {
+      this.errorDestinationZipcode = "半角数字7桁で入力してください";
+    } else {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const axiosJsonpAdapter = require("axios-jsonp");
+        const response = await axios.get("https://zipcoda.net/api", {
+          adapter: axiosJsonpAdapter,
+          params: {
+            zipcode: this.destinationZipcode,
+          },
+        });
+        this.destinationAddress = response.data.items[0].components.join("");
+        console.log("成功");
+      } catch (e) {
+        alert("正しい郵便番号を入力してください");
+      }
     }
   }
+  /**
+   * お届け先情報のエラーチェック処理.
+   *
+   * @returns エラーがある:true / エラーがない:false
+   */
+  private hasErrorsWithUserInformation(): boolean {
+    let hasError = false;
+    this.errorDestinationName = "";
+    this.errorDestinationEmail = "";
+    this.errorDestinationZipcode = "";
+    this.errorDestinationAddress = "";
+    this.errorDestinationTel = "";
+    this.errorOrderDate = "";
 
+    if (this.destinationName === "") {
+      this.errorDestinationName = "お名前を入力してください";
+      hasError = true;
+    }
+    if (this.destinationEmail === "") {
+      this.errorDestinationEmail = "メールアドレスを入力してください";
+      hasError = true;
+    } else if (!this.destinationEmail.includes("@")) {
+      this.errorDestinationEmail = "メールアドレスの形式が不正です";
+      hasError = true;
+    }
+    if (this.destinationZipcode === "") {
+      this.errorDestinationZipcode = "郵便番号を入力してください";
+      hasError = true;
+    } else if (
+      this.destinationZipcode.length != 7 ||
+      !this.destinationZipcode.match(/^[0-9]+$/)
+    ) {
+      this.errorDestinationZipcode = "この郵便番号は有効ではありません。";
+      hasError = true;
+    }
+    if (this.destinationAddress === "") {
+      this.errorDestinationAddress = "住所を入力してください";
+      hasError = true;
+    }
+    if (this.destinationTel === "") {
+      this.errorDestinationTel = "電話番号を入力してください";
+      hasError = true;
+    } else if (
+      this.destinationTel.length >= 12 ||
+      this.destinationTel.length < 10 ||
+      !this.destinationTel.match(/^[0-9]+$/)
+    ) {
+      this.errorDestinationTel = "この電話番号は有効ではありません。";
+      hasError = true;
+    }
+    if (this.deliveryTime === "" || this.orderDate === "") {
+      this.errorOrderDate = "配達日時を選択してください";
+      hasError = true;
+    }
+    //現在から3時間後ではない配達時間が指定された場合はエラーメッセージを返す。
+    //選択された配達日から年月日をそれぞれ取得する。
+    const year = new Date(this.orderDate).getFullYear();
+    const month = new Date(this.orderDate).getMonth();
+    const date = new Date(this.orderDate).getDate();
+    //選択された配達日時と現在のDateオブジェクトを作成する。
+    const selectedDate = new Date(year, month, date, Number(this.deliveryTime));
+    const orderedDate = new Date();
+    //現在から3時間後の日時が選択されているか、時間差をミリ秒で計算する。
+    const enoughTimeToDeliver =
+      (selectedDate.getTime() - orderedDate.getTime()) / (60 * 60 * 1000);
+    //時間差が3時間以下の場合はエラーメッセージを表示する。
+    if (enoughTimeToDeliver <= 3) {
+      this.errorOrderDate = "今から3時間後の日時を入力してください";
+      hasError = true;
+    }
+    return hasError;
+  }
+  /**
+   * クレジットカード情報のエラーチェック処理.
+   *
+   * @returns エラーがある:true / エラーがない:false
+   */
+  private hasErrorsWithCreditCardInformation(): boolean {
+    let hasError = false;
+    this.errorCreditCardNumber = "";
+    this.errorCreditCardExpiryDate = "";
+    this.errorCreditCardName = "";
+    this.errorSecurityCode = "";
+
+    if (this.creditCardNumber === "") {
+      this.errorCreditCardNumber = "クレジットカード番号を入力してください";
+      hasError = true;
+    } else if (
+      this.creditCardNumber.length !== 14 &&
+      this.creditCardNumber.length !== 16
+    ) {
+      this.errorCreditCardNumber =
+        "14桁か16桁のクレジットカード番号を入力してください";
+      hasError = true;
+    }
+    if (
+      this.creditCardExpiryMonth === "選択してください" ||
+      this.creditCardExpiryYear === "選択してください"
+    ) {
+      this.errorCreditCardExpiryDate = "有効期限を入力してください";
+      hasError = true;
+    }
+    if (this.creditCardName === "") {
+      this.errorCreditCardName = "カード名義人を入力してください";
+      hasError = true;
+    } else if (this.creditCardName.length > 50) {
+      this.errorCreditCardName = "カード名義人は50文字以内で入力してください";
+      hasError = true;
+    } else if (this.isHalfWidthAlpha(this.creditCardName) === false) {
+      this.errorCreditCardName = "半角のアルファベットで入力してください";
+      hasError = true;
+    }
+    if (this.securityCode === "") {
+      this.errorSecurityCode = "セキュリティコードを入力してください";
+      hasError = true;
+    } else if (
+      this.securityCode.length !== 3 &&
+      this.securityCode.length !== 4
+    ) {
+      this.errorSecurityCode = "3桁か4桁のセキュリティコードを入力してください";
+      hasError = true;
+    }
+    return hasError;
+  }
+
+  /**
+   * 半角英字を含むか判定.
+   *
+   * @returns 半角英字がある:true / 半角英字がない:false
+   */
+  private isHalfWidthAlpha(creditCardName: string) {
+    if (creditCardName.match(/^[A-Za-z]*$/)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   /**
    * ログインユーザー情報をお届け先情報に自動入力する
    */
@@ -388,13 +709,108 @@ export default class OrderConfirm extends Vue {
       this.destinationTel = "";
     }
   }
+  /**
+   *税抜き合計金額を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の税抜き合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品
+   */
+  private totalPriceWithoutTax(): number {
+    let totalPriceWithoutTax = 0;
+    for (let orderItem of this["$store"].getters.getOrderItemList) {
+      totalPriceWithoutTax += orderItem.calcSubTotalPrice(
+        orderItem.size,
+        orderItem.orderToppingList.length,
+        orderItem.quantity
+      );
+    }
+    return totalPriceWithoutTax;
+  }
+
+  /**
+   * 消費税を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の消費税金額を計算して返す
+   * @returns ショッピングカートに入っている商品の消費税金額
+   */
+  get taxPrice(): number {
+    const tax = 0.1;
+    return this.totalPriceWithoutTax() * tax;
+  }
+
+  /**
+   * 合計金額を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品の合計金額
+   */
+  get totalPriceIncludeTax(): number {
+    this.totalPrice = this.totalPriceWithoutTax() + this.taxPrice;
+    return this.totalPrice;
+  }
 }
 </script>
 
 <style scoped>
+@charset "UTF-8";
+
+.order-confirm-delivery-info {
+  margin: 0 200px 0 200px;
+}
+
+.order-confirm-delivery-datetime {
+  text-align: center;
+}
+
+.order-confirm-delivery-time {
+  margin-right: 10px;
+}
+
+.order-confirm-payment-method {
+  text-align: left;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.order-confirm-payment-method-radio {
+  margin-right: 10px;
+}
+.expiryDate {
+  display: flex;
+}
+
+.cardCredit {
+  text-align: center;
+}
+
+.expiryDate {
+  margin-bottom: 20px;
+}
+
+.order-confirm-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.selectPaymentMethod {
+  text-align: center;
+}
+.creditNum {
+  margin-top: 20px;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .cart-table-th {
   text-align: center;
 }
+
 .cart-item-icon img {
   margin: auto;
   display: block;
