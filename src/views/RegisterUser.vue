@@ -323,9 +323,6 @@ export default class RegisterUser extends Vue {
 </script>
 
 <style scoped>
-.btn {
-  background-color: red;
-}
 .register-page {
   width: 600px;
 }
@@ -336,5 +333,9 @@ export default class RegisterUser extends Vue {
 
 .error {
   color: red;
+}
+
+.row.register-page {
+  margin: 0 auto;
 }
 </style>

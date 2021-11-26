@@ -23,6 +23,7 @@ footer {
   color: white;
   font-size: 5px;
   background-color: #271c19;
+  width: 100%;
 }
 
 .footer {

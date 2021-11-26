@@ -111,4 +111,7 @@ export default class ContactCompany extends Vue {
 .contact-btn {
   text-align: center;
 }
+.top-wrapper {
+  height: 100vh;
+}
 </style>

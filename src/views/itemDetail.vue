@@ -231,8 +231,7 @@ export default class itemDetail extends Vue {
 
 .item-intro {
   width: 400px;
-  padding-top: 50px;
-  padding-left: 50px;
+  padding: 0 2%;
   font-size: 20px;
   text-align: left;
 }

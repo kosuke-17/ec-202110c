@@ -70,7 +70,7 @@
     <!-- itemList ページボタン -->
     <div class="container">
       <div class="page-btn">
-        <div v-for="page of getShowPage" v-bind:key="page">
+        <div v-for="page of getShowPage" v-bind:key="page" class="page-num-btn">
           <button
             type="button"
             class="btn"
@@ -292,5 +292,9 @@ fieldset {
 .changeItemOrder {
   width: 18%;
   margin: right; /*検索窓を中央に配置*/
+}
+
+.page-num-btn {
+  margin-right: 2%;
 }
 </style>

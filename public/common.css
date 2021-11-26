@@ -10,6 +10,11 @@
   padding: 0;
 }
 
+html,
+　body {
+  height: 100%;
+}
+
 /* ブラウザデフォルトのマージンをクリア */
 body {
   margin: 0;
@@ -55,7 +60,7 @@ a {
 
 /* 全てのページに対して上記メニューバー分の8%を空ける */
 .top-wrapper {
-  padding-top: 8%;
+  padding-top: 8% 0 2% 0;
   background-color: #f8f4e6;
 }
 
@@ -72,4 +77,8 @@ a {
 
 .btn {
   background-color: #55423d;
+}
+
+.row {
+  margin: 0 auto;
 }

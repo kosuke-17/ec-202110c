@@ -107,4 +107,8 @@ export default class LoginUser extends Vue {
 .login-btn {
   text-align: center;
 }
+
+.top-wrapper {
+  height: 97vh;
+}
 </style>
