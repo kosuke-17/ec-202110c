@@ -1,6 +1,7 @@
 <template>
   <div class="top-wrapper">
     <div class="container">
+      <h1 class="page-title">＊会員登録＊</h1>
       <div class="row register-page">
         <div class="error">{{ errorOfName }}</div>
         <div class="row">

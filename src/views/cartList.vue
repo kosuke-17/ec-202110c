@@ -1,7 +1,7 @@
 <template>
   <div class="top-wrapper">
     <div class="container">
-      <h1 class="page-title">ショッピングカート</h1>
+      <h1 class="page-title">＊ショッピングカート＊</h1>
       <!-- table -->
       <div class="row">
         <div>
@@ -18,11 +18,11 @@
                       <br />ぜひお買い物をお楽しみください。
                       ご利用をお待ちしております<i class="far fa-smile"></i>
                     </p>
-                  </div>
-                  <div class="card-action">
-                    <router-link to="/itemList"
-                      >商品一覧画面はこちら</router-link
-                    >
+                    <div class="card-action btn">
+                      <router-link to="/itemList"
+                        >商品一覧画面はこちら</router-link
+                      >
+                    </div>
                   </div>
                 </div>
               </div>
@@ -245,11 +245,16 @@ export default class cartList extends Vue {
 
 .card .card-content p {
   color: #49382c;
+  margin-bottom: 5%;
 }
 
 .card .card-action:last-child {
   border-radius: 0 0 2 px 2 px;
-  background-color: #e2d7cf;
+  background-color: #a3856f;
+  width: 30%;
+}
+.card .card-action:last-child:hover {
+  background-color: #debecc;
 }
 
 .card
@@ -266,5 +271,10 @@ export default class cartList extends Vue {
 
 .register-admin-btn {
   margin-bottom: 5% 0 8% 0;
+  background-color: #55423d;
+}
+
+.card-action.btn {
+  padding: 0;
 }
 </style>

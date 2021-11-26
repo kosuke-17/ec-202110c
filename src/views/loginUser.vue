@@ -105,8 +105,11 @@ export default class LoginUser extends Vue {
 
 <style scoped>
 .login-page {
-  width: 600px;
-  height: 570px;
+  width: 70%;
+}
+
+.row .col.s12 {
+  background-color: #e2d7cf;
 }
 
 .login-btn {

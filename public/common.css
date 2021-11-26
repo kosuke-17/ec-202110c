@@ -46,6 +46,13 @@ a:hover {
   color: #5f5d60;
 }
 
+h1 {
+  line-height: 1;
+  margin: 0;
+  font-size: 32px;
+  color: #36271c;
+}
+
 .heading h2 {
   font-weight: normal; /* h要素のデフォルトbold(太字)をnormalに変更 */
 }
@@ -91,4 +98,8 @@ a:hover {
 
 .row {
   margin: 0 auto;
+}
+
+input:focus {
+  color: black;
 }

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header">
         <div class="header-left logo">
-          <router-link to="/"> Raku*2 coffee </router-link>
+          <router-link to="/"> Raku＊2 coffee </router-link>
         </div>
 
         <div class="header-right">

@@ -2,6 +2,7 @@
   <div class="top-wrapper">
     <!-- search form -->
     <div class="container">
+      <h1 class="page-title">＊商品一覧＊</h1>
       <form class="search-form">
         <!-- サジェスト機能 -->
         <fieldset>
