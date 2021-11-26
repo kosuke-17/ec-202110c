@@ -12,6 +12,10 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/OrderFinished.vue"),
   },
   {
+    path: "/orderHistory",
+    component: () => import("../views/OrderHistory.vue"),
+  },
+  {
     path: "/orderConfirm",
     component: () => import("../views/orderConfirm.vue"),
   },

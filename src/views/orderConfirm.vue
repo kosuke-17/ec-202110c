@@ -449,6 +449,7 @@ export default class OrderConfirm extends Vue {
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
+    console.log("userId:" + this.userId);
 
     /*
      *クレジットカード情報を送信する。
@@ -501,6 +502,7 @@ export default class OrderConfirm extends Vue {
     );
     console.log(response.data);
 
+    console.dir("確認したい内容" + JSON.stringify(response));
     if (response.data.status === "success") {
       //成功した場合は、注文完了画面に遷移する
       this.$store.commit("resetOrderItemList");
