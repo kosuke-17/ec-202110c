@@ -64,6 +64,33 @@
             <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
             <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
+
+          <div class="favorite">
+            <div
+              @click="changeFavoriteFlag(item)"
+              v-if="item.isFavorite === false"
+            >
+              <i
+                class="far fa-heart faa-tada animated-hover"
+                style="color: #c0c0c0"
+              ></i>
+            </div>
+            <div
+              @click="changeFavoriteFlag(item)"
+              v-if="item.isFavorite === true"
+            >
+              <i
+                class="fas fa-heart faa-tada animated-hover"
+                style="color: red"
+              ></i>
+            </div>
+            <div>{{ item.favoriteCount }}</div>
+          </div>
+          <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+            {{ item.name }} </router-link
+          ><br />
+          <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+          <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
         </div>
       </div>
 
@@ -201,6 +228,16 @@ export default class itemList extends Vue {
     this["$store"].commit("changeItemOrder", this.selectedOrder);
     this.itemList = this["$store"].getters.getSelectedItems.slice(0, 9);
   }
+  /**
+   * いいねのフラグを変更する.
+   *
+   * @remarks Itemオブジェクトをペイロードとして送り、Vuexストアでいいねのフラグを変更する。
+   */
+  changeFavoriteFlag(item: Item): void {
+    this["$store"].commit("changeFavoriteFlag", {
+      item: item,
+    });
+  }
 }
 </script>
 
@@ -329,6 +366,18 @@ fieldset {
   margin: right; /*検索窓を中央に配置*/
 }
 
+.favorite {
+  display: flex;
+  justify-content: flex-end;
+  width: 85%;
+  margin-bottom: 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.fa-heart:before {
+  margin-right: 5px;
+}
 .page-num-btn {
   margin-right: 2%;
 }
