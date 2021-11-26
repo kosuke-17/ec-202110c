@@ -566,8 +566,11 @@ export default class OrderConfirm extends Vue {
     if (this.destinationZipcode === "") {
       this.errorDestinationZipcode = "郵便番号を入力してください";
       hasError = true;
-    } else if (this.destinationZipcode.includes("-")) {
-      this.errorDestinationZipcode = "ハイフンを含めずに入力してください";
+    } else if (
+      this.destinationZipcode.length != 7 ||
+      !this.destinationZipcode.match(/^[0-9]+$/)
+    ) {
+      this.errorDestinationZipcode = "この郵便番号は有効ではありません。";
       hasError = true;
     }
     if (this.destinationAddress === "") {
@@ -577,8 +580,12 @@ export default class OrderConfirm extends Vue {
     if (this.destinationTel === "") {
       this.errorDestinationTel = "電話番号を入力してください";
       hasError = true;
-    } else if (this.destinationTel.includes("-")) {
-      this.errorDestinationTel = "ハイフンを含めずに入力してください";
+    } else if (
+      this.destinationTel.length >= 12 ||
+      this.destinationTel.length < 10 ||
+      !this.destinationTel.match(/^[0-9]+$/)
+    ) {
+      this.errorDestinationTel = "この電話番号は有効ではありません。";
       hasError = true;
     }
     if (this.deliveryTime === "" || this.orderDate === "") {
