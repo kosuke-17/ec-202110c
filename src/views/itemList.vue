@@ -40,7 +40,7 @@
           v-on:change="changeOrder"
           v-model="selectedOrder"
         >
-          <option disabled value="">--並び替え--</option>
+          <option disabled value="">おすすめ順</option>
           <option>昇順(名前)</option>
           <option>降順(名前)</option>
           <option>金額が高い順(Mサイズ)</option>
