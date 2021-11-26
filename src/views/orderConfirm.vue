@@ -330,6 +330,7 @@
           <span>この内容で注文する</span>
         </button>
       </div>
+      <div><button class="btn" type="button" @click="onclick"></button></div>
     </div>
   </div>
 </template>
@@ -433,13 +434,19 @@ export default class OrderConfirm extends Vue {
     } else if (this.paymentMethod === "2") {
       this.status = "2";
     }
-    // リロードするとorderItemFormListがundefindになる(リロード問題発生)
+    // カートリストの中にある商品情報を格納
+    let orderToppingList = [];
     for (let item of this.currentOrderItemList) {
+      // トッピング情報を格納
+      for (let topping of item.orderToppingList) {
+        orderToppingList.push(topping.id);
+      }
       this.orderItemFormList.push({
         itemId: item.itemId,
         orderId: item.orderId,
         quantity: item.quantity,
         size: item.size,
+        orderToppingFormList: orderToppingList,
       });
     }
 
