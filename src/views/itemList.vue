@@ -31,6 +31,25 @@
     </div>
 
     <!-- item list -->
+
+    <div class="container">
+      <div class="changeItemOrder">
+        <select
+          class="btn search-btn"
+          name="itemlist"
+          id="itemlist"
+          v-on:change="changeOrder"
+          v-model="selectedOrder"
+        >
+          <option disabled value=""></option>
+          <option>昇順(名前)</option>
+          <option>降順(名前)</option>
+          <option>金額が高い順(Mサイズ)</option>
+          <option>金額が低い順(Mサイズ)</option>
+          <option>金額が高い順(Lサイズ)</option>
+          <option>金額が低い順(Lサイズ)</option>
+        </select>
+        
     <div v-if="hasItems">
       <div class="container">
         <div class="changeItemOrder">
@@ -41,7 +60,7 @@
             v-on:change="changeOrder"
             v-model="selectedOrder"
           >
-            <option disabled value="">--並び替え--</option>
+            <option disabled value="">おすすめ順</option>
             <option>昇順(名前)</option>
             <option>降順(名前)</option>
             <option>金額が高い順(Mサイズ)</option>

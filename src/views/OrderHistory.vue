@@ -12,7 +12,7 @@
               <th>支払い状況</th>
               <th>支払い方法</th>
               <th>商品名</th>
-              <th>合計金額</th>
+              <th>合計金額(税込)</th>
             </tr>
           </thead>
           <div>{{ errorMessage }}</div>
