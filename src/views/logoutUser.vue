@@ -17,14 +17,20 @@ export default class LogoutUser extends Vue {
    * @returns Promiseオブジェクト
    */
   async created(): Promise<void> {
-    const response = await axios.post(
-      `http://153.127.48.168:8080/ecsite-api/user/logout`
-    );
-    console.dir("response:" + JSON.stringify(response));
-    //ステートをログアウトに切り替えるミューテーションから呼び出す
-    this["$store"].commit("statusLogout");
-    // ログイン画面に遷移する
-    this.$router.push("/loginUser");
+    await axios.post(`http://153.127.48.168:8080/ecsite-api/user/logout`);
+
+    //会員ステートをログアウトに切り替えるミューテーションから呼び出す
+    if (this["$store"].getters.getLoginStatus) {
+      this["$store"].commit("logoutUser");
+      console.log("ユーザーがログアウト");
+    }
+    //管理者ステートをログアウトに切り替えるミューテーションから呼び出す
+    if (this["$store"].getters.getLoginAdmin) {
+      this["$store"].commit("logoutAdmin");
+      console.log("管理者がログアウト");
+    }
+    // トップページに遷移する
+    this.$router.push("/");
   }
 }
 </script>

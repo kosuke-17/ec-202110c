@@ -28,7 +28,7 @@
               </div>
             </div>
             <div class="row login-btn">
-              <button class="btn" type="button" v-on:click="loginUser">
+              <button class="btn" type="button" v-on:click="loginAdministrator">
                 <span>ログイン</span>
               </button>
             </div>
@@ -44,7 +44,7 @@ import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 
 @Component
-export default class LoginUser extends Vue {
+export default class LoginAdministrator extends Vue {
   // メールアドレス
   private mailAddress = "";
   // パスワード
@@ -60,7 +60,7 @@ export default class LoginUser extends Vue {
    * これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要があります。
    * @returns Promiseオブジェクト
    */
-  async loginUser(): Promise<void> {
+  async loginAdministrator(): Promise<void> {
     const response = await axios.post(
       `http://153.127.48.168:8080/ecsite-api/user/login`,
       {
@@ -68,25 +68,13 @@ export default class LoginUser extends Vue {
         password: this.password,
       }
     );
+    console.log(response);
 
-    // console.dir("response:" + JSON.stringify(response));
-    // エラー処理
+    // ログイン後の処理
     if (response.data.status == "success") {
-      // 会員登録情報の取得
-      const loginUserData = response.data.responseMap.user;
-      // ステートにログインしたユーザーの情報を渡す
-      this["$store"].commit("getUserInfo", {
-        userInfo: loginUserData,
-      });
-      //ステートをログインに切り替えるミューテーションから呼び出す
-      this["$store"].commit("statusLogin");
-
-      // 商品一覧画面に遷移する(ステートのフラグがgoToOrderだったら商品注文ページへ遷移)
-      if (this.$store.state.loginedPageToMoveFlag === "goToOrder") {
-        this.$router.push("/orderConfirm");
-      } else {
-        this.$router.push("/itemList");
-      }
+      this.$router.push("/itemList");
+      //管理者ステートをログインに切り替えるミューテーションから呼び出す
+      this["$store"].commit("loginAdmin");
     } else if (response.data.status == "error") {
       this.errorMessage = "ログインに失敗しました";
     }

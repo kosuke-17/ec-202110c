@@ -83,12 +83,12 @@ export default class LoginUser extends Vue {
     if (response.data.status == "success") {
       // 会員登録情報の取得
       const loginUserData = response.data.responseMap.user;
-      // ステートにログインしたユーザーの情報を渡す
+      //会員ステートにログインしたユーザーの情報を渡す
       this["$store"].commit("getUserInfo", {
         userInfo: loginUserData,
       });
-      //ステートをログインに切り替えるミューテーションから呼び出す
-      this["$store"].commit("statusLogin");
+      //会員ステートをログインに切り替えるミューテーションから呼び出す
+      this["$store"].commit("loginUser");
 
       // 商品一覧画面に遷移する(ステートのフラグがgoToOrderだったら商品注文ページへ遷移)
       if (this.$store.state.loginedPageToMoveFlag === "goToOrder") {
