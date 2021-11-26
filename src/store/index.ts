@@ -60,8 +60,7 @@ export default new Vuex.Store({
      */
     addItemToCart(state, payload): void {
       let duplicatedToppingFlag = false;
-      // 同じ商品、サイズ、トッピングだったらquantityを+1して、カートリストに重複しないようにする。
-      // console.dir("ペーロード:" + JSON.stringify(payload.orderToppingList));
+      // 同じ商品、サイズ、トッピングだったらquantityを加算して、カートリストに重複しないようにする。
 
       for (const orderItem of state.orderItemList) {
         for (const orderedTopping of orderItem.orderToppingList) {
