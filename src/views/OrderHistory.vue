@@ -12,8 +12,7 @@
               <th>現在の状況</th>
               <th>支払い方法</th>
               <th>商品名</th>
-              <th>トッピング</th>
-              <th>小計</th>
+              <th>合計金額</th>
             </tr>
           </thead>
           <tbody v-for="order of orderHistoryList" v-bind:key="order.id">
@@ -34,10 +33,7 @@
                 <span>{{ order.orderItemList[0].item.name }}</span>
               </td>
               <td class="cart-item-name">
-                <span>{{ order.orderItemList[0].item.orderToppingList }}</span>
-              </td>
-              <td class="cart-item-name">
-                <span>{{ order.orderItemList[0].subTotal + "円" }}</span>
+                <span>{{ order.totalPrice + "円" }}</span>
               </td>
             </tr>
           </tbody>

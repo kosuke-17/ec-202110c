@@ -49,8 +49,10 @@ export class Order {
 
   get changeFormatOfStatus(): string {
     let nowstatus = "";
-    if (this.status == 0) {
-      nowstatus = "発送待ち";
+    if (this.status == 1) {
+      nowstatus = "未入金";
+    } else if (this.status == 2) {
+      nowstatus = "入金済";
     }
     return nowstatus;
   }

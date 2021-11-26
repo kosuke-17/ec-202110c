@@ -60,6 +60,7 @@ export default new Vuex.Store({
      * @param payload - 外部APIから商品一覧情報を取得
      */
     getOrderHistoryList(state, payload) {
+      state.orderHistoryList = new Array<Order>();
       for (const order of payload.orders) {
         state.orderHistoryList.push(
           new Order(
@@ -283,7 +284,7 @@ export default new Vuex.Store({
     async getOrderHistoryList(context) {
       console.log(`ログイン中のユーザーID：${this.state.loginUserInfo.id}`);
       const response = await axios.get(
-        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/00`
+        `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo.id}`
       );
       console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
