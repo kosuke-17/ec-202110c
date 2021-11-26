@@ -30,34 +30,41 @@
     </div>
 
     <!-- item list -->
-
-    <div class="container">
-      <div class="changeItemOrder">
-        <select
-          class="btn search-btn"
-          name="itemlist"
-          id="itemlist"
-          v-on:change="changeOrder"
-          v-model="selectedOrder"
-        >
-          <option disabled value="">--並び替え--</option>
-          <option>昇順(名前)</option>
-          <option>降順(名前)</option>
-          <option>金額が高い順(Mサイズ)</option>
-          <option>金額が低い順(Mサイズ)</option>
-          <option>金額が高い順(Lサイズ)</option>
-          <option>金額が低い順(Lサイズ)</option>
-        </select>
+    <div v-if="hasItems">
+      <div class="container">
+        <div class="changeItemOrder">
+          <select
+            class="btn search-btn"
+            name="itemlist"
+            id="itemlist"
+            v-on:change="changeOrder"
+            v-model="selectedOrder"
+          >
+            <option disabled value="">--並び替え--</option>
+            <option>昇順(名前)</option>
+            <option>降順(名前)</option>
+            <option>金額が高い順(Mサイズ)</option>
+            <option>金額が低い順(Mサイズ)</option>
+            <option>金額が高い順(Lサイズ)</option>
+            <option>金額が低い順(Lサイズ)</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="items">
-        <div class="item" v-for="item of itemList" v-bind:key="item.id">
-          <div class="item-icon">
+      <div class="container">
+        <div class="items" v-if="hasItems">
+          <div class="item" v-for="item of itemList" v-bind:key="item.id">
+            <div class="item-icon">
+              <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+                <img :src="item.imagePath" />
+              </router-link>
+            </div>
             <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
-              <img :src="item.imagePath" />
-            </router-link>
+              {{ item.name }} </router-link
+            ><br />
+            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
+
           <div class="favorite">
             <div
               @click="changeFavoriteFlag(item)"
@@ -86,19 +93,44 @@
           <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
         </div>
       </div>
-    </div>
 
-    <!-- itemList ページボタン -->
-    <div class="container">
-      <div class="page-btn">
-        <div v-for="page of getShowPage" v-bind:key="page" class="page-num-btn">
-          <button
-            type="button"
-            class="btn"
-            v-on:click="showItemListForOnePage(page)"
+      <!-- itemList ページボタン -->
+      <div class="container">
+        <div class="page-btn">
+          <div
+            v-for="page of getShowPage"
+            v-bind:key="page"
+            class="page-num-btn"
           >
-            {{ page }}
-          </button>
+            <button
+              type="button"
+              class="btn"
+              v-on:click="showItemListForOnePage(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" v-if="!hasItems">
+      <div class="row">
+        <div class="col s12 m card-noItemList">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text center">
+              <span class="card-title"
+                >ヒットした商品は見つかりませんでした</span
+              >
+              <div class="card-action">
+                検索のヒント:
+                <ul>
+                  <li>キーワードに誤字・脱字がないか確認します。</li>
+                  <li>別のキーワードを試してみます。</li>
+                  <li>もっと一般的なキーワードに変えてみます。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -118,6 +150,8 @@ export default class itemList extends Vue {
   private pegeNum = 0;
   //並び替え変数
   private selectedOrder = "";
+  // 検索表示フラグ
+  private hasItems = true;
 
   /**
    * Vuexストアのアクション経由で非同期でWebAPIから商品一覧を取得する.
@@ -140,6 +174,11 @@ export default class itemList extends Vue {
    */
   getSearchKeyWord(searchKeyWord: string): void {
     this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
+    if (this.itemList[0] == null) {
+      this.hasItems = false;
+    } else {
+      this.hasItems = true;
+    }
   }
 
   /**
