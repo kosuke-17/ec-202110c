@@ -89,8 +89,13 @@ export default class LoginUser extends Vue {
       });
       //ステートをログインに切り替えるミューテーションから呼び出す
       this["$store"].commit("statusLogin");
-      // 商品一覧画面に遷移する
-      this.$router.push("/itemList");
+
+      // 商品一覧画面に遷移する(ステートのフラグがgoToOrderだったら商品注文ページへ遷移)
+      if (this.$store.state.loginedPageToMoveFlag === "goToOrder") {
+        this.$router.push("/orderConfirm");
+      } else {
+        this.$router.push("/itemList");
+      }
     } else if (response.data.status == "error") {
       this.errorMessage = "ログインに失敗しました";
     }

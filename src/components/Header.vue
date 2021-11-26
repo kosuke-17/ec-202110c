@@ -22,6 +22,9 @@
           <router-link to="/loginUser" v-if="loginStatus === false">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
+          <router-link to="/orderHistory" v-if="loginStatus === true">
+            <i class="fas fa-user"></i>注文履歴
+          </router-link>
           <router-link to="/logoutUser" v-if="loginStatus === true">
             <i class="fas fa-sign-out-alt"></i>ログアウト
           </router-link>

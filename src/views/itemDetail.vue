@@ -91,11 +91,9 @@
         <div class="row item-total-price">
           <span
             >この商品金額：{{
-              currentOrderItem.calcSubTotalPrice(
-                size,
-                selectedTopping.length,
-                quantity
-              )
+              currentOrderItem
+                .calcSubTotalPrice(size, selectedTopping.length, quantity)
+                .toLocaleString()
             }}
             円(税抜)</span
           >

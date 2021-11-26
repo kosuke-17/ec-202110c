@@ -79,8 +79,9 @@ export default class ContactCompany extends Vue {
         "【問い合わせ内容】\n" +
         this.content,
     };
-    const url =
-      "https://hooks.slack.com/services/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";
+
+    //localモードにしてurlを環境変数に設定している
+    const url = process.env.VUE_APP_API_BASE_URL;
 
     if (this.name && this.email && this.content) {
       fetch(url, {
