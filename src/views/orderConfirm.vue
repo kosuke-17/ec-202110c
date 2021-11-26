@@ -58,8 +58,8 @@
       </table>
     </div>
     <div class="row cart-total-price">
-      <div>消費税：8,000円</div>
-      <div>ご注文金額合計：38,000円 (税込)</div>
+      <div>消費税：{{ taxPrice }}円</div>
+      <div>ご注文金額合計：{{ totalPriceIncludeTax }}円 (税込)</div>
     </div>
 
     <h2 class="page-title">お届け先情報</h2>
@@ -675,6 +675,44 @@ export default class OrderConfirm extends Vue {
       this.destinationAddress = "";
       this.destinationTel = "";
     }
+  }
+  /**
+   *税抜き合計金額を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の税抜き合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品
+   */
+  private totalPriceWithoutTax(): number {
+    let totalPriceWithoutTax = 0;
+    for (let orderItem of this["$store"].getters.getOrderItemList) {
+      totalPriceWithoutTax += orderItem.calcSubTotalPrice(
+        orderItem.size,
+        orderItem.orderToppingList.length,
+        orderItem.quantity
+      );
+    }
+    return totalPriceWithoutTax;
+  }
+
+  /**
+   * 消費税を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の消費税金額を計算して返す
+   * @returns ショッピングカートに入っている商品の消費税金額
+   */
+  get taxPrice(): number {
+    const tax = 0.1;
+    return this.totalPriceWithoutTax() * tax;
+  }
+
+  /**
+   * 合計金額を計算して返す.
+   *
+   * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品の合計金額
+   */
+  get totalPriceIncludeTax(): number {
+    return this.totalPriceWithoutTax() + this.taxPrice;
   }
 }
 </script>
