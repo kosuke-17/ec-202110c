@@ -3,9 +3,11 @@
     <div class="container">
       <h1 class="title">NO COFFEE, NO LIFE</h1>
       <div class="btn-wrapper">
-        <router-link class="btn" to="/registerUser"> 会員登録 </router-link>
+        <router-link class="btn" to="/registerUser">
+          <i class="fas fa-user"></i> 会員登録
+        </router-link>
         <router-link class="btn" to="/loginUser">
-          <i class="fas fa-sign-in-alt"></i>ログイン
+          <i class="fas fa-sign-in-alt"></i> ログイン
         </router-link>
       </div>
     </div>

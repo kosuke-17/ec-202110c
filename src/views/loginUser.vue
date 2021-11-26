@@ -36,7 +36,7 @@
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
                   <router-link to="/registerUser">
-                    <a>管理者登録はこちら</a>
+                    <a>会員登録はこちら</a>
                   </router-link>
                 </p>
               </div>
@@ -105,8 +105,11 @@ export default class LoginUser extends Vue {
 
 <style scoped>
 .login-page {
-  width: 600px;
-  height: 570px;
+  width: 70%;
+}
+
+.row .col.s12 {
+  background-color: #e2d7cf;
 }
 
 .login-btn {

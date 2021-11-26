@@ -1,9 +1,9 @@
 <template>
   <div class="top-wrapper">
     <div class="container">
+      <h1 class="page-title">＊お問い合わせ＊</h1>
       <div class="row login-page">
         <div class="col s12 z-depth-6 card-panel">
-          <h1>お問い合わせ</h1>
           <!-- <div class="error">{{ errorMessage }}</div> -->
           <form class="login-form">
             <div class="row">
@@ -114,5 +114,20 @@ export default class ContactCompany extends Vue {
 }
 .top-wrapper {
   height: 100vh;
+}
+
+.col.s12.z-depth-6.card-panel {
+  margin-top: 5%;
+  padding: 1% 2%;
+  box-sizing: border-box;
+  background-color: #e2d7cf;
+}
+
+.row .col.s12 {
+  width: 100%;
+  margin-left: auto;
+  left: auto;
+  right: auto;
+  padding: 2% 0;
 }
 </style>
