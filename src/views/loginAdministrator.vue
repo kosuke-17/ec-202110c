@@ -84,6 +84,9 @@ export default class LoginAdministrator extends Vue {
 </script>
 
 <style scoped>
+.top-wrapper {
+  height: 97vh;
+}
 .login-page {
   width: 600px;
   height: 570px;

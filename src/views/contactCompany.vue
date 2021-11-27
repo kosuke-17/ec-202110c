@@ -113,7 +113,7 @@ export default class ContactCompany extends Vue {
   text-align: center;
 }
 .top-wrapper {
-  height: 100vh;
+  height: 97vh;
 }
 
 .col.s12.z-depth-6.card-panel {

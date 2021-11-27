@@ -191,6 +191,9 @@ export default class cartList extends Vue {
 </script>
 
 <style scoped>
+.top-wrapper {
+  height: 97vh;
+}
 .cart-table-th {
   text-align: center;
 }
