@@ -33,6 +33,9 @@
                 <span>ログイン</span>
               </button>
             </div>
+            <br />
+            <br />
+            <br />
           </form>
         </div>
       </div>
@@ -88,8 +91,12 @@ export default class LoginAdministrator extends Vue {
   height: 97vh;
 }
 .login-page {
-  width: 600px;
-  height: 570px;
+  width: 70%;
+  height: 700px;
+}
+
+.row .col.s12 {
+  background-color: #e2d7cf;
 }
 
 .login-btn {
