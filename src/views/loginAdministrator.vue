@@ -72,7 +72,6 @@ export default class LoginAdministrator extends Vue {
         password: this.password,
       }
     );
-    console.log(response);
 
     // ログイン後の処理
     if (response.data.status == "success") {

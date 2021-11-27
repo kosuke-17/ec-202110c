@@ -64,7 +64,6 @@ export default class OrderHistory extends Vue {
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getOrderHistoryList");
-    console.log(this["$store"].getters.getAllOrderHistoryLists.length);
     if (this["$store"].getters.getAllOrderHistoryLists.length == 0) {
       this.errorMessage = "注文履歴がありません";
     } else {

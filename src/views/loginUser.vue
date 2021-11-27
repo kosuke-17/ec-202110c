@@ -79,7 +79,6 @@ export default class LoginUser extends Vue {
       }
     );
 
-    // console.dir("response:" + JSON.stringify(response));
     // エラー処理
     if (response.data.status == "success") {
       // 会員登録情報の取得

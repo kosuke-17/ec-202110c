@@ -22,12 +22,10 @@ export default class LogoutUser extends Vue {
     //会員ステートをログアウトに切り替えるミューテーションから呼び出す
     if (this["$store"].getters.getLoginStatus) {
       this["$store"].commit("logoutUser");
-      console.log("ユーザーがログアウト");
     }
     //管理者ステートをログアウトに切り替えるミューテーションから呼び出す
     if (this["$store"].getters.getLoginAdmin) {
       this["$store"].commit("logoutAdmin");
-      console.log("管理者がログアウト");
     }
     // トップページに遷移する
     this.$router.push("/");
