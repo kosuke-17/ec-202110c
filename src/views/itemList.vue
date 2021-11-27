@@ -49,7 +49,8 @@
           <option>金額が高い順(Lサイズ)</option>
           <option>金額が低い順(Lサイズ)</option>
         </select>
-        
+      </div>
+    </div>
     <div v-if="hasItems">
       <div class="container">
         <div class="changeItemOrder">
