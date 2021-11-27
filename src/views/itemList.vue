@@ -31,26 +31,6 @@
     </div>
 
     <!-- item list -->
-
-    <div class="container">
-      <div class="changeItemOrder">
-        <select
-          class="btn search-btn"
-          name="itemlist"
-          id="itemlist"
-          v-on:change="changeOrder"
-          v-model="selectedOrder"
-        >
-          <option disabled value=""></option>
-          <option>昇順(名前)</option>
-          <option>降順(名前)</option>
-          <option>金額が高い順(Mサイズ)</option>
-          <option>金額が低い順(Mサイズ)</option>
-          <option>金額が高い順(Lサイズ)</option>
-          <option>金額が低い順(Lサイズ)</option>
-        </select>
-      </div>
-    </div>
     <div v-if="hasItems">
       <div class="container">
         <div class="changeItemOrder">
@@ -73,7 +53,7 @@
       </div>
       <div class="container">
         <div class="items" v-if="hasItems">
-          <div class="item" v-for="item of itemList" v-bind:key="item.id">
+          <div class="card item" v-for="item of itemList" v-bind:key="item.id">
             <div class="item-icon">
               <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
                 <img :src="item.imagePath" />
@@ -105,11 +85,6 @@
               </div>
               <div>{{ item.favoriteCount }}</div>
             </div>
-            <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
-              {{ item.name }} </router-link
-            ><br />
-            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
         </div>
       </div>
