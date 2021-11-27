@@ -3,10 +3,10 @@
     <div class="container">
       <h1 class="title">NO COFFEE, NO LIFE</h1>
       <div class="btn-wrapper">
-        <router-link class="btn" to="/registerUser">
+        <router-link class="btn" to="/registerUser" v-if="loginStatus">
           <i class="fas fa-user"></i> 会員登録
         </router-link>
-        <router-link class="btn" to="/loginUser">
+        <router-link class="btn" to="/loginUser" v-if="loginStatus">
           <i class="fas fa-sign-in-alt"></i> ログイン
         </router-link>
       </div>
@@ -18,7 +18,23 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  private loginUserOrAdmin = false;
+  /**
+   * 会員または管理者のログイン状態でナビゲーションの項目を変化
+   * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
+   */
+  get loginStatus(): boolean {
+    if (this["$store"].getters.getLoginStatus) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+    }
+    if (this["$store"].getters.getLoginAdmin) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+    }
+
+    return this.loginUserOrAdmin;
+  }
+}
 </script>
 
 <style scoped>

@@ -16,19 +16,19 @@
           <router-link to="/contactCompany">
             <i class="fas fa-comment"></i>お問い合わせ
           </router-link>
-          <router-link to="/registerUser" v-if="loginStatus === false">
+          <router-link to="/registerUser" v-if="!loginStatus">
             <i class="fas fa-user"></i>会員登録
           </router-link>
-          <router-link to="/loginUser" v-if="loginStatus === false">
+          <router-link to="/loginUser" v-if="!loginStatus">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
-          <router-link to="/loginAdministrator" v-if="loginStatus === false">
+          <router-link to="/loginAdministrator" v-if="!loginStatus">
             <i class="fas fa-sign-out-alt"></i>管理者はこちら
           </router-link>
-          <router-link to="/orderHistory" v-if="loginStatus === true">
+          <router-link to="/orderHistory" v-if="loginStatus">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
-          <router-link to="/logoutUser" v-if="loginStatus === true">
+          <router-link to="/logoutUser" v-if="loginStatus">
             <i class="fas fa-sign-out-alt"></i>ログアウト
           </router-link>
         </div>
