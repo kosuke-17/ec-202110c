@@ -142,7 +142,7 @@ export default class itemDetail extends Vue {
       0,
       "image",
       false,
-      new Array<Topping>()
+      new Array<Topping>(),
     ),
     new Array<OrderTopping>()
   );

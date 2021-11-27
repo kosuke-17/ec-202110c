@@ -84,34 +84,33 @@
             ><br />
             <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
             <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
-          </div>
-
-          <div class="favorite">
-            <div
-              @click="changeFavoriteFlag(item)"
-              v-if="item.isFavorite === false"
-            >
-              <i
-                class="far fa-heart faa-tada animated-hover"
-                style="color: #c0c0c0"
-              ></i>
+            <div class="favorite">
+              <div
+                @click="changeFavoriteFlag(item)"
+                v-if="item.isFavorite === false"
+              >
+                <i
+                  class="far fa-heart faa-tada animated-hover"
+                  style="color: #c0c0c0"
+                ></i>
+              </div>
+              <div
+                @click="changeFavoriteFlag(item)"
+                v-if="item.isFavorite === true"
+              >
+                <i
+                  class="fas fa-heart faa-tada animated-hover"
+                  style="color: red"
+                ></i>
+              </div>
+              <div>{{ item.favoriteCount }}</div>
             </div>
-            <div
-              @click="changeFavoriteFlag(item)"
-              v-if="item.isFavorite === true"
-            >
-              <i
-                class="fas fa-heart faa-tada animated-hover"
-                style="color: red"
-              ></i>
-            </div>
-            <div>{{ item.favoriteCount }}</div>
+            <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
+              {{ item.name }} </router-link
+            ><br />
+            <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
+            <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
           </div>
-          <router-link :to="'/itemDetail/' + item.id" id="item-detail-link">
-            {{ item.name }} </router-link
-          ><br />
-          <span class="price">Ｍ</span>{{ item.priceM }}円(税抜)<br />
-          <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
         </div>
       </div>
 
