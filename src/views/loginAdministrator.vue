@@ -1,7 +1,8 @@
 <template>
-  <body>
+  <div class="top-wrapper">
     <div class="container">
       <div class="row login-page">
+        <h1 class="center">管理者ログイン</h1>
         <div class="col s12 z-depth-6 card-panel">
           <div class="error">{{ errorMessage }}</div>
           <form class="login-form" action="employeeList.html">
@@ -36,7 +37,7 @@
         </div>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script lang="ts">
