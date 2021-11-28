@@ -7,6 +7,9 @@
         </div>
 
         <div class="header-right">
+          <router-link to="/addNewItem">
+            <i class="far fa-plus-square"></i>商品追加
+          </router-link>
           <router-link to="/itemList">
             <i class="fas fa-utensils"></i> 商品一覧
           </router-link>

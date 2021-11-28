@@ -81,4 +81,8 @@ export default class OrderHistory extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped>
+.top-wrapper {
+  min-height: 97vh;
+}
+</style>

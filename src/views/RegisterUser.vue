@@ -369,4 +369,7 @@ export default class RegisterUser extends Vue {
 .row.register-page {
   margin: 0 auto;
 }
+.top-wrapper {
+  min-height: 97vh;
+}
 </style>

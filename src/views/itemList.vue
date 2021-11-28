@@ -376,4 +376,7 @@ fieldset {
 .page-num-btn {
   margin-right: 2%;
 }
+.top-wrapper {
+  min-height: 97vh;
+}
 </style>
