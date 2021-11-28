@@ -43,7 +43,7 @@
                 <label for="imagePath">画像URL</label>
               </div>
             </div>
-            <!-- <div class="row">
+            <div class="row">
               <div class="input-field col s6">
                 <button class="btn" type="button" @click="addTopping">
                   <i class="far fa-plus-square">トッピング</i>
@@ -63,7 +63,7 @@
                 </div>
                 <!-- <label for="topping">トッピング</label> -->
               </div>
-            </div> -->
+            </div>
             <div class="row login-btn">
               <button class="btn" type="button">
                 <span>商品追加</span>
