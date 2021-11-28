@@ -49,9 +49,10 @@ export default class Header extends Vue {
   get loginStatus(): boolean {
     if (this["$store"].getters.getLoginStatus) {
       this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
-    }
-    if (this["$store"].getters.getLoginAdmin) {
+    } else if (this["$store"].getters.getLoginAdmin) {
       this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+    } else {
+      this.loginUserOrAdmin = false;
     }
 
     return this.loginUserOrAdmin;
