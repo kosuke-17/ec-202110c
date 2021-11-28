@@ -48,20 +48,29 @@
                 <button class="btn" type="button" @click="addTopping">
                   <i class="far fa-plus-square">トッピング</i>
                 </button>
-                <div v-for="(topping, i) of toppingArr" :key="i">
-                  トッピング名：<input
-                    id="toppingName"
-                    type="text"
-                    v-model="toppingName"
-                  />
-                  トッピングタイプ：<input
-                    id="toppingType"
-                    type="text"
-                    v-model="toppingType"
-                  />
-                  <!-- <button class="btn" @click="deleteTopping">削除</button> -->
+                <div
+                  class="toppingBox"
+                  v-for="(topping, i) of toppingArr"
+                  :key="i"
+                >
+                  <div>
+                    トッピング名：<input
+                      id="toppingName"
+                      type="text"
+                      v-model="toppingName"
+                    />
+                  </div>
+                  <div>
+                    トッピングタイプ：<input
+                      id="toppingType"
+                      type="text"
+                      v-model="toppingType"
+                    />
+                  </div>
+                  <button class="btn delete-btn" @click="deleteTopping(i)">
+                    削除
+                  </button>
                 </div>
-                <!-- <label for="topping">トッピング</label> -->
               </div>
             </div>
             <div class="row login-btn">
@@ -94,7 +103,13 @@ export default class LoginUser extends Vue {
   // private topping = new Topping(1, "", "", 0, 0);
 
   addTopping(): void {
-    this.toppingArr.push(new Topping(1, "", "", 0, 0));
+    this.toppingArr.push(
+      new Topping(1, this.toppingType, this.toppingName, 0, 0)
+    );
+  }
+  deleteTopping(Index: number): void {
+    const deleteCount = 1;
+    this.toppingArr.splice(Index, deleteCount);
   }
 }
 </script>
@@ -111,8 +126,13 @@ export default class LoginUser extends Vue {
 .login-btn {
   text-align: center;
 }
-
-.top-wrapper {
-  height: 97vh;
+.toppingBox {
+  width: 600px;
+  margin-top: 10px;
+  display: flex;
+  gap: 6px 20px;
+}
+.delete-btn {
+  width: 90px;
 }
 </style>
