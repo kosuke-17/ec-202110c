@@ -4,7 +4,6 @@
       <div class="row login-page">
         <h1 class="center">商品追加</h1>
         <div class="col s12 z-depth-6 card-panel">
-          <div class="error">{{ errorMessage }}</div>
           <form class="login-form" action="employeeList.html">
             <div class="row">
               <i class="material-icons prefix"></i>
@@ -43,43 +42,22 @@
                 <label for="imagePath">画像URL</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <button class="btn" type="button" @click="addTopping">
-                  <i class="far fa-plus-square">トッピング</i
-                  >：M(200円)、L(300円)
-                </button>
-                <div
-                  class="toppingBox"
-                  v-for="(topping, i) of toppingArr"
-                  :key="i"
-                >
-                  <div>
-                    トッピング名：<input
-                      id="toppingName"
-                      type="text"
-                      v-model="toppingName"
-                    />
-                  </div>
-                  <div>
-                    トッピングタイプ：<input
-                      id="toppingType"
-                      type="text"
-                      v-model="toppingType"
-                    />
-                  </div>
-                  <button
-                    class="btn delete-btn"
-                    type="button"
-                    @click="deleteTopping(i)"
-                  >
-                    削除
-                  </button>
-                </div>
+            <div class="topping-hedding">
+              トッピング19種
+              <span>&nbsp;Ｍ：</span>200円(税抜)
+              <span>&nbsp;Ｌ：</span>300円(税抜)
+            </div>
+            <div class="card item-toppings">
+              <div
+                class="toppingList"
+                v-for="topping of toppings"
+                :key="topping.id"
+              >
+                <div>{{ topping.name }}</div>
               </div>
             </div>
             <div class="row login-btn">
-              <button class="btn" type="button">
+              <button class="btn" type="button" @click="addItem">
                 <span>商品追加</span>
               </button>
             </div>
@@ -91,6 +69,7 @@
 </template>
 
 <script lang="ts">
+import toppingData from "@/types/ToppingData";
 import { Topping } from "@/types/Topping";
 import { Component, Vue } from "vue-property-decorator";
 
@@ -104,17 +83,20 @@ export default class LoginUser extends Vue {
   private imagePath = "";
   private toppingType = "";
   private toppingName = "";
-  private toppingArr = new Array<Topping>();
-  // private topping = new Topping(1, "", "", 0, 0);
+  private toppings = new Array<Topping>();
 
-  addTopping(): void {
-    this.toppingArr.push(
-      new Topping(1, this.toppingType, this.toppingName, 0, 0)
-    );
-  }
-  deleteTopping(Index: number): void {
-    const deleteCount = 1;
-    this.toppingArr.splice(Index, deleteCount);
+  created(): void {
+    for (const topping of toppingData) {
+      this.toppings.push(
+        new Topping(
+          topping.id,
+          topping.type,
+          topping.name,
+          topping.priceM,
+          topping.priceL
+        )
+      );
+    }
   }
 }
 </script>
@@ -131,11 +113,14 @@ export default class LoginUser extends Vue {
 .login-btn {
   text-align: center;
 }
-.toppingBox {
-  width: 600px;
-  margin-top: 10px;
-  display: flex;
-  gap: 6px 20px;
+.topping-hedding {
+  font-weight: bold;
+  font-size: 17px;
+  text-align: left;
+}
+.toppingList {
+  display: inline-block;
+  padding: 10px;
 }
 .delete-btn {
   width: 90px;
