@@ -117,6 +117,6 @@ export default class LoginUser extends Vue {
 }
 
 .top-wrapper {
-  height: 97vh;
+  min-height: 97vh;
 }
 </style>

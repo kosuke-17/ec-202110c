@@ -46,7 +46,8 @@
             <div class="row">
               <div class="input-field col s6">
                 <button class="btn" type="button" @click="addTopping">
-                  <i class="far fa-plus-square">トッピング</i>
+                  <i class="far fa-plus-square">トッピング</i
+                  >：M(200円)、L(300円)
                 </button>
                 <div
                   class="toppingBox"
@@ -67,7 +68,11 @@
                       v-model="toppingType"
                     />
                   </div>
-                  <button class="btn delete-btn" @click="deleteTopping(i)">
+                  <button
+                    class="btn delete-btn"
+                    type="button"
+                    @click="deleteTopping(i)"
+                  >
                     削除
                   </button>
                 </div>
@@ -134,5 +139,8 @@ export default class LoginUser extends Vue {
 }
 .delete-btn {
   width: 90px;
+}
+.top-wrapper {
+  min-height: 97vh;
 }
 </style>

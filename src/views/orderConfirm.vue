@@ -838,4 +838,7 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
 }
+.top-wrapper {
+  min-height: 97vh;
+}
 </style>

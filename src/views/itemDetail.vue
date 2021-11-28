@@ -301,4 +301,7 @@ export default class itemDetail extends Vue {
   color: red;
   text-align: center;
 }
+.top-wrapper {
+  min-height: 97vh;
+}
 </style>

@@ -41,7 +41,7 @@ export default class Home extends Vue {
 .home {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 97vh;
   background-image: url("/img_coffee/home_coffee.jpg");
   background-size: 100% 100vh;
   background-repeat: no-repeat;

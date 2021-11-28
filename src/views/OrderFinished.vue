@@ -41,4 +41,8 @@ export default class Home extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped>
+.top-wrapper {
+  min-height: 97vh;
+}
+</style>
