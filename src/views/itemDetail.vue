@@ -166,7 +166,6 @@ export default class itemDetail extends Vue {
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemID = parseInt(this["$route"].params.id);
-
     try {
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/item/${itemID}`
