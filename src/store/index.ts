@@ -102,10 +102,10 @@ export default new Vuex.Store({
       console.dir("state.orderItemList:" + JSON.stringify(state.orderItemList));
 
       for (const orderItem of state.orderItemList) {
-        for (const orderedTopping of orderItem.orderToppingList) {
+        for (const orderedTopping of orderItem._orderToppingList) {
           if (
             payload.orderToppingList.find(
-              (orderTopping: Topping) => orderedTopping.id === orderTopping.id
+              (orderTopping: Topping) => orderedTopping._id === orderTopping.id
             )
           ) {
             duplicatedToppingFlag = true;
@@ -113,11 +113,11 @@ export default new Vuex.Store({
         }
 
         if (
-          orderItem.item.id === payload.orderItem.id &&
-          orderItem.size === payload.size &&
+          orderItem._item.id === payload.orderItem.id &&
+          orderItem._size === payload.size &&
           duplicatedToppingFlag
         ) {
-          orderItem.quantity += payload.quantity;
+          orderItem._quantity += payload.quantity;
           return;
         }
         duplicatedToppingFlag = false;

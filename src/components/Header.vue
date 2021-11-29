@@ -31,9 +31,18 @@
           <router-link to="/orderHistory" v-if="loginUser">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
-          <router-link to="/logoutUser" v-if="loginStatus">
-            <i class="fas fa-sign-out-alt"></i>ログアウト
-          </router-link>
+          <div class="example-modal-window" v-if="loginStatus">
+            <a>
+              <button @click="openModal" class="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>ログアウト
+              </button>
+            </a>
+            <LogoutModal v-on:close-modal="closeModal" v-if="isModalOpen" />
+          </div>
+          <span class="admin-apper" v-if="loginAdmin">管理者：ログイン中</span>
+          <span class="user-apper" v-if="loginUser">
+            {{ loginUserdata._name }}：ログイン中
+          </span>
         </div>
       </div>
     </div>
@@ -41,18 +50,30 @@
 </template>
 
 <script lang="ts">
+import { User } from "@/types/User";
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import LogoutModal from "./logoutModal.vue";
+
+@Component({ components: { LogoutModal } })
 export default class Header extends Vue {
+  //モーダルの表示ステータス
+  private isModalOpen = false;
+  //ユーザーがログイン中
   private loginUser = false;
+  //管理者がログイン中
   private loginAdmin = false;
+  //ユーザーまたは管理者がログイン中
   private loginAllStatus = false;
+  private loginUserdata = new User(0, "", "", "", "", "", "");
+
   /**
    * 会員または管理者のログイン状態でナビゲーションの項目を変化
    * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
    */
-
   get loginStatus(): boolean {
+    // フィールド変数にユーザー情報を格納
+    this.loginUserdata = this.$store.getters.getLoginUserInfo;
+
     if (this["$store"].getters.getLoginStatus) {
       this.loginAllStatus = this["$store"].getters.getLoginStatus;
       this.loginUser = true;
@@ -66,6 +87,20 @@ export default class Header extends Vue {
     }
 
     return this.loginAllStatus;
+  }
+  //モーダルをオープンする処理
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  //モーダルをクローズする処理
+  //logoutModal.vueから受け取った引数をもとにモーダルクローズする
+  closeModal(close: string): void {
+    if (close === "") {
+      this.isModalOpen = false;
+    } else {
+      this.isModalOpen = true;
+    }
   }
 }
 </script>
@@ -113,5 +148,29 @@ header {
 /* fontawesome(ログインアイコンの設定) */
 .fas {
   margin-right: 5px;
+}
+.admin-apper {
+  background-color: #332315;
+  margin: 10px;
+  color: white;
+  padding: 10px 5px;
+}
+.user-apper {
+  background-color: #332315;
+  color: white;
+  margin: 10px;
+  padding-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.logoutBtn {
+  border: none;
+  color: #9d8e87;
+  background-color: #ede4cd;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  color: #332315;
 }
 </style>
