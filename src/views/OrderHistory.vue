@@ -101,30 +101,52 @@ export default class OrderHistory extends Vue {
       this.errorMessage = "";
     }
     this.orderHistoryList = this["$store"].getters.getAllOrderHistoryLists;
-    // console.dir(
-    //   "this.orderHistoryList:" + JSON.stringify(this.orderHistoryList)
-    // );
-    // console.log(this.orderHistoryList);
   }
 
   /**
    * 注文履歴から再注文する
    */
   reOrder(orderIndex: number): void {
-    this["$store"].commit("addItemToCart", {
-      size: "M",
-      orderToppingList: "チョコチップ",
-      quantity: 1,
-      orderItem: {
-        id: 1,
-        name: "チョコ",
-        description: "a",
-        priceM: 150,
-        priceL: 150,
-        imagePath: "gga",
-        deleted: false,
-      },
-    });
+    let count =
+      this["$store"].getters.getAllOrderHistoryLists[orderIndex].orderItemList
+        .length;
+    console.log(count);
+    this["$store"].commit("resetOrderItemList");
+
+    for (let i = 0; i <= count - 1; i++) {
+      this["$store"].commit("addItemToCart", {
+        size: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+          .orderItemList[i].size,
+        orderToppingList:
+          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].orderToppingList,
+        quantity:
+          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].quantity,
+        orderItem: {
+          id: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].id,
+          name: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].item.name,
+          description:
+            this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+              .orderItemList[i].item.description,
+          priceM:
+            this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+              .orderItemList[i].item.priceM,
+          priceL:
+            this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+              .orderItemList[i].item.priceL,
+          imagePath:
+            this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+              .orderItemList[i].item.imagePath,
+          deleted:
+            this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+              .orderItemList[i].item.deleted,
+        },
+      });
+    }
+
     this["$router"].push("/cartList");
   }
 }
