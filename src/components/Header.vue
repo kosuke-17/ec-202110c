@@ -38,9 +38,17 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Header extends Vue {
+  private loginUserOrAdmin = false;
   // ユーザーのログイン状態でナビゲーションの項目を変化
   get loginStatus(): boolean {
-    return this["$store"].getters.getLoginStatus;
+    if (this["$store"].getters.getLoginStatus) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+    } else if (this["$store"].getters.getLoginAdmin) {
+      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+    } else {
+      this.loginUserOrAdmin = false;
+    }
+    return this.loginUserOrAdmin;
   }
 }
 </script>
@@ -49,7 +57,6 @@ export default class Header extends Vue {
 <style scoped>
 header {
   height: 65px;
-
   width: 100%;
   background-color: #ede4cd;
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
@@ -59,7 +66,6 @@ header {
   display: flex; /* ヘッダロゴと右側のリンクを横並びにする */
   /* justify-content: flex-end; 右寄せにしたい場合*/
 }
-
 .logo {
   width: 15%;
   display: flex;
@@ -68,17 +74,14 @@ header {
   font-size: 18px;
   font-weight: 600;
 }
-
 .logo a {
   color: #332315;
 }
-
 .header-right {
   margin-left: auto; /* ヘッダ右側のリンクだけ右寄せにする(ロゴは左寄せのまま) */
   /* float: right; */
   display: flex; /* ヘッダ右側のリンクを横に並べる */
 }
-
 .header-right a {
   line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
@@ -87,7 +90,6 @@ header {
   /* float: left; */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */
 }
-
 .header-right a:hover {
   color: #332315;
 }

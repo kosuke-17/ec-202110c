@@ -2,13 +2,13 @@
   <div class="top-wrapper">
     <div class="container">
       <div class="row login-page">
-        <h1 class="center">＊会員ログイン＊</h1>
+        <h1 class="center">管理者ログイン</h1>
         <div class="col s12 z-depth-6 card-panel">
           <div class="error">{{ errorMessage }}</div>
           <form class="login-form" action="employeeList.html">
             <div class="row"></div>
             <div class="row">
-              <div class="input-field col s12 darken-3">
+              <div class="input-field col s12">
                 <i class="material-icons prefix">mail_outline</i>
                 <input
                   class="validate"
@@ -29,19 +29,13 @@
               </div>
             </div>
             <div class="row login-btn">
-              <button class="btn" type="button" v-on:click="loginUser">
+              <button class="btn" type="button" v-on:click="loginAdministrator">
                 <span>ログイン</span>
               </button>
             </div>
-            <div class="row">
-              <div class="input-field col s6 m6 l6">
-                <p class="margin medium-small">
-                  <router-link to="/registerUser">
-                    <a>会員登録はこちら</a>
-                  </router-link>
-                </p>
-              </div>
-            </div>
+            <br />
+            <br />
+            <br />
           </form>
         </div>
       </div>
@@ -54,7 +48,7 @@ import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 
 @Component
-export default class LoginUser extends Vue {
+export default class LoginAdministrator extends Vue {
   // メールアドレス
   private mailAddress = "";
   // パスワード
@@ -70,7 +64,7 @@ export default class LoginUser extends Vue {
    * これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要があります。
    * @returns Promiseオブジェクト
    */
-  async loginUser(): Promise<void> {
+  async loginAdministrator(): Promise<void> {
     const response = await axios.post(
       `http://153.127.48.168:8080/ecsite-api/user/login`,
       {
@@ -79,24 +73,11 @@ export default class LoginUser extends Vue {
       }
     );
 
-    // console.dir("response:" + JSON.stringify(response));
-    // エラー処理
+    // ログイン後の処理
     if (response.data.status == "success") {
-      // 会員登録情報の取得
-      const loginUserData = response.data.responseMap.user;
-      // ステートにログインしたユーザーの情報を渡す
-      this["$store"].commit("getUserInfo", {
-        userInfo: loginUserData,
-      });
-      //ステートをログインに切り替えるミューテーションから呼び出す
-      this["$store"].commit("statusLogin");
-
-      // 商品一覧画面に遷移する(ステートのフラグがgoToOrderだったら商品注文ページへ遷移)
-      if (this.$store.state.loginedPageToMoveFlag === "goToOrder") {
-        this.$router.push("/orderConfirm");
-      } else {
-        this.$router.push("/itemList");
-      }
+      this.$router.push("/itemList");
+      //管理者ステートをログインに切り替えるミューテーションから呼び出す
+      this["$store"].commit("loginAdmin");
     } else if (response.data.status == "error") {
       this.errorMessage = "ログインに失敗しました";
     }
@@ -105,8 +86,12 @@ export default class LoginUser extends Vue {
 </script>
 
 <style scoped>
+.top-wrapper {
+  min-height: 97vh;
+}
 .login-page {
   width: 70%;
+  height: 700px;
 }
 
 .row .col.s12 {
@@ -115,10 +100,6 @@ export default class LoginUser extends Vue {
 
 .login-btn {
   text-align: center;
-}
-
-.top-wrapper {
-  height: 97vh;
 }
 
 .col.s12.z-depth-6.card-panel {
