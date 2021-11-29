@@ -25,7 +25,7 @@
                 <span>{{ orderItem.item.name }}</span>
               </td>
               <td>
-                <span class="price">&nbsp;{{ orderItem.size }}</span
+                <span class="price">{{ orderItem.size }}</span
                 >&nbsp;&nbsp;{{ orderItem.orderItemUnitPrice(index) }}円
                 &nbsp;&nbsp; {{ orderItem.quantity }}個
               </td>
@@ -834,11 +834,39 @@ input[type="number"]::-webkit-inner-spin-button {
   text-align: center;
 }
 .price {
-  background-color: #ff4500;
+  background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
 }
 .top-wrapper {
   min-height: 97vh;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #55423d;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:before,
+[type="radio"].with-gap:checked + span:after {
+  border: #55423d;
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+  top: -4 px;
+  left: -5 px;
+  width: 12 px;
+  height: 22 px;
+  border-top: 2 px solid transparent;
+  border-left: 2 px solid transparent;
+  border-right: 2 px solid #55423d;
+  border-bottom: 2 px solid #55423d;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
 }
 </style>
