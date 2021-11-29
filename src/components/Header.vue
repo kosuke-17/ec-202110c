@@ -7,16 +7,16 @@
         </div>
 
         <div class="header-right">
-          <router-link to="/addNewItem">
+          <router-link to="/addNewItem" v-if="loginAdmin">
             <i class="far fa-plus-square"></i>商品追加
           </router-link>
           <router-link to="/itemList">
             <i class="fas fa-utensils"></i> 商品一覧
           </router-link>
-          <router-link to="/cartList">
+          <router-link to="/cartList" v-if="!loginAdmin">
             <i class="fas fa-shopping-cart"></i>カート
           </router-link>
-          <router-link to="/contactCompany">
+          <router-link to="/contactCompany" v-if="!loginAdmin">
             <i class="fas fa-comment"></i>お問い合わせ
           </router-link>
           <router-link to="/registerUser" v-if="!loginStatus">
@@ -28,7 +28,7 @@
           <router-link to="/loginAdministrator" v-if="!loginStatus">
             <i class="fas fa-sign-out-alt"></i>管理者はこちら
           </router-link>
-          <router-link to="/orderHistory" v-if="loginStatus">
+          <router-link to="/orderHistory" v-if="loginUser">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
           <router-link to="/logoutUser" v-if="loginStatus">
@@ -44,21 +44,27 @@
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Header extends Vue {
-  private loginUserOrAdmin = false;
+  private loginUser = false;
+  private loginAdmin = false;
+  private loginAllStatus = false;
   /**
    * 会員または管理者のログイン状態でナビゲーションの項目を変化
    * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
    */
   get loginStatus(): boolean {
     if (this["$store"].getters.getLoginStatus) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+      this.loginAllStatus = this["$store"].getters.getLoginStatus;
+      this.loginUser = true;
     } else if (this["$store"].getters.getLoginAdmin) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+      this.loginAllStatus = this["$store"].getters.getLoginAdmin;
+      this.loginAdmin = true;
     } else {
-      this.loginUserOrAdmin = false;
+      this.loginAllStatus = false;
+      this.loginUser = false;
+      this.loginAdmin = false;
     }
 
-    return this.loginUserOrAdmin;
+    return this.loginAllStatus;
   }
 }
 </script>

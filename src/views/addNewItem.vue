@@ -4,25 +4,24 @@
       <div class="row login-page">
         <h1 class="center">商品追加</h1>
         <div class="col s12 z-depth-6 card-panel">
-          <div class="error">{{ errorMessage }}</div>
           <form class="login-form" action="employeeList.html">
             <div class="row">
               <i class="material-icons prefix"></i>
               <div class="input-field col s6">
                 <input id="name" type="text" v-model="name" />
-                <label for="name">名前</label>
+                <label class="active" for="name">名前</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s6">
                 <input id="type" type="text" v-model="type" />
-                <label for="type">タイプ</label>
+                <label class="active" for="type">タイプ</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <input id="description" type="text" v-model="description" />
-                <label for="description">説明</label>
+                <label class="active" for="description">説明</label>
               </div>
             </div>
             <div class="row">
@@ -40,46 +39,25 @@
             <div class="row">
               <div class="input-field col s12">
                 <input id="imagePath" type="text" v-model="imagePath" />
-                <label for="imagePath">画像URL</label>
+                <label class="active" for="imagePath">画像URL</label>
               </div>
             </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <button class="btn" type="button" @click="addTopping">
-                  <i class="far fa-plus-square">トッピング</i
-                  >：M(200円)、L(300円)
-                </button>
-                <div
-                  class="toppingBox"
-                  v-for="(topping, i) of toppingArr"
-                  :key="i"
-                >
-                  <div>
-                    トッピング名：<input
-                      id="toppingName"
-                      type="text"
-                      v-model="toppingName"
-                    />
-                  </div>
-                  <div>
-                    トッピングタイプ：<input
-                      id="toppingType"
-                      type="text"
-                      v-model="toppingType"
-                    />
-                  </div>
-                  <button
-                    class="btn delete-btn"
-                    type="button"
-                    @click="deleteTopping(i)"
-                  >
-                    削除
-                  </button>
-                </div>
+            <div class="topping-hedding">
+              トッピング19種
+              <span>&nbsp;Ｍ：</span>200円(税抜)
+              <span>&nbsp;Ｌ：</span>300円(税抜)
+            </div>
+            <div class="card item-toppings">
+              <div
+                class="toppingList"
+                v-for="topping of toppings"
+                :key="topping.id"
+              >
+                <div>{{ topping.name }}</div>
               </div>
             </div>
             <div class="row login-btn">
-              <button class="btn" type="button">
+              <button class="btn" type="button" @click="addNewItem">
                 <span>商品追加</span>
               </button>
             </div>
@@ -91,30 +69,49 @@
 </template>
 
 <script lang="ts">
+import toppingData from "@/types/ToppingData";
 import { Topping } from "@/types/Topping";
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class LoginUser extends Vue {
-  private name = "";
-  private type = "";
-  private description = "";
-  private priceM = 0;
-  private priceL = 0;
-  private imagePath = "";
-  private toppingType = "";
-  private toppingName = "";
-  private toppingArr = new Array<Topping>();
-  // private topping = new Topping(1, "", "", 0, 0);
+  private name = "クリスマスブレンドコーヒー";
+  private type = "coffee";
+  private description =
+    "季節限定の商品です。香りと風味が強く、クリスマスツリーを思わせるコーヒーとなっています。";
+  private priceM = 290;
+  private priceL = 410;
+  private imagePath = "/img_coffee/newCoffee.jpg";
+  private toppings = new Array<Topping>();
 
-  addTopping(): void {
-    this.toppingArr.push(
-      new Topping(1, this.toppingType, this.toppingName, 0, 0)
-    );
+  created(): void {
+    //トッピングの表示をさせるだけ(商品追加の時はtoppingをnullにする)
+    for (const topping of toppingData) {
+      this.toppings.push(
+        new Topping(
+          topping.id,
+          topping.type,
+          topping.name,
+          topping.priceM,
+          topping.priceL
+        )
+      );
+    }
   }
-  deleteTopping(Index: number): void {
-    const deleteCount = 1;
-    this.toppingArr.splice(Index, deleteCount);
+
+  addNewItem(): void {
+    this.$store.commit("addNewItem", {
+      item: {
+        name: this.name,
+        type: this.type,
+        description: this.description,
+        priceM: this.priceM,
+        priceL: this.priceL,
+        imagePath: this.imagePath,
+        toppingList: null,
+      },
+    });
+    this.$router.push("/itemList");
   }
 }
 </script>
@@ -131,11 +128,14 @@ export default class LoginUser extends Vue {
 .login-btn {
   text-align: center;
 }
-.toppingBox {
-  width: 600px;
-  margin-top: 10px;
-  display: flex;
-  gap: 6px 20px;
+.topping-hedding {
+  font-weight: bold;
+  font-size: 17px;
+  text-align: left;
+}
+.toppingList {
+  display: inline-block;
+  padding: 10px;
 }
 .delete-btn {
   width: 90px;
