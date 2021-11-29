@@ -9,19 +9,19 @@
               <i class="material-icons prefix"></i>
               <div class="input-field col s6">
                 <input id="name" type="text" v-model="name" />
-                <label for="name">名前</label>
+                <label class="active" for="name">名前</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s6">
                 <input id="type" type="text" v-model="type" />
-                <label for="type">タイプ</label>
+                <label class="active" for="type">タイプ</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <input id="description" type="text" v-model="description" />
-                <label for="description">説明</label>
+                <label class="active" for="description">説明</label>
               </div>
             </div>
             <div class="row">
@@ -39,7 +39,7 @@
             <div class="row">
               <div class="input-field col s12">
                 <input id="imagePath" type="text" v-model="imagePath" />
-                <label for="imagePath">画像URL</label>
+                <label class="active" for="imagePath">画像URL</label>
               </div>
             </div>
             <div class="topping-hedding">
@@ -57,7 +57,7 @@
               </div>
             </div>
             <div class="row login-btn">
-              <button class="btn" type="button" @click="addItem">
+              <button class="btn" type="button" @click="addNewItem">
                 <span>商品追加</span>
               </button>
             </div>
@@ -75,17 +75,17 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class LoginUser extends Vue {
-  private name = "";
-  private type = "";
-  private description = "";
-  private priceM = 0;
-  private priceL = 0;
-  private imagePath = "";
-  private toppingType = "";
-  private toppingName = "";
+  private name = "クリスマスブレンドコーヒー";
+  private type = "coffee";
+  private description =
+    "季節限定の商品です。香りと風味が強く、クリスマスツリーを思わせるコーヒーとなっています。";
+  private priceM = 290;
+  private priceL = 410;
+  private imagePath = "/img_coffee/newCoffee.jpg";
   private toppings = new Array<Topping>();
 
   created(): void {
+    //トッピングの表示をさせるだけ(商品追加の時はtoppingをnullにする)
     for (const topping of toppingData) {
       this.toppings.push(
         new Topping(
@@ -97,6 +97,21 @@ export default class LoginUser extends Vue {
         )
       );
     }
+  }
+
+  addNewItem(): void {
+    this.$store.commit("addNewItem", {
+      item: {
+        name: this.name,
+        type: this.type,
+        description: this.description,
+        priceM: this.priceM,
+        priceL: this.priceL,
+        imagePath: this.imagePath,
+        toppingList: null,
+      },
+    });
+    this.$router.push("/itemList");
   }
 }
 </script>
