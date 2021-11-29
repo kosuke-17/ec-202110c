@@ -252,7 +252,7 @@ export default class itemDetail extends Vue {
 
 /* サイズをオレンジ〇で囲む */
 .price {
-  background-color: #ff4500;
+  background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
 }
