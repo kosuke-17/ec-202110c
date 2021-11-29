@@ -444,7 +444,7 @@ export default class OrderConfirm extends Vue {
     for (let item of this.currentOrderItemList) {
       // トッピング情報を格納
       for (let topping of item.orderToppingList) {
-        orderToppingList.push(topping.id);
+        orderToppingList.push({ toppingId: topping.id });
       }
       this.orderItemFormList.push({
         itemId: item.itemId,
