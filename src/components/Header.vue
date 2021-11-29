@@ -7,16 +7,16 @@
         </div>
 
         <div class="header-right">
-          <router-link to="/addNewItem">
+          <router-link to="/addNewItem" v-if="loginAdmin">
             <i class="far fa-plus-square"></i>商品追加
           </router-link>
           <router-link to="/itemList">
             <i class="fas fa-utensils"></i> 商品一覧
           </router-link>
-          <router-link to="/cartList">
+          <router-link to="/cartList" v-if="!loginAdmin">
             <i class="fas fa-shopping-cart"></i>カート
           </router-link>
-          <router-link to="/contactCompany">
+          <router-link to="/contactCompany" v-if="!loginAdmin">
             <i class="fas fa-comment"></i>お問い合わせ
           </router-link>
           <router-link to="/registerUser" v-if="!loginStatus">
@@ -28,7 +28,7 @@
           <router-link to="/loginAdministrator" v-if="!loginStatus">
             <i class="fas fa-sign-out-alt"></i>管理者はこちら
           </router-link>
-          <router-link to="/orderHistory" v-if="loginStatus">
+          <router-link to="/orderHistory" v-if="loginUser">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
           <div class="example-modal-window" v-if="loginStatus">
@@ -51,9 +51,14 @@ import LogoutModal from "./logoutModal.vue";
 
 @Component({ components: { LogoutModal } })
 export default class Header extends Vue {
-  private loginUserOrAdmin = false;
   //モーダルの表示ステータス
   private isModalOpen = false;
+  //ユーザーがログイン中
+  private loginUser = false;
+  //管理者がログイン中
+  private loginAdmin = false;
+  //ユーザーまたは管理者がログイン中
+  private loginAllStatus = false;
 
   /**
    * 会員または管理者のログイン状態でナビゲーションの項目を変化
@@ -61,14 +66,18 @@ export default class Header extends Vue {
    */
   get loginStatus(): boolean {
     if (this["$store"].getters.getLoginStatus) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+      this.loginAllStatus = this["$store"].getters.getLoginStatus;
+      this.loginUser = true;
     } else if (this["$store"].getters.getLoginAdmin) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+      this.loginAllStatus = this["$store"].getters.getLoginAdmin;
+      this.loginAdmin = true;
     } else {
-      this.loginUserOrAdmin = false;
+      this.loginAllStatus = false;
+      this.loginUser = false;
+      this.loginAdmin = false;
     }
 
-    return this.loginUserOrAdmin;
+    return this.loginAllStatus;
   }
   //モーダルをオープンする処理
   openModal(): void {
@@ -91,7 +100,6 @@ export default class Header extends Vue {
 <style scoped>
 header {
   height: 65px;
-
   width: 100%;
   background-color: #ede4cd;
   position: fixed; /* スクロールしてもヘッダが表示されるように位置を固定する */
@@ -101,7 +109,6 @@ header {
   display: flex; /* ヘッダロゴと右側のリンクを横並びにする */
   /* justify-content: flex-end; 右寄せにしたい場合*/
 }
-
 .logo {
   width: 15%;
   display: flex;
@@ -110,17 +117,14 @@ header {
   font-size: 18px;
   font-weight: 600;
 }
-
 .logo a {
   color: #332315;
 }
-
 .header-right {
   margin-left: auto; /* ヘッダ右側のリンクだけ右寄せにする(ロゴは左寄せのまま) */
   /* float: right; */
   display: flex; /* ヘッダ右側のリンクを横に並べる */
 }
-
 .header-right a {
   line-height: 65px; /* 行の高さを指定(文字が上下の真ん中に配置される) */
   padding: 0 25px;
@@ -129,7 +133,6 @@ header {
   /* float: left; */
   transition: all 0.5s; /* アニメーションの設定 all=変化の対象 0.5s=変化にかかる時間 hoverと組み合わせることが多い */
 }
-
 .header-right a:hover {
   color: #332315;
 }

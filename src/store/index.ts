@@ -30,6 +30,8 @@ export default new Vuex.Store({
     orderHistoryList: new Array<Order>(),
     // ログイン後に画面遷移するためのフラグ
     loginedPageToMoveFlag: "",
+    //商品一覧が入る配列(追加商品が入る)
+    newItemList: new Array<Item>(),
   },
   mutations: {
     /**
@@ -58,7 +60,6 @@ export default new Vuex.Store({
           )
         );
       }
-      // console.dir("itemList:" + JSON.stringify(state.itemList));
     },
 
     /**
@@ -87,7 +88,6 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("注文履歴:" + JSON.stringify(state.orderHistoryList[0]));
     },
 
     /**
@@ -102,8 +102,6 @@ export default new Vuex.Store({
 
       for (const orderItem of state.orderItemList) {
         for (const orderedTopping of orderItem.orderToppingList) {
-          console.dir(JSON.stringify(payload.orderToppingList));
-
           if (
             payload.orderToppingList.find(
               (orderTopping: Topping) => orderedTopping.id === orderTopping.id
@@ -146,7 +144,6 @@ export default new Vuex.Store({
           payload.orderToppingList
         )
       );
-      // console.dir(JSON.stringify(state.orderItemList));
     },
 
     /**
@@ -329,6 +326,23 @@ export default new Vuex.Store({
         targetItem[0].favoriteCount--;
       }
     },
+    addNewItem(state, payload): void {
+      state.newItemList.unshift(
+        new Item(
+          state.itemList.length + 30,
+          payload.item.type,
+          payload.item.name,
+          payload.item.description,
+          payload.item.priceM,
+          payload.item.priceL,
+          payload.item.imagePath,
+          false,
+          payload.item.toppingList,
+          false,
+          Math.floor(Math.random() * 10)
+        )
+      );
+    },
   }, //end mutations
 
   actions: {
@@ -342,7 +356,6 @@ export default new Vuex.Store({
       const response = await axios.get(
         "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
       );
-      console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
@@ -360,7 +373,6 @@ export default new Vuex.Store({
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo._id}`
       );
-      //console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
@@ -375,7 +387,7 @@ export default new Vuex.Store({
      * @returns - 商品一覧
      */
     getAllItems(state) {
-      return state.itemList;
+      return state.newItemList.concat(state.itemList);
     },
     /**
      * 注文履歴一覧を取得する.
@@ -416,7 +428,6 @@ export default new Vuex.Store({
      * @returns ショッピングカートに入っている商品の配列
      */
     getOrderItemList(state) {
-      // return state.orderItemList;
       const orderItemList = new Array<OrderItem>();
       for (const orderItem of state.orderItemList) {
         orderItemList.push(
@@ -480,6 +491,7 @@ export default new Vuex.Store({
       //ステートのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
       paths: [
         "orderItemList",
+        "itemList",
         "isLogin",
         "loginUserInfo",
         "loginAdministratorFlag",

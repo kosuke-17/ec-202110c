@@ -2,13 +2,13 @@
   <div class="top-wrapper">
     <div class="container">
       <div class="row login-page">
-        <h1 class="center">会員ログイン</h1>
+        <h1 class="center">＊会員ログイン＊</h1>
         <div class="col s12 z-depth-6 card-panel">
           <div class="error">{{ errorMessage }}</div>
           <form class="login-form" action="employeeList.html">
             <div class="row"></div>
             <div class="row">
-              <div class="input-field col s12">
+              <div class="input-field col s12 darken-3">
                 <i class="material-icons prefix">mail_outline</i>
                 <input
                   class="validate"
@@ -118,5 +118,21 @@ export default class LoginUser extends Vue {
 
 .top-wrapper {
   min-height: 97vh;
+}
+
+.col.s12.z-depth-6.card-panel {
+  padding-top: 6%;
+  margin-top: 6%;
+}
+
+.margin.medium-small a {
+  color: #9a8e95;
+}
+.margin.medium-small a:hover {
+  color: #55423d;
+}
+
+h1 {
+  margin-bottom: 1%;
 }
 </style>
