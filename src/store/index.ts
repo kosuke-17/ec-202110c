@@ -99,6 +99,7 @@ export default new Vuex.Store({
     addItemToCart(state, payload): void {
       let duplicatedToppingFlag = false;
       // 同じ商品、サイズ、トッピングだったらquantityを加算して、カートリストに重複しないようにする。
+      console.dir("state.orderItemList:" + JSON.stringify(state.orderItemList));
 
       for (const orderItem of state.orderItemList) {
         for (const orderedTopping of orderItem.orderToppingList) {
@@ -375,6 +376,8 @@ export default new Vuex.Store({
       );
       const payload = response.data;
 
+      // console.dir("response:" + JSON.stringify(response.data));
+      // console.log(response.data);
       //(memo)ミューテーションから呼び出している
       context.commit("getOrderHistoryList", payload);
     },

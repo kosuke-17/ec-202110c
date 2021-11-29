@@ -12,12 +12,16 @@
               <th>支払い状況</th>
               <th>支払い方法</th>
               <th>商品名</th>
-              <th>合計金額(税込)</th>
+              <th>トッピング</th>
+              <th>金額(税込)</th>
             </tr>
           </thead>
           <div>{{ errorMessage }}</div>
-          <tbody v-for="order of orderHistory" v-bind:key="order.id">
-            <tr>
+          <tbody>
+            <tr
+              v-for="(order, orderIndex) of orderHistoryList"
+              v-bind:key="order.id"
+            >
               <td class="cart-item-name">
                 <span>{{ order.orderDate }}</span>
               </td>
@@ -30,11 +34,38 @@
               <td class="cart-item-name">
                 <span>{{ order.changeFormatOfPaymentMethod }}</span>
               </td>
-              <td class="cart-item-name">
-                <span>{{ order.orderItemList[0].item.name }}</span>
+              <td>
+                <div
+                  v-for="orderItem of order.orderItemList"
+                  v-bind:key="orderItem.id"
+                >
+                  {{ orderItem.item.name }}
+                </div>
+              </td>
+              <td>
+                <div
+                  v-for="orderItem of order.orderItemList"
+                  v-bind:key="orderItem.id"
+                >
+                  <div
+                    v-for="orderTopping of orderItem.orderToppingList"
+                    v-bind:key="orderTopping.id"
+                  >
+                    {{ orderTopping.topping.name }}
+                  </div>
+                </div>
               </td>
               <td class="cart-item-name">
                 <span>{{ order.changeFormatOfTotalPrice + "円" }}</span>
+              </td>
+              <td class="cart-item-name">
+                <button
+                  class="waves-effect waves-light btn"
+                  type="button"
+                  @click="reOrder(orderIndex)"
+                >
+                  <span>再注文</span>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -69,14 +100,32 @@ export default class OrderHistory extends Vue {
     } else {
       this.errorMessage = "";
     }
+    this.orderHistoryList = this["$store"].getters.getAllOrderHistoryLists;
+    // console.dir(
+    //   "this.orderHistoryList:" + JSON.stringify(this.orderHistoryList)
+    // );
+    // console.log(this.orderHistoryList);
   }
 
   /**
-   * Vuexストア内の注文履歴一覧を取得する。
-   * @Return 非同期で取得したVuexストア内の注文履歴一覧を取得し返す。
+   * 注文履歴から再注文する
    */
-  get orderHistory(): Array<Order> {
-    return this["$store"].getters.getAllOrderHistoryLists;
+  reOrder(orderIndex: number): void {
+    this["$store"].commit("addItemToCart", {
+      size: "M",
+      orderToppingList: "チョコチップ",
+      quantity: 1,
+      orderItem: {
+        id: 1,
+        name: "チョコ",
+        description: "a",
+        priceM: 150,
+        priceL: 150,
+        imagePath: "gga",
+        deleted: false,
+      },
+    });
+    this["$router"].push("/cartList");
   }
 }
 </script>
