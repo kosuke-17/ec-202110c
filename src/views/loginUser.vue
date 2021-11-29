@@ -37,7 +37,7 @@
               <div class="input-field col s6 m6 l6">
                 <p class="margin medium-small">
                   <router-link to="/registerUser">
-                    <a>会員登録はこちら</a>
+                    会員登録はこちら
                   </router-link>
                 </p>
               </div>
@@ -79,17 +79,16 @@ export default class LoginUser extends Vue {
       }
     );
 
-    // console.dir("response:" + JSON.stringify(response));
     // エラー処理
     if (response.data.status == "success") {
       // 会員登録情報の取得
       const loginUserData = response.data.responseMap.user;
-      // ステートにログインしたユーザーの情報を渡す
+      //会員ステートにログインしたユーザーの情報を渡す
       this["$store"].commit("getUserInfo", {
         userInfo: loginUserData,
       });
-      //ステートをログインに切り替えるミューテーションから呼び出す
-      this["$store"].commit("statusLogin");
+      //会員ステートをログインに切り替えるミューテーションから呼び出す
+      this["$store"].commit("loginUser");
 
       // 商品一覧画面に遷移する(ステートのフラグがgoToOrderだったら商品注文ページへ遷移)
       if (this.$store.state.loginedPageToMoveFlag === "goToOrder") {
@@ -118,7 +117,7 @@ export default class LoginUser extends Vue {
 }
 
 .top-wrapper {
-  height: 97vh;
+  min-height: 97vh;
 }
 
 .col.s12.z-depth-6.card-panel {

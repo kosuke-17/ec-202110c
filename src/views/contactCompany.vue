@@ -91,8 +91,7 @@ export default class ContactCompany extends Vue {
         .catch((error) => {
           throw new Error(error);
         })
-        .then((data) => {
-          console.log("Success:", data);
+        .then(() => {
           alert("送信が完了しました。");
           this.name = "";
           this.email = "";
@@ -113,7 +112,7 @@ export default class ContactCompany extends Vue {
   text-align: center;
 }
 .top-wrapper {
-  height: 100vh;
+  min-height: 97vh;
 }
 
 .col.s12.z-depth-6.card-panel {
