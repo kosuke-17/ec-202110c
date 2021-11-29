@@ -852,4 +852,21 @@ input[type="number"]::-webkit-inner-spin-button {
 [type="radio"].with-gap:checked + span:after {
   border: #55423d;
 }
+
+[type="checkbox"]:checked + span:not(.lever):before {
+  top: -4 px;
+  left: -5 px;
+  width: 12 px;
+  height: 22 px;
+  border-top: 2 px solid transparent;
+  border-left: 2 px solid transparent;
+  border-right: 2 px solid #55423d;
+  border-bottom: 2 px solid #55423d;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
 </style>
