@@ -37,7 +37,7 @@
                 <i class="fas fa-sign-out-alt"></i>ログアウト
               </button>
             </a>
-            <LogoutModal v-on:logout-modal="closeModal" v-if="isModalOpen" />
+            <LogoutModal v-on:close-modal="closeModal" v-if="isModalOpen" />
           </div>
         </div>
       </div>

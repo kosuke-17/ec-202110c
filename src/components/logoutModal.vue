@@ -1,37 +1,52 @@
 <template>
-  <!-- <transition name="modal" appear>
-    <div class="modal modal-overlay">
-      <div class="modal-window">
-        <div class="modal-content"></div> -->
   <div>
-    <p>本当にログアウトしますか？</p>
-    <!-- <footer class="modal-footer"> -->
-    <button @click="preLogoutModal('yes')">はい</button>
-    <button @click="preLogoutModal('no')">いいえ</button>
-  </div>
-  <!-- </footer>
+    <div class="modal-overlay">
+      <a href="#!" class="overlay"></a>
+      <div class="modal-wrapper">
+        <div class="modal-contents">
+          <a class="modal-close" @click="preLogoutModal('no')">✕</a>
+          <div class="modal-content">
+            <p>本当にログアウトしますか？</p>
+            <button class="btn" @click="preLogoutModal('yes')">はい</button>
+            <button class="btn" @click="preLogoutModal('no')">いいえ</button>
+          </div>
+        </div>
       </div>
     </div>
-  </transition> -->
+  </div>
 </template>
 
 <script lang="ts">
+import { Emit, Component, Vue } from "vue-property-decorator";
+// [npm install axios-jsonp]が必要
 import axios from "axios";
-import { Emit, Vue } from "vue-property-decorator";
 
+@Component
 export default class LogoutModal extends Vue {
   @Emit()
-  public logoutModal(close: string): void {
+  /**
+   * モーダルをクローズする.
+   *
+   * @params - モーダルをクローズするかを表す文字列
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public closeModal(close: string): void {
     console.log("close-modalイベント発生");
-    console.log(close);
   }
 
+  /**
+   * ログアウト実行の確認.
+   *
+   * @params - ログアウトを実行するかを表す文字列
+   * @remarks 引数に"yes"を受け取ったら、logoutメソッドを実行して、モーダルをクローズする。
+   * "no"を受け取ったら、ログアウトせずにモーダルをクローズする。
+   */
   public preLogoutModal(answer: string): void {
     if (answer === "yes") {
       this.logout();
     }
-    //親コンポーネントで判別するときに常にfalseを返す
-    this.logoutModal("");
+    //親コンポーネントで判別するときに常にfalseを返すためにから文字を引数に指定。
+    this.closeModal("");
   }
 
   //ログアウトをする処理
@@ -53,6 +68,11 @@ export default class LogoutModal extends Vue {
 </script>
 
 <style scoped>
+* {
+  padding: 0;
+  margin: 0;
+}
+
 .modal-overlay {
   display: flex;
   align-items: center;
@@ -66,43 +86,75 @@ export default class LogoutModal extends Vue {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.modal-window {
-  background: #fff;
-  border-radius: 4px;
-  overflow: hidden;
+.modal-open a {
+  display: inline-block;
+  padding: 5px;
+  text-decoration: none;
+  color: #fff;
 }
-
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.modal:not(:target) {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+.modal:target {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+.modal .overlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #000;
+  opacity: 0.7;
+  top: 0;
+  left: 0;
+}
+.modal-wrapper {
+  width: 100%;
+  max-width: 400px;
+  min-width: 300px;
+  height: 80%;
+  max-height: 350px;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modal-contents {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  align-items: center;
+  display: grid;
+}
 .modal-content {
-  padding: 10px 20px;
+  margin: 25px;
+  font-weight: bold;
+  text-align: center;
 }
-
-.modal-footer {
-  background: #ccc;
-  padding: 10px;
-  text-align: right;
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  text-decoration: none;
+  cursor: pointer;
 }
-
-/* オーバーレイのトランジション */
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.4s;
-}
-/* オーバーレイに包含されているモーダルウィンドウのトランジション */
-.modal-window {
-  transition: opacity 0.4s, transform 0.4s;
-}
-
-/* ディレイを付けるとモーダルウィンドウが消えた後にオーバーレイが消える */
-.modal-leave-active {
-  transition: opacity 0.6s ease 0.4s;
-}
-
-.modal-enter,
-.modal-leave-to {
-  opacity: 0;
-}
-.modal-window {
-  opacity: 0;
-  transform: translateY(-20px);
+.btn {
+  background-color: rgba(49, 29, 2, 0.89);
+  margin: 10px;
+  padding: 2px 10px;
 }
 </style>
