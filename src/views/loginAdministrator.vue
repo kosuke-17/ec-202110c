@@ -117,4 +117,5 @@ export default class LoginAdministrator extends Vue {
 h1 {
   margin-bottom: 1%;
 }
+
 </style>

@@ -444,7 +444,7 @@ export default class OrderConfirm extends Vue {
     for (let item of this.currentOrderItemList) {
       // トッピング情報を格納
       for (let topping of item.orderToppingList) {
-        orderToppingList.push(topping.id);
+        orderToppingList.push({ toppingId: topping.id });
       }
       this.orderItemFormList.push({
         itemId: item.itemId,
@@ -461,7 +461,6 @@ export default class OrderConfirm extends Vue {
       createOrderDate,
       `yyyy/MM/dd ${this.deliveryTime}:00:00`
     );
-    console.log("userId:" + this.userId);
 
     /*
      *クレジットカード情報を送信する。
@@ -512,9 +511,7 @@ export default class OrderConfirm extends Vue {
         orderItemFormList: this.orderItemFormList,
       }
     );
-    console.log(response.data);
 
-    console.dir("確認したい内容" + JSON.stringify(response));
     if (response.data.status === "success") {
       //成功した場合は、注文完了画面に遷移する
       this.$store.commit("resetOrderItemList");
@@ -546,7 +543,6 @@ export default class OrderConfirm extends Vue {
           },
         });
         this.destinationAddress = response.data.items[0].components.join("");
-        console.log("成功");
       } catch (e) {
         alert("正しい郵便番号を入力してください");
       }
@@ -841,5 +837,8 @@ input[type="number"]::-webkit-inner-spin-button {
   background-color: #ff4500;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
+}
+.top-wrapper {
+  min-height: 97vh;
 }
 </style>

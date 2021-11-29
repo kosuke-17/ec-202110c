@@ -343,10 +343,6 @@ export default class RegisterUser extends Vue {
           zipcode: this.zipcode,
         },
       });
-      //JSON形式で取得内容確認
-      console.dir("郵便番号" + JSON.stringify(response));
-      //componentsのパスを確認
-      console.dir(JSON.stringify(response.data.items[0].components));
       //.join("")でcomponents配列内を連結
       this.address = response.data.items[0].components.join("");
     } else {
@@ -372,5 +368,8 @@ export default class RegisterUser extends Vue {
 
 .row.register-page {
   margin: 0 auto;
+}
+.top-wrapper {
+  min-height: 97vh;
 }
 </style>

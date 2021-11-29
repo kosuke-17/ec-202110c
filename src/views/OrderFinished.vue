@@ -27,12 +27,9 @@ export default class Home extends Vue {
    * ログインしていなければ、ログイン画面に戻るように処理を実装.
    */
   created(): void {
-    if (this.$store.state.isLogin) {
-      console.log("ログインしています");
-    } else {
+    if (!this.$store.state.isLogin) {
       alert("ログインしてないため、ログイン画面に移動します。");
       this.$router.push("/loginUser");
-      console.log("ログインしてません");
     }
     /**
      * トップ画面に遷移する処理.
@@ -48,6 +45,7 @@ export default class Home extends Vue {
 .top-wrapper {
   min-height: 97vh;
 }
+
 
 .order-finished-thanks-message {
   text-align: center;

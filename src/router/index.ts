@@ -4,6 +4,10 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+    path: "/addNewItem",
+    component: () => import("../views/addNewItem.vue"),
+  },
+  {
     path: "/contactCompany",
     component: () => import("../views/contactCompany.vue"),
   },
@@ -42,6 +46,10 @@ const routes: Array<RouteConfig> = [
   {
     path: "/logoutUser",
     component: () => import("../views/logoutUser.vue"),
+  },
+  {
+    path: "/loginAdministrator",
+    component: () => import("../views/loginAdministrator.vue"),
   },
   {
     path: "/",

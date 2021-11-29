@@ -20,14 +20,18 @@ export default new Vuex.Store({
     selectedItemList: new Array<Item>(),
     //カートに入っている商品一覧
     orderItemList: new Array<OrderItem>(),
-    //ログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
+    //ユーザーがログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
     isLogin: false,
+    //管理者がログインされているかどうかのフラグ(ログイン時:true/ログアウト時:false)
+    loginAdministratorFlag: false,
     //ログインしているユーザーの情報
     loginUserInfo: new User(0, "", "", "", "", "", ""),
     //商品履歴一覧が入る配列
     orderHistoryList: new Array<Order>(),
     // ログイン後に画面遷移するためのフラグ
     loginedPageToMoveFlag: "",
+    //商品一覧が入る配列(追加商品が入る)
+    newItemList: new Array<Item>(),
   },
   mutations: {
     /**
@@ -48,11 +52,14 @@ export default new Vuex.Store({
             item.priceL,
             item.imagePath,
             item.deleteId,
-            item.toppingList
+            item.toppingList,
+            //最初はいいねしていない
+            false,
+            //モックの数値をランダムで表示する
+            Math.floor(Math.random() * 10)
           )
         );
       }
-      // console.dir("itemList:" + JSON.stringify(state.itemList));
     },
 
     /**
@@ -81,7 +88,6 @@ export default new Vuex.Store({
           )
         );
       }
-      console.dir("注文履歴:" + JSON.stringify(state.orderHistoryList[0]));
     },
 
     /**
@@ -96,8 +102,6 @@ export default new Vuex.Store({
 
       for (const orderItem of state.orderItemList) {
         for (const orderedTopping of orderItem.orderToppingList) {
-          console.dir(JSON.stringify(payload.orderToppingList));
-
           if (
             payload.orderToppingList.find(
               (orderTopping: Topping) => orderedTopping.id === orderTopping.id
@@ -133,12 +137,13 @@ export default new Vuex.Store({
             payload.orderItem.priceL,
             payload.orderItem.imagePath,
             payload.orderItem.deleteId,
-            payload.orderItem.toppingList
+            payload.orderItem.toppingList,
+            false,
+            0
           ),
           payload.orderToppingList
         )
       );
-      // console.dir(JSON.stringify(state.orderItemList));
     },
 
     /**
@@ -224,20 +229,36 @@ export default new Vuex.Store({
       }
     },
     /**
-     * ログインする.
+     * 会員がログインする.
      * @remarks ステートをログイン状態に変更している
      * @param state ステートオブジェクト
      */
-    statusLogin(state) {
+    loginUser(state) {
       state.isLogin = true;
     },
     /**
-     * ログアウトする.
+     * 会員がログアウトする.
      * @remarks ステートをログアウト状態に変更している
      * @param state ステートオブジェクト
      */
-    statusLogout(state) {
+    logoutUser(state) {
       state.isLogin = false;
+    },
+    /**
+     * 管理者がログインする.
+     * @remarks ステートをログイン状態に変更している
+     * @param state ステートオブジェクト
+     */
+    loginAdmin(state) {
+      state.loginAdministratorFlag = true;
+    },
+    /**
+     * 管理者がログアウトする.
+     * @remarks ステートをログアウト状態に変更している
+     * @param state ステートオブジェクト
+     */
+    logoutAdmin(state) {
+      state.loginAdministratorFlag = false;
     },
     /**
      * ショッピングカートに入っている商品を削除する.
@@ -280,6 +301,48 @@ export default new Vuex.Store({
     setMoveFlag(state, payload): void {
       state.loginedPageToMoveFlag = payload.setStr;
     },
+
+    /**
+     * いいねのフラグといいね数を変更する.
+     *
+     * @remarks ペイロードとして送られてきたItemオブジェクトをItemリストから検索する。
+     *          いいねがされていなかったら、isFavorite = trueにして、いいね数を＋１する。
+     *          いいねされていたら、isFavorite = falseにして、いいね数を-1する。
+     * @param state - ステートオブジェクト
+     * @param payload - いいねボタンをクリックされたItemオブジェクト
+     */
+    changeFavoriteFlag(state, payload): void {
+      const targetItem = [];
+      for (const item of state.itemList) {
+        if (item === payload.item) {
+          targetItem.push(item);
+        }
+      }
+      if (targetItem[0].isFavorite === false) {
+        targetItem[0].isFavorite = true;
+        targetItem[0].favoriteCount++;
+      } else {
+        targetItem[0].isFavorite = false;
+        targetItem[0].favoriteCount--;
+      }
+    },
+    addNewItem(state, payload): void {
+      state.newItemList.unshift(
+        new Item(
+          state.itemList.length + 30,
+          payload.item.type,
+          payload.item.name,
+          payload.item.description,
+          payload.item.priceM,
+          payload.item.priceL,
+          payload.item.imagePath,
+          false,
+          payload.item.toppingList,
+          false,
+          Math.floor(Math.random() * 10)
+        )
+      );
+    },
   }, //end mutations
 
   actions: {
@@ -293,7 +356,6 @@ export default new Vuex.Store({
       const response = await axios.get(
         "http://153.127.48.168:8080/ecsite-api/item/items/coffee"
       );
-      console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
@@ -311,7 +373,6 @@ export default new Vuex.Store({
       const response = await axios.get(
         `http://153.127.48.168:8080/ecsite-api/order/orders/coffee/${this.state.loginUserInfo._id}`
       );
-      //console.dir("response:" + JSON.stringify(response));
       const payload = response.data;
 
       //(memo)ミューテーションから呼び出している
@@ -326,7 +387,7 @@ export default new Vuex.Store({
      * @returns - 商品一覧
      */
     getAllItems(state) {
-      return state.itemList;
+      return state.newItemList.concat(state.itemList);
     },
     /**
      * 注文履歴一覧を取得する.
@@ -367,7 +428,6 @@ export default new Vuex.Store({
      * @returns ショッピングカートに入っている商品の配列
      */
     getOrderItemList(state) {
-      // return state.orderItemList;
       const orderItemList = new Array<OrderItem>();
       for (const orderItem of state.orderItemList) {
         orderItemList.push(
@@ -386,7 +446,9 @@ export default new Vuex.Store({
               orderItem._item._priceL,
               orderItem._item._imagePath,
               orderItem._item._deleteId,
-              orderItem._item._toppingList
+              orderItem._item._toppingList,
+              false,
+              0
             ),
             orderItem._orderToppingList
           )
@@ -402,6 +464,14 @@ export default new Vuex.Store({
      */
     getLoginStatus(state) {
       return state.isLogin;
+    },
+    /**
+     * ログイン状態を取得
+     * @param state - ステートオブジェクト
+     * @returns - ログイン状態
+     */
+    getLoginAdmin(state) {
+      return state.loginAdministratorFlag;
     },
 
     /**
@@ -419,7 +489,13 @@ export default new Vuex.Store({
       // ストレージのキーを指定
       key: "vue",
       //ステートのデータをセッションストレージに格納しブラウザ更新しても残るようにしている
-      paths: ["orderItemList", "isLogin", "loginUserInfo"],
+      paths: [
+        "orderItemList",
+        "itemList",
+        "isLogin",
+        "loginUserInfo",
+        "loginAdministratorFlag",
+      ],
       // ストレージの種類を指定
       storage: window.sessionStorage,
     }),

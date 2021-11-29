@@ -7,27 +7,38 @@
         </div>
 
         <div class="header-right">
+          <router-link to="/addNewItem" v-if="loginAdmin">
+            <i class="far fa-plus-square"></i>商品追加
+          </router-link>
           <router-link to="/itemList">
             <i class="fas fa-utensils"></i> 商品一覧
           </router-link>
-          <router-link to="/cartList">
+          <router-link to="/cartList" v-if="!loginAdmin">
             <i class="fas fa-shopping-cart"></i>カート
           </router-link>
-          <router-link to="/contactCompany">
+          <router-link to="/contactCompany" v-if="!loginAdmin">
             <i class="fas fa-comment"></i>お問い合わせ
           </router-link>
-          <router-link to="/registerUser" v-if="loginStatus === false">
+          <router-link to="/registerUser" v-if="!loginStatus">
             <i class="fas fa-user"></i>会員登録
           </router-link>
-          <router-link to="/loginUser" v-if="loginStatus === false">
+          <router-link to="/loginUser" v-if="!loginStatus">
             <i class="fas fa-sign-in-alt"></i>ログイン
           </router-link>
-          <router-link to="/orderHistory" v-if="loginStatus === true">
+          <router-link to="/loginAdministrator" v-if="!loginStatus">
+            <i class="fas fa-sign-out-alt"></i>管理者はこちら
+          </router-link>
+          <router-link to="/orderHistory" v-if="loginUser">
             <i class="fas fa-user"></i>注文履歴
           </router-link>
-          <router-link to="/logoutUser" v-if="loginStatus === true">
-            <i class="fas fa-sign-out-alt"></i>ログアウト
-          </router-link>
+          <div class="example-modal-window" v-if="loginStatus">
+            <a>
+              <button @click="openModal" class="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>ログアウト
+              </button>
+            </a>
+            <LogoutModal v-on:close-modal="closeModal" v-if="isModalOpen" />
+          </div>
         </div>
       </div>
     </div>
@@ -36,19 +47,51 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import LogoutModal from "./logoutModal.vue";
+
+@Component({ components: { LogoutModal } })
 export default class Header extends Vue {
-  private loginUserOrAdmin = false;
-  // ユーザーのログイン状態でナビゲーションの項目を変化
+  //モーダルの表示ステータス
+  private isModalOpen = false;
+  //ユーザーがログイン中
+  private loginUser = false;
+  //管理者がログイン中
+  private loginAdmin = false;
+  //ユーザーまたは管理者がログイン中
+  private loginAllStatus = false;
+
+  /**
+   * 会員または管理者のログイン状態でナビゲーションの項目を変化
+   * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
+   */
   get loginStatus(): boolean {
     if (this["$store"].getters.getLoginStatus) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginStatus;
+      this.loginAllStatus = this["$store"].getters.getLoginStatus;
+      this.loginUser = true;
     } else if (this["$store"].getters.getLoginAdmin) {
-      this.loginUserOrAdmin = this["$store"].getters.getLoginAdmin;
+      this.loginAllStatus = this["$store"].getters.getLoginAdmin;
+      this.loginAdmin = true;
     } else {
-      this.loginUserOrAdmin = false;
+      this.loginAllStatus = false;
+      this.loginUser = false;
+      this.loginAdmin = false;
     }
-    return this.loginUserOrAdmin;
+
+    return this.loginAllStatus;
+  }
+  //モーダルをオープンする処理
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  //モーダルをクローズする処理
+  //logoutModal.vueから受け取った引数をもとにモーダルクローズする
+  closeModal(close: string): void {
+    if (close === "") {
+      this.isModalOpen = false;
+    } else {
+      this.isModalOpen = true;
+    }
   }
 }
 </script>
@@ -96,5 +139,16 @@ header {
 /* fontawesome(ログインアイコンの設定) */
 .fas {
   margin-right: 5px;
+}
+
+.logoutBtn {
+  border: none;
+  color: #9d8e87;
+  background-color: #ede4cd;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  color: #332315;
 }
 </style>

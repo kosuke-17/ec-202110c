@@ -19,8 +19,28 @@ export class Item {
     //削除フラグ
     public _deleteId: boolean,
     //トッピングリスト
-    public _toppingList: Array<Topping>
+    public _toppingList: Array<Topping>,
+    //いいねの状態のフラグ
+    public _isFavorite: boolean,
+    //いいね数
+    public _favoriteCount: number
   ) {}
+
+  public get isFavorite(): boolean {
+    return this._isFavorite;
+  }
+
+  public set isFavorite(isFavorite: boolean) {
+    this._isFavorite = isFavorite;
+  }
+
+  public get favoriteCount(): number {
+    return this._favoriteCount;
+  }
+
+  public set favoriteCount(favoriteCount: number) {
+    this._favoriteCount = favoriteCount;
+  }
 
   public get id(): number {
     return this._id;

@@ -12,7 +12,7 @@
               <th>支払い状況</th>
               <th>支払い方法</th>
               <th>商品名</th>
-              <th>合計金額</th>
+              <th>合計金額(税込)</th>
             </tr>
           </thead>
           <div>{{ errorMessage }}</div>
@@ -64,7 +64,6 @@ export default class OrderHistory extends Vue {
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getOrderHistoryList");
-    console.log(this["$store"].getters.getAllOrderHistoryLists.length);
     if (this["$store"].getters.getAllOrderHistoryLists.length == 0) {
       this.errorMessage = "注文履歴がありません";
     } else {
@@ -82,4 +81,8 @@ export default class OrderHistory extends Vue {
 }
 </script>
 
-<style></style>
+<style scoped>
+.top-wrapper {
+  min-height: 97vh;
+}
+</style>
