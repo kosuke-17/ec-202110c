@@ -101,4 +101,21 @@ export default class LoginAdministrator extends Vue {
 .login-btn {
   text-align: center;
 }
+
+.col.s12.z-depth-6.card-panel {
+  padding-top: 6%;
+  margin-top: 6%;
+}
+
+.margin.medium-small a {
+  color: #9a8e95;
+}
+.margin.medium-small a:hover {
+  color: #55423d;
+}
+
+h1 {
+  margin-bottom: 1%;
+}
+
 </style>

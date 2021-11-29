@@ -45,4 +45,12 @@ export default class Home extends Vue {
 .top-wrapper {
   min-height: 97vh;
 }
+
+
+.order-finished-thanks-message {
+  text-align: center;
+}
+.row.order-finished-btn {
+  text-align: center;
+}
 </style>

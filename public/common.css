@@ -99,7 +99,3 @@ h1 {
 .row {
   margin: 0 auto;
 }
-
-input:focus {
-  color: black;
-}
