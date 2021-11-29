@@ -274,10 +274,17 @@ fieldset {
   padding: 0 0 15px 0;
 }
 
-/* サイズをオレンジ〇で囲む */
+/* サイズを〇で囲む */
 .price {
   background-color: #d6c6af;
   border-radius: 50%; /* 角丸にする設定 */
+}
+
+.item a {
+  color: #513a2a;
+}
+.item a:hover {
+  color: #1f1714;
 }
 
 .page-btn {
