@@ -300,4 +300,26 @@ export default class itemDetail extends Vue {
 .top-wrapper {
   min-height: 97vh;
 }
+[type="radio"]:checked + span:after {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
+  background-color: #55423d;
+  border: #55423d;
+}
+[type="checkbox"]:checked + span:not(.lever):before {
+  top: -4px;
+  left: -5px;
+  width: 12px;
+  height: 22px;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid #332315;
+  border-bottom: 2px solid #332315;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
 </style>
