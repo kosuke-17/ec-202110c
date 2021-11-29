@@ -1,9 +1,9 @@
-import { Topping } from './Topping';
+import { Topping } from "./Topping";
 
 export class OrderTopping {
   constructor(
     //注文トッピングID
-    private _id: number,
+    public _id: number,
     //トッピングID
     private _toppingId: number,
     //注文商品ID

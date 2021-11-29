@@ -39,6 +39,10 @@
             </a>
             <LogoutModal v-on:close-modal="closeModal" v-if="isModalOpen" />
           </div>
+          <span class="admin-apper" v-if="loginAdmin">管理者：ログイン中</span>
+          <span class="user-apper" v-if="loginUser">
+            {{ loginUserdata._name }}：ログイン中
+          </span>
         </div>
       </div>
     </div>
@@ -46,6 +50,7 @@
 </template>
 
 <script lang="ts">
+import { User } from "@/types/User";
 import { Component, Vue } from "vue-property-decorator";
 import LogoutModal from "./logoutModal.vue";
 
@@ -59,12 +64,16 @@ export default class Header extends Vue {
   private loginAdmin = false;
   //ユーザーまたは管理者がログイン中
   private loginAllStatus = false;
+  private loginUserdata = new User(0, "", "", "", "", "", "");
 
   /**
    * 会員または管理者のログイン状態でナビゲーションの項目を変化
    * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
    */
   get loginStatus(): boolean {
+    // フィールド変数にユーザー情報を格納
+    this.loginUserdata = this.$store.getters.getLoginUserInfo;
+
     if (this["$store"].getters.getLoginStatus) {
       this.loginAllStatus = this["$store"].getters.getLoginStatus;
       this.loginUser = true;
@@ -140,7 +149,20 @@ header {
 .fas {
   margin-right: 5px;
 }
-
+.admin-apper {
+  background-color: #332315;
+  margin: 10px;
+  color: white;
+  padding: 10px 5px;
+}
+.user-apper {
+  background-color: #332315;
+  color: white;
+  margin: 10px;
+  padding-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
 .logoutBtn {
   border: none;
   color: #9d8e87;
