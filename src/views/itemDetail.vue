@@ -142,7 +142,9 @@ export default class itemDetail extends Vue {
       0,
       "image",
       false,
-      new Array<Topping>()
+      new Array<Topping>(),
+      false,
+      0
     ),
     new Array<OrderTopping>()
   );
@@ -183,7 +185,9 @@ export default class itemDetail extends Vue {
         response.data.item.priceL,
         response.data.item.imagePath,
         response.data.item.deleted,
-        response.data.item.toppingList
+        response.data.item.toppingList,
+        false,
+        0
       ),
       new Array<OrderTopping>()
     );
