@@ -480,8 +480,6 @@ export default new Vuex.Store({
      * @returns 現在ログインしているユーザー情報
      */
     getLoginUserInfo(state) {
-      console.dir(JSON.stringify(state.loginUserInfo));
-
       return state.loginUserInfo;
     },
   }, //end getters
