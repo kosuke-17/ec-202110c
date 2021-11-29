@@ -66,6 +66,7 @@
             <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
             <div class="favorite">
               <div
+                class="favoriteBtn"
                 @click="changeFavoriteFlag(item)"
                 v-if="item.isFavorite === false"
               >
@@ -75,6 +76,7 @@
                 ></i>
               </div>
               <div
+                class="favoriteBtn"
                 @click="changeFavoriteFlag(item)"
                 v-if="item.isFavorite === true"
               >
@@ -385,5 +387,9 @@ fieldset {
 }
 .top-wrapper {
   min-height: 97vh;
+}
+
+.favoriteBtn :hover {
+  cursor: pointer;
 }
 </style>
