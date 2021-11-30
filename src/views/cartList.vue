@@ -30,7 +30,7 @@
           </div>
         </div>
         <div v-if="orderItemList.length">
-          <table class="striped">
+          <table>
             <thead>
               <tr>
                 <th class="cart-table-th">商品名</th>
@@ -280,7 +280,12 @@ export default class cartList extends Vue {
 .card-action.btn {
   padding: 0;
 }
-table.striped > tbody > tr:nth-child(odd) {
+
+table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
   background-color: #eae6da;
 }
 </style>

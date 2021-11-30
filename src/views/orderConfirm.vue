@@ -4,7 +4,7 @@
       <h1 class="page-title">注文内容確認</h1>
       <!-- table -->
       <div class="row">
-        <table class="striped">
+        <table>
           <thead>
             <tr>
               <th class="cart-table-th">商品名</th>
@@ -868,5 +868,13 @@ input[type="number"]::-webkit-inner-spin-button {
   backface-visibility: hidden;
   -webkit-transform-origin: 100% 100%;
   transform-origin: 100% 100%;
+}
+
+table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #eae6da;
 }
 </style>
