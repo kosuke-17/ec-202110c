@@ -59,12 +59,17 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class ContactCompany extends Vue {
+  //お問い合わせ元氏名
   private name = "";
+  //お問い合わせ元メールアドレス
   private email = "";
+  //お問い合わせ内容
   private content = "";
 
   /**
    * お問い合わせ内容の送信.
+   *
+   * @remarks お問い合わせ内容をslackに送信。
    */
   async submitToCompany(): Promise<void> {
     const payload = {

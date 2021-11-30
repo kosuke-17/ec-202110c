@@ -23,18 +23,14 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
-  /**
-   * ログインしていなければ、ログイン画面に戻るように処理を実装.
-   */
+  //ログインしていなければ、ログイン画面に戻るように処理を実装
   created(): void {
     if (!this.$store.state.isLogin) {
       alert("ログインしてないため、ログイン画面に移動します。");
       this.$router.push("/loginUser");
     }
-    /**
-     * トップ画面に遷移する処理.
-     */
   }
+  // トップ画面に遷移
   goHome(): void {
     this.$router.push("/");
   }
@@ -45,7 +41,6 @@ export default class Home extends Vue {
 .top-wrapper {
   min-height: 97vh;
 }
-
 
 .order-finished-thanks-message {
   text-align: center;

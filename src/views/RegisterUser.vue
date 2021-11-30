@@ -47,8 +47,6 @@
             <button class="btn" type="button" v-on:click="getAddressByZipCode">
               <span>住所検索</span>
             </button>
-
-            <div>{{ errorMess }}</div>
           </div>
         </div>
         <div class="row">
@@ -138,7 +136,6 @@ export default class RegisterUser extends Vue {
   private password = "";
   // 確認用パスワード
   private checkPassword = "";
-
   // エラーメッセージ（名前）
   private errorOfName = "";
   // エラーメッセージ（メールアドレス）
@@ -153,8 +150,6 @@ export default class RegisterUser extends Vue {
   private errorOfPassword = "";
   // エラーメッセージ（確認用パスワード）
   private errorOfCheckpassword = "";
-  //
-  private errorMess = "";
 
   /**
    * ユーザー情報を登録する.
@@ -162,7 +157,6 @@ export default class RegisterUser extends Vue {
    * @remarks
    * 本メソッドは非同期でWebAPIを呼び出しユーザー登録をするためasync/await axiosを利用しています。
    * これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要があります。
-   * @returns Promiseオブジェクト
    */
   async registerUser(): Promise<void> {
     // 登録画面にエラーが表示されている場合はユーザー登録処理を実行しない
@@ -291,7 +285,6 @@ export default class RegisterUser extends Vue {
 
   /**
    * 入力した内容とエラーをクリアする.
-   *
    */
   private clear(): void {
     this.lastName = "";
@@ -326,13 +319,13 @@ export default class RegisterUser extends Vue {
   }
 
   /**
-   * 郵便馬号から住所取得.
+   * 郵便番号から住所取得.
    * @remarks 入力された郵便番号からzipcodaを使用して住所を取得、axios-jsonpはインストール
    *           使うためには「npm install --save-dev axios-jsonp」を行う
    */
 
   async getAddressByZipCode(): Promise<void> {
-    this.errorMess = "";
+    this.errorOfZipcode = "";
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const axiosJsonpAdapter = require("axios-jsonp");
     this.errorOfZipcode = "";

@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+// 使用するためには「npm install axios --save」を行う
 import axios from "axios";
 
 @Component
@@ -57,12 +58,11 @@ export default class LoginAdministrator extends Vue {
   private errorMessage = "";
 
   /**
-   * ログインする.
+   * 管理者ログインする.
    *
    * @remarks
    * 本メソッドは非同期でWebAPIを呼び出しログインをするためasync/await axiosを利用しています。
    * これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要があります。
-   * @returns Promiseオブジェクト
    */
   async loginAdministrator(): Promise<void> {
     const response = await axios.post(

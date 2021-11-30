@@ -151,10 +151,9 @@ export default class itemList extends Vue {
   private hasItems = true;
 
   /**
-   * Vuexストアのアクション経由で非同期でWebAPIから商品一覧を取得する.
+   * WebAPIから商品一覧を取得する.
    *
    * @remarks 全商品一覧をAPIからアクションで取得、ミューテーションで商品オブジェクト化したものを商品一覧配列に格納
-   *
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getItemList");
@@ -166,8 +165,8 @@ export default class itemList extends Vue {
 
   /**
    *商品名を曖昧検索する.
+
    *@params - 入力欄に入力された検索キーワード
-   *
    */
   getSearchKeyWord(searchKeyWord: string): void {
     this.itemList = this["$store"].getters.getSearchKeyWord(searchKeyWord);
@@ -180,18 +179,19 @@ export default class itemList extends Vue {
 
   /**
    * ページ数を表示する.
-   * @remarks 検索結果の商品数(itemList.length)を使用
-   * @remarks 検索結果した商品数からページング
+   *
+   *@remarks 検索結果の商品数(itemList.length)を使用
+   *         検索結果した商品数からページング
    *@returns 表示するページ数
    */
   get getShowPage(): number {
     return Math.ceil((this.itemList.length + 1) / 9);
   }
   /**
-   *１ぺーじに表示させる商品リスト.
+   *１ページに表示させる商品リスト.
+
    *@remarks クリックされたページ数から表示させる商品リストのIndexを指定してsliceメソットで表示させるリストを指定している
-   *@param target - 押されたページ数
-   *
+   *@param targetNum - 押されたページ数
    */
   showItemListForOnePage(targetNum: number): void {
     let startIndex = (targetNum - 1) * 9;
@@ -203,7 +203,8 @@ export default class itemList extends Vue {
     );
   }
   /**
-   * 商品一覧の初期ページを９個に指定.
+   * 商品一覧の初期ページを９個の商品に指定.
+   *
    * @returns 商品リストの最初の９個（Index:0〜8）
    */
   get defaltDisplayItemList(): void {
@@ -211,6 +212,7 @@ export default class itemList extends Vue {
   }
   /**
    *商品全件一覧を取得.
+   *
    * @remarks 商品検索のサジェスト機能をするために全件取得メソッドを作成
    */
   get getAllItem(): void {
@@ -219,6 +221,7 @@ export default class itemList extends Vue {
 
   /**
    * 並び替えした後の商品全件一覧を取得.
+   *
    * @remarks payloadで指定した並び替え方法を渡す
    */
   changeOrder(): void {
