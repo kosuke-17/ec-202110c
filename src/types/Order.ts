@@ -32,16 +32,6 @@ export class Order {
     private _orderItemList: Array<Item>
   ) {}
 
-  get getTax(): number {
-    // ここに消費税の金額処理を書く
-    return 1;
-  }
-
-  get getCalcSubTotalPrice(): number {
-    // ここに注文商品税込合計金額処理を書く
-    return 1;
-  }
-
   // 注文履歴画面の配達日のフォーマットを変更
   get changeFormatOfDeliveryTime(): string {
     const formatString = format(this.deliveryTime, "yyyy-MM-dd");
@@ -59,7 +49,7 @@ export class Order {
     return nowstatus;
   }
 
-  // 注文履歴画面の支払い方法のフォーマットを変更
+  // 注文履歴画面の支払い状態を変更
   get changeFormatOfPaymentMethod(): string {
     let changedFormat = "";
     if (this.paymentMethod == 1) {

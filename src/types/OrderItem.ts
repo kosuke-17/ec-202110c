@@ -46,7 +46,7 @@ export class OrderItem {
   }
 
   /**
-   * ショッピングカートで商品のサイズごとの単価を表示する.
+   * ショッピングカートで商品のサイズごとの単価を返す.
    *
    * @returns 商品の単価
    */
@@ -60,8 +60,9 @@ export class OrderItem {
     return itemPrice;
   }
   /**
-   * サイズによってトッピングの値段を返す.
+   * トッピングの値段を返す.
    *
+   * @remarks サイズによって異なるトッピングの値段を返す。
    * @param orderItemSize - 選択された商品のサイズ
    * @returns サイズごとのトッピングの値段
    */

@@ -114,17 +114,20 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class cartList extends Vue {
+  //ショッピングカートに入っている商品リスト
   private orderItemList = new Array<OrderItem>();
+
   /**
    * ショッピングカートに入っている商品の配列を変数に格納.
    */
   created(): void {
     this.orderItemList = this["$store"].getters.getOrderItemList;
   }
+
   /**
-   * ショッピングカートに入っている商品の配列を返す.
+   * 注文する.
    *
-   * @returns ショッピングカートに入っている商品の配列
+   * @remarks ショッピングカートに入っている商品を注文する。
    *          ログインしていなければ、ログイン画面に戻るように処理を実装
    */
   goToOrder(): void {
@@ -141,6 +144,8 @@ export default class cartList extends Vue {
 
   /**
    * ショッピングカートに入っている商品を削除する.
+   *
+   * @param index - ショッピングカートに入っている商品のIndex番号
    */
   deleteItem(index: number): void {
     this["$store"].commit("deleteItem", {
@@ -150,7 +155,7 @@ export default class cartList extends Vue {
   }
 
   /**
-   *税抜き合計金額を計算するして返す.
+   *税抜き合計金額を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の税抜き合計金額を計算して返す
    * @returns ショッピングカートに入っている商品

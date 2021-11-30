@@ -19,9 +19,13 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Home extends Vue {
+  //ユーザーか管理者のどちらがログインしているかを表す
   private loginUserOrAdmin = false;
+
   /**
-   * 会員または管理者のログイン状態でナビゲーションの項目を変化
+   * ログイン状態を返す.
+   *
+   * @remarks 会員または管理者のログイン状態でナビゲーションの項目を変化させる。
    * @returns true:会員か管理者がログイン false:会員と管理者共にログアウトの状態
    */
   get loginStatus(): boolean {
