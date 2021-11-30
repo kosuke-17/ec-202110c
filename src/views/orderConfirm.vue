@@ -397,7 +397,7 @@ export default class OrderConfirm extends Vue {
   //有効期限（年）
   private creditCardExpiryYear = "選択してください";
   //カード名義人
-  private creditCardName = "KOSUKETAMURA";
+  private creditCardName = "KOSUKE TAMURA";
   //セキュリティコード
   private securityCode = "123";
   //クレジットカード番号のエラーメッセージ
@@ -661,6 +661,9 @@ export default class OrderConfirm extends Vue {
     } else if (this.isHalfWidthAlpha(this.creditCardName) === false) {
       this.errorCreditCardName = "半角のアルファベットで入力してください";
       hasError = true;
+    } else if (!this.creditCardName.includes(" ")) {
+      this.errorCreditCardName = "姓と名の間に半角スペースを入れてください";
+      hasError = true;
     }
     if (this.securityCode === "") {
       this.errorSecurityCode = "セキュリティコードを入力してください";
@@ -681,7 +684,10 @@ export default class OrderConfirm extends Vue {
    * @returns 半角英字がある:true / 半角英字がない:false
    */
   private isHalfWidthAlpha(creditCardName: string) {
-    if (creditCardName.match(/^[A-Za-z]*$/)) {
+    //半角スペースは半角英字として認識されないため、半角スペースを無くす。
+    // このメソッドがないと、falseが返って"半角のアルファベットで入力してください"とエラーが出てしまう。
+    const formatCardName = creditCardName.replace(/\s+/g, "");
+    if (formatCardName.match(/^[A-Za-z]*$/)) {
       return true;
     } else {
       return false;
