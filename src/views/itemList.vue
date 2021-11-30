@@ -395,6 +395,5 @@ fieldset {
 
 .favoriteBtn :hover {
   cursor: pointer;
-
 }
 </style>
