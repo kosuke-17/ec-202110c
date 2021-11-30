@@ -397,7 +397,7 @@ export default class OrderConfirm extends Vue {
   //有効期限（年）
   private creditCardExpiryYear = "選択してください";
   //カード名義人
-  private creditCardName = "KOSUKETAMURA";
+  private creditCardName = "KOSUKE TAMURA";
   //セキュリティコード
   private securityCode = "123";
   //クレジットカード番号のエラーメッセージ
