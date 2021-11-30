@@ -462,7 +462,6 @@ export default new Vuex.Store({
       }
       return orderItemList;
     },
-
     /**
      * ログイン状態を取得
      * @param state - ステートオブジェクト

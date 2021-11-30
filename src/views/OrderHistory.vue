@@ -4,7 +4,7 @@
       <h1 class="page-title">注文履歴</h1>
       <!-- table -->
       <div class="row">
-        <table class="striped">
+        <table>
           <thead>
             <tr>
               <th class="cart-table-th">注文日</th>
@@ -79,6 +79,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Order } from "../types/Order";
+import { Topping } from "../types/Topping";
 
 @Component
 export default class OrderHistory extends Vue {
@@ -107,25 +108,38 @@ export default class OrderHistory extends Vue {
    * 注文履歴から再注文する.
    */
   reOrder(orderIndex: number): void {
-    let count =
+    let itemCount =
       this["$store"].getters.getAllOrderHistoryLists[orderIndex].orderItemList
         .length;
-    console.log(count);
+
+    // カートの中身を空にする
     this["$store"].commit("resetOrderItemList");
 
-    for (let i = 0; i <= count - 1; i++) {
+    for (let i = 0; i < itemCount; i++) {
+      let toppingList = new Array<Topping>();
+      let toppingCount =
+        this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+          .orderItemList[i].orderToppingList.length;
+      for (let j = 0; j < toppingCount; j++) {
+        toppingList.push(
+          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].orderToppingList[j].topping
+        );
+      }
+
+      // カートに注文履歴の商品を追加する
       this["$store"].commit("addItemToCart", {
         size: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
           .orderItemList[i].size,
-        orderToppingList:
-          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
-            .orderItemList[i].orderToppingList,
+
+        orderToppingList: toppingList,
+
         quantity:
           this["$store"].getters.getAllOrderHistoryLists[orderIndex]
             .orderItemList[i].quantity,
         orderItem: {
           id: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
-            .orderItemList[i].id,
+            .orderItemList[i].item.id,
           name: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
             .orderItemList[i].item.name,
           description:
@@ -155,5 +169,13 @@ export default class OrderHistory extends Vue {
 <style scoped>
 .top-wrapper {
   min-height: 97vh;
+}
+
+table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #eae6da;
 }
 </style>
