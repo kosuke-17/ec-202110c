@@ -105,7 +105,7 @@
           <button class="btn" type="button" v-on:click="registerUser">
             <span>登録<i class="material-icons right">done</i></span>
           </button>
-          <button class="btn" type="button" v-on:click="clear">
+          <button class="btn clear-btn" type="button" v-on:click="clear">
             <span>クリア<i class="material-icons right">done</i></span>
           </button>
         </div>
@@ -378,5 +378,10 @@ export default class RegisterUser extends Vue {
   padding: 1% 2%;
   box-sizing: border-box;
   background-color: #fffaf0;
+}
+
+.clear-btn {
+  margin-left: 3%;
+  background-color: #c5b3af;
 }
 </style>
