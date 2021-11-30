@@ -332,4 +332,7 @@ export default class itemDetail extends Vue {
   -webkit-transform-origin: 100% 100%;
   transform-origin: 100% 100%;
 }
+button.waves-effect.waves-light.btn {
+  margin: 3%;
+}
 </style>
