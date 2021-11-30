@@ -2,7 +2,7 @@
   <div class="top-wrapper">
     <div class="container">
       <h1 class="page-title">＊会員登録＊</h1>
-      <div class="row register-page">
+      <div class="row register-page col s12 z-depth-6 card-panel">
         <div class="error">{{ errorOfName }}</div>
         <div class="row">
           <div class="input-field col s6">
@@ -371,5 +371,12 @@ export default class RegisterUser extends Vue {
 }
 .top-wrapper {
   min-height: 97vh;
+}
+
+.col.s12.z-depth-6.card-panel {
+  margin-top: 5%;
+  padding: 1% 2%;
+  box-sizing: border-box;
+  background-color: #fffaf0;
 }
 </style>

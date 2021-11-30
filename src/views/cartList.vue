@@ -280,4 +280,7 @@ export default class cartList extends Vue {
 .card-action.btn {
   padding: 0;
 }
+table.striped > tbody > tr:nth-child(odd) {
+  background-color: #eae6da;
+}
 </style>

@@ -389,7 +389,12 @@ fieldset {
   min-height: 97vh;
 }
 
+.card {
+  background-color: #fffaf1;
+
+
 .favoriteBtn :hover {
   cursor: pointer;
+
 }
 </style>

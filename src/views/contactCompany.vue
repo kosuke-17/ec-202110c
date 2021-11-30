@@ -119,7 +119,7 @@ export default class ContactCompany extends Vue {
   margin-top: 5%;
   padding: 1% 2%;
   box-sizing: border-box;
-  background-color: #e2d7cf;
+  background-color: #fffaf0;
 }
 
 .row .col.s12 {
