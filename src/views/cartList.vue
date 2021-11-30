@@ -269,7 +269,7 @@ export default class cartList extends Vue {
 }
 
 .row.order-confirm-btn {
-  margin: 0;
+  margin: 3%;
 }
 
 .register-admin-btn {
