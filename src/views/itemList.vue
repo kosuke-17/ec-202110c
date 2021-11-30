@@ -386,4 +386,7 @@ fieldset {
 .top-wrapper {
   min-height: 97vh;
 }
+.card {
+  background-color: #fffaf1;
+}
 </style>
