@@ -166,31 +166,37 @@ export default class itemDetail extends Vue {
   async created(): Promise<void> {
     // 送られてきたリクエストパラメータのidをnumberに変換して取得する
     const itemID = parseInt(this["$route"].params.id);
-    const response = await axios.get(
-      `http://153.127.48.168:8080/ecsite-api/item/${itemID}`
-    );
-    //外部APIから取得してきたデータを代入
-    this.currentOrderItem = new OrderItem(
-      0,
-      0,
-      0,
-      0,
-      "M",
-      new Item(
-        response.data.item.id,
-        response.data.item.type,
-        response.data.item.name,
-        response.data.item.description,
-        response.data.item.priceM,
-        response.data.item.priceL,
-        response.data.item.imagePath,
-        response.data.item.deleted,
-        response.data.item.toppingList,
-        false,
-        0
-      ),
-      new Array<OrderTopping>()
-    );
+    try {
+      const response = await axios.get(
+        `http://153.127.48.168:8080/ecsite-api/item/${itemID}`
+      );
+      //外部APIから取得してきたデータを代入
+      this.currentOrderItem = new OrderItem(
+        0,
+        0,
+        0,
+        0,
+        "M",
+        new Item(
+          response.data.item.id,
+          response.data.item.type,
+          response.data.item.name,
+          response.data.item.description,
+          response.data.item.priceM,
+          response.data.item.priceL,
+          response.data.item.imagePath,
+          response.data.item.deleted,
+          response.data.item.toppingList,
+          false,
+          0
+        ),
+        new Array<OrderTopping>()
+      );
+    } catch (error) {
+      if (error) {
+        this.$router.push("/not-found");
+      }
+    }
   }
 
   /**
