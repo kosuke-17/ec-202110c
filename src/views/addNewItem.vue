@@ -75,15 +75,25 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class LoginUser extends Vue {
+  //商品名
   private name = "クリスマスブレンドコーヒー";
+  //タイプ
   private type = "coffee";
+  //説明
   private description =
     "季節限定の商品です。香りと風味が強く、クリスマスツリーを思わせるコーヒーとなっています。";
+  //Mの価格
   private priceM = 290;
+  //Lの価格
   private priceL = 410;
+  //画像パス
   private imagePath = "/img_coffee/newCoffee.jpg";
+  //トッピングリスト
   private toppings = new Array<Topping>();
 
+  /**
+   * トッピングを表示する.
+   */
   created(): void {
     //トッピングの表示をさせるだけ(商品追加の時はtoppingをnullにする)
     for (const topping of toppingData) {
@@ -98,7 +108,9 @@ export default class LoginUser extends Vue {
       );
     }
   }
-
+  /**
+   * 新商品を追加する.
+   */
   addNewItem(): void {
     this.$store.commit("addNewItem", {
       item: {

@@ -84,14 +84,14 @@ import { Order } from "../types/Order";
 export default class OrderHistory extends Vue {
   //注文履歴一覧を格納する配列
   private orderHistoryList = Array<Order>();
+  //エラーメッセージ
   private errorMessage = "";
 
   /**
-   * Vuexストアのアクション経由で非同期でWebAPIから注文履歴一覧を取得する.
+   * WebAPIから注文履歴一覧を取得する.
    *
    * @remarks 全商品一覧をAPIからアクションで取得
    * ミューテーションで商品オブジェクト化したものを注文一覧配列に格納
-   *
    */
   async created(): Promise<void> {
     await this["$store"].dispatch("getOrderHistoryList");
@@ -104,7 +104,7 @@ export default class OrderHistory extends Vue {
   }
 
   /**
-   * 注文履歴から再注文する
+   * 注文履歴から再注文する.
    */
   reOrder(orderIndex: number): void {
     let count =

@@ -339,7 +339,9 @@
 <script lang="ts">
 import { OrderItem } from "@/types/OrderItem";
 import { User } from "@/types/User";
+// 使用するためには「npm install axios --save」を行う
 import axios from "axios";
+// 使用するためには「npm install --save-dev date-fns」を行う
 import { format } from "date-fns";
 import { Component, Vue } from "vue-property-decorator";
 
@@ -406,7 +408,6 @@ export default class OrderConfirm extends Vue {
   private errorSecurityCode = "";
   //届け先を変更するフラグ
   private changeAddressFlag = false;
-
   //郵便番号エラーメッセージ
   private errorOfZipcode = "";
 
@@ -414,11 +415,9 @@ export default class OrderConfirm extends Vue {
    *注文確認画面表示の準備.
    *
    * @remarks ショッピングカートに入っている商品の配列を変数に格納.
-   *
    */
   created(): void {
     this.currentOrderItemList = this.$store.getters.getOrderItemList;
-
     //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }
@@ -464,9 +463,7 @@ export default class OrderConfirm extends Vue {
 
     /*
      *クレジットカード情報を送信する。
-     *
      *本メソッドは非同期でWebAPIを呼び出しクレジットカード情報を送信するためasync/await axiosを利用。
-     *これらを利用する場合は明示的に戻り値にPromiseオブジェクト型を指定する必要が。
      */
     if (this.status === "2") {
       // 入力値エラーチェックし、エラーが１つ以上あれば処理を止める
@@ -495,6 +492,7 @@ export default class OrderConfirm extends Vue {
     // ログインしているユーザーのIDを格納
     const userId = this.$store.state.loginUserInfo.id;
 
+    //注文情報を送信する
     const response = await axios.post(
       "http://153.127.48.168:8080/ecsite-api/order",
       {
@@ -526,7 +524,7 @@ export default class OrderConfirm extends Vue {
   /**
    * 郵便番号から住所情報を取得.
    *
-   * @returns Promiseオブジェクト
+   * @remarks エラーの時はアラートを表示する
    */
   async searchAddress(): Promise<void> {
     this.errorDestinationZipcode = "";
@@ -536,6 +534,7 @@ export default class OrderConfirm extends Vue {
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const axiosJsonpAdapter = require("axios-jsonp");
+        //郵便番号を外部APIから取得
         const response = await axios.get("https://zipcoda.net/api", {
           adapter: axiosJsonpAdapter,
           params: {
@@ -620,6 +619,7 @@ export default class OrderConfirm extends Vue {
     }
     return hasError;
   }
+
   /**
    * クレジットカード情報のエラーチェック処理.
    *
@@ -686,7 +686,7 @@ export default class OrderConfirm extends Vue {
     }
   }
   /**
-   * ログインユーザー情報をお届け先情報に自動入力する
+   * ログインユーザー情報をお届け先情報に自動入力する.
    */
   autoInput(): void {
     this.destinationName = this["$store"].getters.getLoginUserInfo._name;
@@ -697,7 +697,8 @@ export default class OrderConfirm extends Vue {
   }
 
   /**
-   * 届け先入力欄を空欄にする
+   * 届け先入力欄を空欄にする.
+   *
    * @remarks 届け先情報を登録されているユーザー情報とは異なる届け先をしていたいとき、
    *          届け先を変更するにチェックを入れると、自動入力されていた情報がリセットされる
    */
@@ -714,7 +715,7 @@ export default class OrderConfirm extends Vue {
    *税抜き合計金額を計算して返す.
    *
    * @remarks ショッピングカートに入っている商品の税抜き合計金額を計算して返す
-   * @returns ショッピングカートに入っている商品
+   * @returns ショッピングカートに入っている商品の税抜き合計金額
    */
   private totalPriceWithoutTax(): number {
     let totalPriceWithoutTax = 0;
@@ -740,10 +741,10 @@ export default class OrderConfirm extends Vue {
   }
 
   /**
-   * 合計金額を計算して返す.
+   * 税込合計金額を計算して返す.
    *
-   * @remarks ショッピングカートに入っている商品の合計金額を計算して返す
-   * @returns ショッピングカートに入っている商品の合計金額
+   * @remarks ショッピングカートに入っている商品の税込合計金額を計算して返す
+   * @returns ショッピングカートに入っている商品の税込合計金額
    */
   get totalPriceIncludeTax(): number {
     this.totalPrice = this.totalPriceWithoutTax() + this.taxPrice;
