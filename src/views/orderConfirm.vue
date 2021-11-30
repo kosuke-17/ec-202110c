@@ -418,8 +418,6 @@ export default class OrderConfirm extends Vue {
    */
   created(): void {
     this.currentOrderItemList = this.$store.getters.getOrderItemList;
-    console.dir("注文" + JSON.stringify(this.currentOrderItemList[0]));
-    // console.log("注文");
     //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }

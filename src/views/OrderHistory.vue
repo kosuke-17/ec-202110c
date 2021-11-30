@@ -112,6 +112,7 @@ export default class OrderHistory extends Vue {
       this["$store"].getters.getAllOrderHistoryLists[orderIndex].orderItemList
         .length;
 
+    // カートの中身を空にする
     this["$store"].commit("resetOrderItemList");
 
     for (let i = 0; i < itemCount; i++) {
@@ -124,13 +125,9 @@ export default class OrderHistory extends Vue {
           this["$store"].getters.getAllOrderHistoryLists[orderIndex]
             .orderItemList[i].orderToppingList[j].topping
         );
-        console.dir("topping" + toppingList);
       }
 
-      console.log(
-        this["$store"].getters.getAllOrderHistoryLists[orderIndex]
-          .orderItemList[i].item.id
-      );
+      // カートに注文履歴の商品を追加する
       this["$store"].commit("addItemToCart", {
         size: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
           .orderItemList[i].size,
