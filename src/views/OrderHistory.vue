@@ -4,7 +4,7 @@
       <h1 class="page-title">注文履歴</h1>
       <!-- table -->
       <div class="row">
-        <table class="striped">
+        <table>
           <thead>
             <tr>
               <th class="cart-table-th">注文日</th>
@@ -155,5 +155,13 @@ export default class OrderHistory extends Vue {
 <style scoped>
 .top-wrapper {
   min-height: 97vh;
+}
+
+table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #eae6da;
 }
 </style>
