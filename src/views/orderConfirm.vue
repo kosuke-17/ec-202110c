@@ -835,6 +835,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .order-confirm-btn {
   text-align: center;
+  margin: 3%;
 }
 .price {
   background-color: #d6c6af;
