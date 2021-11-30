@@ -420,7 +420,6 @@ export default class OrderConfirm extends Vue {
    */
   created(): void {
     this.currentOrderItemList = this.$store.getters.getOrderItemList;
-
     //ログインユーザーの届け先情報を自動入力する
     this.autoInput();
   }
