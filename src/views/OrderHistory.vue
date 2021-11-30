@@ -79,6 +79,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Order } from "../types/Order";
+import { Topping } from "../types/Topping";
 
 @Component
 export default class OrderHistory extends Vue {
@@ -107,25 +108,41 @@ export default class OrderHistory extends Vue {
    * 注文履歴から再注文する
    */
   reOrder(orderIndex: number): void {
-    let count =
+    let itemCount =
       this["$store"].getters.getAllOrderHistoryLists[orderIndex].orderItemList
         .length;
-    console.log(count);
+
     this["$store"].commit("resetOrderItemList");
 
-    for (let i = 0; i <= count - 1; i++) {
+    for (let i = 0; i < itemCount; i++) {
+      let toppingList = new Array<Topping>();
+      let toppingCount =
+        this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+          .orderItemList[i].orderToppingList.length;
+      for (let j = 0; j < toppingCount; j++) {
+        toppingList.push(
+          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+            .orderItemList[i].orderToppingList[j].topping
+        );
+        console.dir("topping" + toppingList);
+      }
+
+      console.log(
+        this["$store"].getters.getAllOrderHistoryLists[orderIndex]
+          .orderItemList[i].item.id
+      );
       this["$store"].commit("addItemToCart", {
         size: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
           .orderItemList[i].size,
-        orderToppingList:
-          this["$store"].getters.getAllOrderHistoryLists[orderIndex]
-            .orderItemList[i].orderToppingList,
+
+        orderToppingList: toppingList,
+
         quantity:
           this["$store"].getters.getAllOrderHistoryLists[orderIndex]
             .orderItemList[i].quantity,
         orderItem: {
           id: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
-            .orderItemList[i].id,
+            .orderItemList[i].item.id,
           name: this["$store"].getters.getAllOrderHistoryLists[orderIndex]
             .orderItemList[i].item.name,
           description:
