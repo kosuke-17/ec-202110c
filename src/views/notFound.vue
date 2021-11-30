@@ -12,14 +12,17 @@ export default class notFound extends Vue {}
 </script>
 <style scoped>
 div {
-  background: #def2ff;
-  width: 100vw;
+  width: 100%;
   height: 80vh;
 }
 .img-content {
   text-align: center;
 }
 .top-wrapper {
-  min-height: 97vh;
+  min-height: 98vh;
+}
+
+img {
+  width: 1000px;
 }
 </style>
