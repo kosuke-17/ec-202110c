@@ -99,21 +99,24 @@ export default new Vuex.Store({
     addItemToCart(state, payload): void {
       let duplicatedToppingFlag = false;
       // 同じ商品、サイズ、トッピングだったらquantityを加算して、カートリストに重複しないようにする。
-      console.dir("state.orderItemList:" + JSON.stringify(state.orderItemList));
 
       for (const orderItem of state.orderItemList) {
         for (const orderedTopping of orderItem._orderToppingList) {
           if (
-            payload.orderToppingList.find(
-              (orderTopping: Topping) => orderedTopping._id === orderTopping.id
-            )
+            payload.orderToppingList.find((orderTopping: Topping) => {
+              if (orderedTopping.id) {
+                return orderedTopping.id === orderTopping.id;
+              } else {
+                return orderedTopping._id === orderTopping.id;
+              }
+            })
           ) {
             duplicatedToppingFlag = true;
           }
         }
 
         if (
-          orderItem._item.id === payload.orderItem.id &&
+          orderItem._item._id === payload.orderItem.id &&
           orderItem._size === payload.size &&
           duplicatedToppingFlag
         ) {
