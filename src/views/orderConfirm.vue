@@ -250,7 +250,7 @@
                 maxlength="16"
                 v-model="creditCardNumber"
               />
-              <label for="creditNum">クレジットカード番号</label>
+              <label class="active" for="creditNum">クレジットカード番号</label>
             </div>
           </div>
           <div class="errorMessage">{{ errorCreditCardExpiryDate }}</div>
@@ -308,7 +308,7 @@
                 maxlength="50"
                 v-model="creditCardName"
               />
-              <label for="creditName">カード名義人</label>
+              <label class="active" for="creditName">カード名義人</label>
             </div>
           </div>
           <div class="row">
@@ -322,7 +322,9 @@
                 maxlength="4"
                 v-model="securityCode"
               />
-              <label for="securityCode">セキュリティコード</label>
+              <label class="active" for="securityCode"
+                >セキュリティコード</label
+              >
             </div>
           </div>
         </div>
@@ -387,15 +389,15 @@ export default class OrderConfirm extends Vue {
   // 配達日時のエラーメッセージ
   private errorOrderDate = "";
   // クレジットカード番号
-  private creditCardNumber = "";
+  private creditCardNumber = "01010101010101";
   //有効期限（月）
   private creditCardExpiryMonth = "選択してください";
   //有効期限（年）
   private creditCardExpiryYear = "選択してください";
   //カード名義人
-  private creditCardName = "";
+  private creditCardName = "KOSUKETAMURA";
   //セキュリティコード
-  private securityCode = "";
+  private securityCode = "123";
   //クレジットカード番号のエラーメッセージ
   private errorCreditCardNumber = "";
   //有効期限のエラーメッセージ
