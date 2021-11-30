@@ -192,7 +192,7 @@ export default class cartList extends Vue {
 
 <style scoped>
 .top-wrapper {
-  height: 97vh;
+  min-height: 98vh;
 }
 .cart-table-th {
   text-align: center;
