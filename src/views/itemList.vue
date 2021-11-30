@@ -66,6 +66,7 @@
             <span class="price">Ｌ</span>{{ item.priceL }}円(税抜)<br />
             <div class="favorite">
               <div
+                class="favoriteBtn"
                 @click="changeFavoriteFlag(item)"
                 v-if="item.isFavorite === false"
               >
@@ -75,6 +76,7 @@
                 ></i>
               </div>
               <div
+                class="favoriteBtn"
                 @click="changeFavoriteFlag(item)"
                 v-if="item.isFavorite === true"
               >
@@ -381,9 +383,17 @@ fieldset {
   margin-right: 5px;
 }
 .page-num-btn {
-  margin-right: 2%;
+  margin: 2%;
 }
 .top-wrapper {
   min-height: 97vh;
+}
+
+.card {
+  background-color: #fffaf1;
+}
+
+.favoriteBtn :hover {
+  cursor: pointer;
 }
 </style>

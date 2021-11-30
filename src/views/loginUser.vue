@@ -109,7 +109,7 @@ export default class LoginUser extends Vue {
 }
 
 .row .col.s12 {
-  background-color: #e2d7cf;
+  background-color: #fffaf0;
 }
 
 .login-btn {

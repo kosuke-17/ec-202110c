@@ -95,7 +95,7 @@ export default class LoginAdministrator extends Vue {
 }
 
 .row .col.s12 {
-  background-color: #e2d7cf;
+  background-color: #fffaf1;
 }
 
 .login-btn {
@@ -117,5 +117,4 @@ export default class LoginAdministrator extends Vue {
 h1 {
   margin-bottom: 1%;
 }
-
 </style>
