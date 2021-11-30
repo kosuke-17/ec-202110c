@@ -192,7 +192,7 @@ export default class cartList extends Vue {
 
 <style scoped>
 .top-wrapper {
-  height: 97vh;
+  min-height: 98vh;
 }
 .cart-table-th {
   text-align: center;
@@ -269,7 +269,7 @@ export default class cartList extends Vue {
 }
 
 .row.order-confirm-btn {
-  margin: 0;
+  margin: 3%;
 }
 
 .register-admin-btn {
@@ -279,5 +279,8 @@ export default class cartList extends Vue {
 
 .card-action.btn {
   padding: 0;
+}
+table.striped > tbody > tr:nth-child(odd) {
+  background-color: #eae6da;
 }
 </style>

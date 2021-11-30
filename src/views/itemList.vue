@@ -383,10 +383,14 @@ fieldset {
   margin-right: 5px;
 }
 .page-num-btn {
-  margin-right: 2%;
+  margin: 2%;
 }
 .top-wrapper {
   min-height: 97vh;
+}
+
+.card {
+  background-color: #fffaf1;
 }
 
 .favoriteBtn :hover {
