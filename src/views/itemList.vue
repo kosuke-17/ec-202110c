@@ -391,7 +391,7 @@ fieldset {
 
 .card {
   background-color: #fffaf1;
-
+}
 
 .favoriteBtn :hover {
   cursor: pointer;
