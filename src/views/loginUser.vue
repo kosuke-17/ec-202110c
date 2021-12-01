@@ -16,7 +16,11 @@
                   type="email"
                   v-model="mailAddress"
                 />
-                <label for="mailAddress" data-error="wrong" data-success="right"
+                <label
+                  class="active"
+                  for="mailAddress"
+                  data-error="wrong"
+                  data-success="right"
                   >メールアドレス</label
                 >
               </div>
@@ -25,7 +29,7 @@
               <div class="input-field col s12">
                 <i class="material-icons prefix">lock_outline</i>
                 <input id="password" type="password" v-model="password" />
-                <label for="password">パスワード</label>
+                <label class="active" for="password">パスワード</label>
               </div>
             </div>
             <div class="row login-btn">
@@ -57,9 +61,9 @@ import axios from "axios";
 @Component
 export default class LoginUser extends Vue {
   // メールアドレス
-  private mailAddress = "";
+  private mailAddress = "dorayaki@com";
   // パスワード
-  private password = "";
+  private password = "Password1111";
   // エラーメッセージ
   private errorMessage = "";
 
