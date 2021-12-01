@@ -61,7 +61,7 @@ import axios from "axios";
 @Component
 export default class LoginUser extends Vue {
   // メールアドレス
-  private mailAddress = "dorayaki@com";
+  private mailAddress = "dora@yaki.com";
   // パスワード
   private password = "Password1111";
   // エラーメッセージ

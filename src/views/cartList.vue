@@ -224,7 +224,7 @@ export default class cartList extends Vue {
   text-align: center;
 }
 .price {
-  background-color: #d6c6af;
+  background-color: #fffaf1;
   border-radius: 50%; /* 角丸にする設定 */
   color: black;
   text-align: center;
@@ -241,24 +241,24 @@ export default class cartList extends Vue {
 .card .card-content {
   padding: 11% 2%;
   border-radius: 0 0 2px 2px;
-  background-color: #e2d7cf;
+  background-color: #fffaf0;
 }
 
 .card .card-content .card-title {
   display: block;
   line-height: 32px;
   margin-bottom: 5%;
-  color: #49382c;
+  color: #332315;
 }
 
 .card .card-content p {
-  color: #49382c;
+  color: #332315;
   margin-bottom: 5%;
 }
 
 .card .card-action:last-child {
   border-radius: 0 0 2 px 2 px;
-  background-color: #a3856f;
+  background-color: #332315;
   width: 30%;
 }
 .card .card-action:last-child:hover {
@@ -268,9 +268,10 @@ export default class cartList extends Vue {
 .card
   .card-action
   a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
-  color: #271c19;
+  color: #55423d;
   margin: 0;
   font-size: 21px;
+  color: white;
 }
 
 .row.order-confirm-btn {
